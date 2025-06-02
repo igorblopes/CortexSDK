@@ -1,14 +1,14 @@
 export interface Fingerprint {
     accountHash: string;
     ip: string;
-    conectionType: string;
+    connectionType: string;
     screenResolution: [number, number];
     locality: UserLocality;
     device: string;
     timezone: string;
     language: string;
     operatingSystem: string;
-    soversion: string;
+    soVersion: string;
     deviceType: string;
     createdAt: Date;
 }
@@ -19,6 +19,7 @@ export interface UserLocality {
 }
 
 export interface UserBehavior {
+  accountHash: string;
   pageVisit: string;
   clicks: UserBehaviorClicks[];
   sessionDuration: number;
@@ -31,6 +32,7 @@ export interface UserBehaviorClicks {
 }
 
 export interface FraudAssessment {
+  accountHash: string;
   score: number;
   level: 'allow' | 'review' | 'deny';
   reasons: string[];
