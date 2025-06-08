@@ -130,6 +130,7 @@ export class FingerprintDB {
                 operating_system TEXT,
                 so_version TEXT,
                 device_type TEXT,
+                browser_agent TEXT,
                 created_at TEXT)
             `);     
             
@@ -145,7 +146,7 @@ export class FingerprintDB {
             let locality = fingerprint.locality != null ? `${fingerprint.locality.lat} , ${fingerprint.locality.long}` : "";
             let screenResolution = `${fingerprint.screenResolution[0]} , ${fingerprint.screenResolution[1]}`;
             await this.db.run(`
-                INSERT INTO fingerprint (account_hash, ip, connection_type, screen_resolution, locality, device, timezone, language, operating_system, so_version, device_type, created_at)
+                INSERT INTO fingerprint (account_hash, ip, connection_type, screen_resolution, locality, device, timezone, language, operating_system, so_version, device_type, browser_agent, created_at)
                 VALUES (
                     ${fingerprint.accountHash}, 
                     ${fingerprint.ip},
@@ -158,6 +159,7 @@ export class FingerprintDB {
                     ${fingerprint.operatingSystem},
                     ${fingerprint.soVersion},
                     ${fingerprint.deviceType},
+                    ${fingerprint.browserAgent},
                     ${fingerprint.createdAt}
                 )
             `);
@@ -219,6 +221,7 @@ export class FingerprintDB {
             operatingSystem: item.operating_system,
             soVersion: item.so_version,
             deviceType: item.device_type,
+            browserAgent: item.browser_agent,
             createdAt: dateCreatedAt
         };
 

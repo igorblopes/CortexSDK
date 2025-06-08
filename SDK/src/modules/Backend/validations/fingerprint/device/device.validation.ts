@@ -1,5 +1,5 @@
-import { Fingerprint } from "../../interfaces";
-import { Validation } from "../validation.interface";
+import { Fingerprint } from "../../../interfaces";
+import { Validation } from "../../validation.interface";
 
 export class DeviceValidation implements Validation{
     

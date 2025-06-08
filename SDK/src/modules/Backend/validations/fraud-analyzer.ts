@@ -1,11 +1,10 @@
 import { CheckoutDB } from "../infra/database/cortext-db-checkout";
 import { FingerprintDB } from "../infra/database/cortext-db-fingerprint";
 import { FraudDB } from "../infra/database/cortext-db-fraud";
+import { SenseScoreDB } from "../infra/database/cortext-db-sense-score";
 import { UserBehaviorDB } from "../infra/database/cortext-db-user-behavior";
 import { FraudAssessment } from "../interfaces";
-import { ConfigModelDB } from "../interfaces-db";
 import { ScoreMappers } from "./score-mappers";
-import { Validation } from "./validation.interface";
 
 export class FraudAnalizer {
 
@@ -15,16 +14,49 @@ export class FraudAnalizer {
         private checkoutDB: CheckoutDB,
         private fingerprintDB: FingerprintDB,
         private userBehaviorDB: UserBehaviorDB,
-        private fraudDB: FraudDB
+        private fraudDB: FraudDB,
+        private senseScoreDB: SenseScoreDB
     ) {
         
     }
 
+    async analyze(accountHash: string): Promise<FraudAssessment> {
 
-    async analyzeFingerprints(accountHash: string): Promise<FraudAssessment> {
+        let mapScores = await this.senseScoreDB.getMapAllSenseScore();
+
+        const results = await Promise.all([
+            this.analyzeFingerprints(accountHash, mapScores),
+            this.analyzeCheckouts(accountHash, mapScores),
+            this.analyzeUserBehaviors(accountHash, mapScores)
+        ]);
+
+
+        let fingerprintResult = results[0];
+        let checkoutResult = results[1];
+        let userBehaviorResult = results[2];
+
+        let score = fingerprintResult.score + checkoutResult.score + userBehaviorResult.score;
+
+        let reasons = fingerprintResult.reasons.concat(checkoutResult.reasons, userBehaviorResult.reasons);
+
+        let fraudResult: FraudAssessment = {
+            accountHash: accountHash,
+            score: score,
+            level: mapScores.has(score) ? mapScores.get(score) : "allow",
+            reasons: reasons,
+            createdAt: new Date()
+        };
+
+        this.fraudDB.createFraudEntity(fraudResult);
+
+        return fraudResult;
+
+    }
+
+
+    async analyzeFingerprints(accountHash: string, mapScores: Map<number, string>): Promise<FraudAssessment> {
 
         let fingerprints = await this.fingerprintDB.findFingerprintsByAccountHash(accountHash);
-        let frauds = await this.fraudDB.findFraudByAccountHash(accountHash);
 
         let map = await this.scoreMappers.getMap();
 
@@ -41,23 +73,19 @@ export class FraudAnalizer {
             
         }
 
-
-
-
         return {
             accountHash: accountHash,
             score: score,
-            level: "allow",
+            level: mapScores.has(score) ? mapScores.get(score) : "allow",
             reasons: reasons,
             createdAt: new Date()
         };
     }
 
 
-    async analyzeCheckouts(accountHash: string): Promise<FraudAssessment> {
+    async analyzeCheckouts(accountHash: string, mapScores: Map<number, string>): Promise<FraudAssessment> {
 
         let checkouts = await this.checkoutDB.findCheckoutsByAccountHash(accountHash);
-        let frauds = await this.fraudDB.findFraudByAccountHash(accountHash);
 
         let map = await this.scoreMappers.getMap();
 
@@ -74,23 +102,19 @@ export class FraudAnalizer {
             
         }
 
-
-
-
         return {
             accountHash: accountHash,
             score: score,
-            level: "allow",
+            level: mapScores.has(score) ? mapScores.get(score) : "allow",
             reasons: reasons,
             createdAt: new Date()
         };
     }
 
 
-    async analyzeUserBehaviors(accountHash: string): Promise<FraudAssessment> {
+    async analyzeUserBehaviors(accountHash: string, mapScores: Map<number, string>): Promise<FraudAssessment> {
 
         let userBehaviors = await this.userBehaviorDB.findUserBehaviorByAccountHash(accountHash);
-        let frauds = await this.fraudDB.findFraudByAccountHash(accountHash);
 
         let map = await this.scoreMappers.getMap();
 
@@ -107,13 +131,10 @@ export class FraudAnalizer {
             
         }
 
-
-
-
         return {
             accountHash: accountHash,
             score: score,
-            level: "allow",
+            level: mapScores.has(score) ? mapScores.get(score) : "allow",
             reasons: reasons,
             createdAt: new Date()
         };

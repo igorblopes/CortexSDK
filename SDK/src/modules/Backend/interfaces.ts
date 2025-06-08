@@ -10,6 +10,7 @@ export interface Fingerprint {
     operatingSystem: string;
     soVersion: string;
     deviceType: string;
+    browserAgent: string;
     createdAt: Date;
 }
 
@@ -42,7 +43,7 @@ export interface Checkout {
 export interface FraudAssessment {
   accountHash: string;
   score: number;
-  level: 'allow' | 'review' | 'deny';
+  level: string | undefined;
   reasons: string[];
   createdAt: Date;
 }

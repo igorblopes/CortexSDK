@@ -2,8 +2,16 @@ import { CheckoutDB } from "../infra/database/cortext-db-checkout";
 import { FingerprintDB } from "../infra/database/cortext-db-fingerprint";
 import { UserBehaviorDB } from "../infra/database/cortext-db-user-behavior";
 import { ConfigModelDB } from "../interfaces-db";
-import { ConnectionValidation } from "./connections/connection.validation";
-import { DeviceValidation } from "./device/device.validation";
+import { BrowserAgentValidation } from "./fingerprint/browser_agent/browser-agent.validation";
+import { ConnectionValidation } from "./fingerprint/connections/connection.validation";
+import { DeviceValidation } from "./fingerprint/device/device.validation";
+import { IpValidation } from "./fingerprint/ip/ip.validation";
+import { LanguageValidation } from "./fingerprint/language/language.validation";
+import { LocalityValidation } from "./fingerprint/locality/locality.validation";
+import { OperatingSystemValidation } from "./fingerprint/operating_system/operating-system.validation";
+import { ResolutionValidation } from "./fingerprint/resolution/resolution.validation";
+import { TimezoneValidation } from "./fingerprint/timezone/timezone.validation";
+import { SOVersionValidation } from "./fingerprint/version/so-version.validation";
 import { Validation } from "./validation.interface";
 
 export class ScoreMappers {
@@ -56,16 +64,16 @@ export class ScoreMappers {
         let map = new Map<string, Validation>;
 
         // Fingerprints
-        //map.set("Its new locality", );
+        map.set("Its new locality", new LocalityValidation());
         map.set("Its new device", new ConnectionValidation());
-        //map.set("Its new ip", );
-        //map.set("Its new language", );
-        //map.set("Its new timezone", );
+        map.set("Its new ip", new IpValidation());
+        map.set("Its new language", new LanguageValidation());
+        map.set("Its new timezone", new TimezoneValidation());
         map.set("Its different wifi connection", new DeviceValidation());
-        //map.set("Its new screen resolution", );
-        //map.set("Its new system operation", );
-        //map.set("Its new so version", );
-        //map.set("Its new browser agent", );
+        map.set("Its new screen resolution", new ResolutionValidation());
+        map.set("Its new system operation", new OperatingSystemValidation());
+        map.set("Its new so version", new SOVersionValidation());
+        map.set("Its new browser agent", new BrowserAgentValidation());
     
 
         // Checkouts

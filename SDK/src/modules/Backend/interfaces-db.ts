@@ -11,6 +11,7 @@ export interface FingerprintModelDB {
     operating_system: string;
     so_version: string;
     device_type: string;
+    browser_agent: string;
     created_at: string;
 }
 
@@ -55,4 +56,10 @@ export interface ConfigModelDB {
     name: string;
     score: number;
     status: number;
+}
+
+export interface SenseScoreModelDB {
+    id: number;
+    score: number;
+    level: string;
 }
