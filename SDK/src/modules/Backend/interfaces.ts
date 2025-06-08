@@ -28,7 +28,7 @@ export interface UserBehavior {
 
 export interface UserBehaviorClicks {
     elementClick: string;
-    createdAt: string;
+    createdAt: Date;
 }
 
 export interface Checkout {

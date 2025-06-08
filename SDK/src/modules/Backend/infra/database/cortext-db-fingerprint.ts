@@ -1,6 +1,6 @@
 import sqlite3 from 'sqlite3';
 import { Fingerprint, UserLocality } from '../../interfaces';
-import { FingerprintModelDB } from '../../interfacesDB';
+import { ConfigModelDB, FingerprintModelDB } from '../../interfaces-db';
 
 export class FingerprintDB {
 
@@ -18,6 +18,33 @@ export class FingerprintDB {
         } catch (err) {
             console.error('Error creating database or table:', err);
         }
+    }
+
+    
+    async findAllFingerprintScore(): Promise<ConfigModelDB[]> {
+        let all: ConfigModelDB[] = [];
+        
+        try {
+
+            await this.db.all<ConfigModelDB>(`
+                SELECT * FROM fingerprint_score
+            `, function(err, rows) {
+
+                for(let row of rows) {
+                    all.push({
+                        id: row.id,
+                        name: row.name,
+                        score: row.score,
+                        status: row.status
+                    });
+                }
+
+            });            
+        } catch (err) {
+            console.error('Error creating database or table:', err);
+        }
+
+        return all;
     }
     
     async seedFingerprintScore() {
@@ -159,6 +186,8 @@ export class FingerprintDB {
             }
 
         });
+
+        fingerprints.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
         return fingerprints;
 

@@ -1,10 +1,11 @@
 import sqlite3 from 'sqlite3';
 import { Fingerprint, FraudAssessment, UserBehavior } from '../../interfaces';
-import { FingerprintDB } from './cortextDBFingerprint';
-import { FraudDB } from './cortextDBFraud';
-import { UserBehaviorDB } from './cortextDBUserBehavior';
-import { CheckoutDB } from './cortextDBCheckout';
-import { RootDatabase } from './rootDB';
+import { FingerprintDB } from './cortext-db-fingerprint';
+import { FraudDB } from './cortext-db-fraud';
+import { UserBehaviorDB } from './cortext-db-user-behavior';
+import { CheckoutDB } from './cortext-db-checkout';
+import { RootDatabase } from './root-db';
+import { SenseScoreDB } from './cortext-db-sense-score';
 
 export class CortexDatabase {
 
@@ -13,6 +14,7 @@ export class CortexDatabase {
     fraudDB: any | FraudDB = null;
     userBehaviorDB: any | UserBehaviorDB = null;
     checkoutDB: any | CheckoutDB = null;
+    senseScoreDB: any | SenseScoreDB = null;
 
     constructor(
         private rootDB: RootDatabase,
@@ -23,6 +25,7 @@ export class CortexDatabase {
         this.fraudDB = new FraudDB(this.db);
         this.userBehaviorDB = new UserBehaviorDB(this.db);
         this.checkoutDB = new CheckoutDB(this.db);
+        this.senseScoreDB = new SenseScoreDB(this.db);
     }
     
     
@@ -33,6 +36,9 @@ export class CortexDatabase {
 
             // Criacao da tabela principal de fraude
             await this.fraudDB.createTableFraud();
+
+            // Criacao da tabela de sensiblidade do score
+            await this.senseScoreDB.createTableSenseScore();
 
 
 
@@ -56,6 +62,9 @@ export class CortexDatabase {
             await this.fingerprintDB.seedFingerprintScore();
             await this.userBehaviorDB.seedUserBehaviorScore();
             await this.checkoutDB.seedCheckoutScore();
+
+            // Seed da tablea de sensibilidade de score
+            await this.senseScoreDB.seedSenseScore();
             
         } catch (err) {
             console.error('Error creating database or table:', err);
