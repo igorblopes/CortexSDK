@@ -63,7 +63,7 @@ export class CortexDatabase {
             await this.userBehaviorDB.seedUserBehaviorScore();
             await this.checkoutDB.seedCheckoutScore();
 
-            // Seed da tablea de sensibilidade de score
+            // Seed da tabela de sensibilidade de score
             await this.senseScoreDB.seedSenseScore();
             
         } catch (err) {

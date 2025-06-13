@@ -90,7 +90,8 @@ export class UserBehaviorDB {
 
     async createTableUserBehavior() {
         try {
-            await this.db.run(`CREATE TABLE IF NOT EXISTS user_behavior ( 
+            await this.db.run(
+                `CREATE TABLE IF NOT EXISTS user_behavior ( 
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 account_hash TEXT,
                 session_duration integer
@@ -105,12 +106,14 @@ export class UserBehaviorDB {
 
     async createTableUserBehaviorClicks() {
         try {
-            await this.db.run(`CREATE TABLE IF NOT EXISTS user_behavior_clicks ( 
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                element_click TEXT,
-                created_at TEXT,
-                user_behavior_id INTEGER,
-                FOREIGN KEY (user_behavior_id) REFERENCES user_behavior(id)))
+            await this.db.run(
+                `CREATE TABLE IF NOT EXISTS user_behavior_clicks ( 
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    element_click TEXT,
+                    created_at TEXT,
+                    user_behavior_id INTEGER,
+                    FOREIGN KEY (user_behavior_id) REFERENCES user_behavior(id)
+                )
             `);     
 
         } catch (err) {

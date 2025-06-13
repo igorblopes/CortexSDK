@@ -6,7 +6,7 @@ import { UserBehaviorDB } from "../infra/database/cortext-db-user-behavior";
 import { FraudAssessment } from "../interfaces";
 import { ScoreMappers } from "./score-mappers";
 
-export class FraudAnalizer {
+export class FraudAnalyzer {
 
     scoreMappers = new ScoreMappers(this.checkoutDB, this.fingerprintDB, this.userBehaviorDB);
     
