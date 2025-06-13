@@ -65,11 +65,11 @@ export class ScoreMappers {
 
         // Fingerprints
         map.set("Its new locality", new LocalityValidation());
-        map.set("Its new device", new ConnectionValidation());
+        map.set("Its new device", new DeviceValidation());
         map.set("Its new ip", new IpValidation());
         map.set("Its new language", new LanguageValidation());
         map.set("Its new timezone", new TimezoneValidation());
-        map.set("Its different wifi connection", new DeviceValidation());
+        map.set("Its different wifi connection", new ConnectionValidation());
         map.set("Its new screen resolution", new ResolutionValidation());
         map.set("Its new system operation", new OperatingSystemValidation());
         map.set("Its new so version", new SOVersionValidation());
