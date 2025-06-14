@@ -58,7 +58,7 @@ export class FraudAnalyzer {
 
         let fingerprints = await this.fingerprintDB.findFingerprintsByAccountHash(accountHash);
 
-        let map = await this.scoreMappers.getMap();
+        let map = await this.scoreMappers.getMapFingerprint();
 
         let reasons: string[] = [];
         let score = 0;
@@ -87,7 +87,7 @@ export class FraudAnalyzer {
 
         let checkouts = await this.checkoutDB.findCheckoutsByAccountHash(accountHash);
 
-        let map = await this.scoreMappers.getMap();
+        let map = await this.scoreMappers.getMapCheckout();
 
         let reasons: string[] = [];
         let score = 0;
@@ -116,7 +116,7 @@ export class FraudAnalyzer {
 
         let userBehaviors = await this.userBehaviorDB.findUserBehaviorByAccountHash(accountHash);
 
-        let map = await this.scoreMappers.getMap();
+        let map = await this.scoreMappers.getMapUserBehavior();
 
         let reasons: string[] = [];
         let score = 0;

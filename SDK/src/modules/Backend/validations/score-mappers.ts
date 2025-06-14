@@ -27,11 +27,31 @@ export class ScoreMappers {
         private userBehaviorDB: UserBehaviorDB
     ) {}
 
-    async getMap(): Promise<Map<ConfigModelDB, Validation | undefined>> {
+
+    async getMapFingerprint(): Promise<Map<ConfigModelDB, Validation | undefined>> {
+
+        
+        let fingerprintScores = await this.fingerprintDB.findAllFingerprintScore();
+        
+        let mapNameToValidation = this.getMapNameScoreToClassValidation();
+
+        let map = new Map<ConfigModelDB, Validation | undefined>();        
+
+        for(let score of fingerprintScores) {
+            if(score.status != 1) {continue;}
+
+            if(mapNameToValidation.has(score.name)){
+                map.set(score, mapNameToValidation.get(score.name));
+            }
+        }
+
+
+        return map;
+    }
+
+    async getMapCheckout(): Promise<Map<ConfigModelDB, Validation | undefined>> {
 
         let checkoutScores = await this.checkoutDB.findAllCheckoutScore();
-        let fingerprintScores = await this.fingerprintDB.findAllFingerprintScore();
-        let userBehaviorScores = await this.userBehaviorDB.findAllUserBehaviorScore();
 
         let mapNameToValidation = this.getMapNameScoreToClassValidation();
 
@@ -46,13 +66,16 @@ export class ScoreMappers {
             }
         }
 
-        for(let score of fingerprintScores) {
-            if(score.status != 1) {continue;}
+        return map;
+    }
 
-            if(mapNameToValidation.has(score.name)){
-                map.set(score, mapNameToValidation.get(score.name));
-            }
-        }
+    async getMapUserBehavior(): Promise<Map<ConfigModelDB, Validation | undefined>> {
+
+        let userBehaviorScores = await this.userBehaviorDB.findAllUserBehaviorScore();
+
+        let mapNameToValidation = this.getMapNameScoreToClassValidation();
+
+        let map = new Map<ConfigModelDB, Validation | undefined>();
 
         for(let score of userBehaviorScores) {
             if(score.status != 1) {continue;}
@@ -65,8 +88,9 @@ export class ScoreMappers {
         return map;
     }
 
+
     getMapNameScoreToClassValidation(): Map<string, Validation> {
-        let map = new Map<string, Validation>;
+        let map = new Map<string, Validation>();
 
         // Fingerprints
         map.set("Its new locality", new LocalityValidation());
