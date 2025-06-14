@@ -18,9 +18,15 @@ export interface FingerprintModelDB {
 export interface CheckoutModelDB {
     id: number;
     account_hash: string;
+    created_at: string;
+}
+
+export interface CheckoutItensModelDB {
+    id: number;
     type: string;
     quantity: number;
     unit_value: number;
+    checkout_id: number;
     created_at: string;
 }
 

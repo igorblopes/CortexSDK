@@ -130,7 +130,7 @@ export class UserBehaviorDB {
             `, 
             function(err) {
 
-                 if (err) {
+                if (err) {
                     console.error('Erro ao inserir:', err.message);
                     return;
                 }

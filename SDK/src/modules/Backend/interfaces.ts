@@ -34,10 +34,14 @@ export interface UserBehaviorClicks {
 
 export interface Checkout {
   accountHash: string;
+  itens: CheckoutItens[];
+  createdAt: Date;
+}
+
+export interface CheckoutItens {
   type: string;
   quantity: number;
   unitValue: number;
-  createdAt: Date;
 }
 
 export interface FraudAssessment {
