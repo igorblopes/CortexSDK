@@ -1,0 +1,16 @@
+<div class="products-grid">
+  <div class="product-card" *ngFor="let product of paginatedProducts">
+    <img [src]="product.image" alt="{{ product.name }}" />
+    <h3>{{ product.name }}</h3>
+    <p>R$ {{ product.price }}</p>
+    <input type="number" min="1" [(ngModel)]="quantities[product.id]" />
+    <button (click)="addToCart(product)">Adicionar ao Carrinho</button>
+  </div>
+</div>
+
+<div class="pagination">
+  <button *ngFor="let page of [1,2,3,4,5]" (click)="changePage(page)" [class.active]="page === currentPage">{{ page }}</button>
+  
+</div>
+
+<button (click)="goToCheckout()">Ir para o Checkout</button>

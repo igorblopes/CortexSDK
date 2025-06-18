@@ -1,0 +1,9 @@
+<div class="login-container">
+  <form (ngSubmit)="login()">
+    <h2>Entrar</h2>
+    <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+    <input type="password" placeholder="Senha" [(ngModel)]="password" name="password" required />
+    <button type="submit">Login</button>
+    <a class="forgot" href="#">Recupere sua senha</a>
+  </form>
+</div>

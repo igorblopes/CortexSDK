@@ -1,0 +1,15 @@
+<div class="checkout-container">
+  <div class="left">
+    <h3>Seus Produtos</h3>
+    <ul>
+      <li *ngFor="let item of cartItems">
+        {{ item.product.name }} - R$ {{ item.product.price }} x {{ item.quantity }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="right">
+    <h3>Total: R$ {{ total.toFixed(2) }}</h3>
+    <button>Finalizar Compra</button>
+  </div>
+</div>
