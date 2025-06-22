@@ -24,7 +24,16 @@
   "jsii": {
     "versionFormat": "full",
     "outdir": "distjsii",
-    "targets": {},
+    "targets": {
+      "java": {
+        "package": "com.br.CortexSDK",
+        "maven": {
+          "groupId": "br.com.CortexSDK",
+          "artifactId": "Backend-CortexSDK",
+          "versionSuffix": "."
+        }
+      }
+    },
     "tsc": {
       "outDir": "distJava"
     }

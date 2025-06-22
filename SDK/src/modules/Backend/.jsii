@@ -32,6 +32,14 @@
   },
   "schema": "jsii/0.10.0",
   "targets": {
+    "java": {
+      "maven": {
+        "artifactId": "Backend-CortexSDK",
+        "groupId": "br.com.CortexSDK",
+        "versionSuffix": "."
+      },
+      "package": "com.br.CortexSDK"
+    },
     "js": {
       "npm": "backend-sdk"
     }
@@ -85,5 +93,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "Z1S8FjGDCVQx/5lHyqTQtW0v+Bvc16rwto18/b9i6kg="
+  "fingerprint": "+3IQw/5EC5qx2wLH8cerR4REIFTV+QJA/3FLXPtyIrc="
 }
