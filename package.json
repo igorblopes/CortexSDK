@@ -3,6 +3,37 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "@types/sqlite3": "^3.1.11"
+    "@types/sqlite3": "^3.1.11",
+    "eslint": "^9.29.0",
+    "jsii": "^5.8.12",
+    "jsii-pacmak": "^1.112.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  },
+  "name": "cortexsdk",
+  "version": "1.0.0",
+  "description": "desc",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "igor.mello",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igorblopes/CortexSDK.git"
+  },
+  "bugs": {
+    "url": "https://github.com/igorblopes/CortexSDK/issues"
+  },
+  "homepage": "https://github.com/igorblopes/CortexSDK#readme",
+  "stability": "experimental",
+  "types": "index.js",
+  "jsii": {
+    "versionFormat": "full",
+    "tsc": {
+      "outDir": "dist"
+    }
   }
 }

@@ -2,6 +2,7 @@
   "name": "sdk",
   "version": "1.0.0",
   "description": "",
+  "repository": "https://github.com/igorblopes/CortexSDK",
   "main": "index.js",
   "scripts": {
     "build_frontend_sdk": "tsup src/Frontend/index.ts --format esm,cjs --dts",
@@ -9,9 +10,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "igor.mello",
   "license": "ISC",
   "devDependencies": {
+    "jsii": "^5.8.12",
+    "jsii-pacmak": "^1.112.0",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3"
   }

@@ -1,4 +1,4 @@
-import sqlite3 from 'sqlite3';
+import * as sqlite3 from 'sqlite3';
 import { FraudAssessment } from '../../interfaces';
 import { FraudAssessmentModelDB, FraudAssessmentReasonModelDB } from '../../interfaces-db';
 
@@ -73,6 +73,11 @@ export class FraudDB {
         await this.db.all<FraudAssessmentModelDB>(`
             SELECT * FROM fraud WHERE account_hash = ${accountHash}
         `, function(err, rows) {
+
+                if (err) {
+                    console.error('Erro ao Buscar:', err.message);
+                    return;
+                }
             
             for(let item of rows){
                 if(item != null){
@@ -80,6 +85,11 @@ export class FraudDB {
                     context.db.all<FraudAssessmentReasonModelDB>(`
                         SELECT * FROM fraud_reason WHERE fraud_id = ${item.id}
                     `, function(err, rows) {
+
+                        if (err) {
+                            console.error('Erro ao Buscar:', err.message);
+                            return;
+                        }
 
                         frauds.push(
                             context.convertItemDatabaseToModel(item, rows)

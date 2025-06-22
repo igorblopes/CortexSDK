@@ -1,9 +1,4 @@
-import sqlite3 from 'sqlite3';
-import { Fingerprint, FraudAssessment, UserBehavior } from '../../interfaces';
-import { FingerprintDB } from './cortext-db-fingerprint';
-import { FraudDB } from './cortext-db-fraud';
-import { UserBehaviorDB } from './cortext-db-user-behavior';
-import { CheckoutDB } from './cortext-db-checkout';
+import * as sqlite3 from 'sqlite3';
 
 export class RootDatabase {
 

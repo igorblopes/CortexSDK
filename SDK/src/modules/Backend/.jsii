@@ -1,0 +1,89 @@
+{
+  "author": {
+    "name": "igor.mello",
+    "roles": [
+      "author"
+    ]
+  },
+  "bundled": {
+    "sqlite3": "^5.1.7"
+  },
+  "description": "desc",
+  "docs": {
+    "stability": "experimental"
+  },
+  "homepage": "https://github.com/igorblopes/CortexSDK#readme",
+  "jsiiVersion": "5.8.12 (build 5c353f5)",
+  "license": "ISC",
+  "metadata": {
+    "jsii": {
+      "pacmak": {
+        "hasDefaultInterfaces": true
+      }
+    }
+  },
+  "name": "backend-sdk",
+  "readme": {
+    "markdown": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igorblopes/CortexSDK.git"
+  },
+  "schema": "jsii/0.10.0",
+  "targets": {
+    "js": {
+      "npm": "backend-sdk"
+    }
+  },
+  "types": {
+    "backend-sdk.BackendSDK": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.BackendSDK",
+      "initializer": {
+        "docs": {
+          "stability": "experimental"
+        }
+      },
+      "kind": "class",
+      "locationInModule": {
+        "filename": "index.ts",
+        "line": 1
+      },
+      "methods": [
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "index.ts",
+            "line": 3
+          },
+          "name": "init"
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "index.ts",
+            "line": 7
+          },
+          "name": "test",
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "BackendSDK",
+      "symbolId": "index:BackendSDK"
+    }
+  },
+  "version": "1.0.0",
+  "fingerprint": "Z1S8FjGDCVQx/5lHyqTQtW0v+Bvc16rwto18/b9i6kg="
+}

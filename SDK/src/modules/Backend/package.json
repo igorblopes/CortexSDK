@@ -1,0 +1,38 @@
+{
+  "name": "backend-sdk",
+  "version": "1.0.0",
+  "description": "desc",
+  "main": "Backend/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "jsii",
+    "build:watch": "jsii --watch",
+    "package": "jsii-pacmak"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igorblopes/CortexSDK.git"
+  },
+  "author": "igor.mello",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/igorblopes/CortexSDK/issues"
+  },
+  "homepage": "https://github.com/igorblopes/CortexSDK#readme",
+  "stability": "experimental",
+  "types": "Backend/index.ts",
+  "jsii": {
+    "versionFormat": "full",
+    "outdir": "distjsii",
+    "targets": {},
+    "tsc": {
+      "outDir": "distJava"
+    }
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7"
+  },
+  "bundledDependencies": [
+    "sqlite3"
+  ]
+}

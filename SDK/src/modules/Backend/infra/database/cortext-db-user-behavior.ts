@@ -1,4 +1,4 @@
-import sqlite3 from 'sqlite3';
+import * as sqlite3 from 'sqlite3';
 import { UserBehavior, UserBehaviorClicks } from '../../interfaces';
 import { ConfigModelDB, UserBehaviorClicksModelDB, UserBehaviorModelDB } from '../../interfaces-db';
 
@@ -31,6 +31,11 @@ export class UserBehaviorDB {
             await this.db.all<ConfigModelDB>(`
                 SELECT * FROM user_behavior_score
             `, function(err, rows) {
+
+                if (err) {
+                    console.error('Erro ao Buscar:', err.message);
+                    return;
+                }
 
                 for(let row of rows) {
                     all.push({
@@ -161,6 +166,11 @@ export class UserBehaviorDB {
         await this.db.all<UserBehaviorModelDB>(`
             SELECT * FROM user_behavior WHERE account_hash = ${accountHash}
         `, function(err, rows) {
+
+            if (err) {
+                console.error('Erro ao Buscar:', err.message);
+                return;
+            }
             
             for(let item of rows){
                 if(item != null){
@@ -168,6 +178,11 @@ export class UserBehaviorDB {
                     context.db.all<UserBehaviorClicksModelDB>(`
                         SELECT * FROM user_behavior_clicks WHERE user_behavior_id = ${item.id}
                     `, function(err, rows) {
+
+                        if (err) {
+                            console.error('Erro ao Buscar:', err.message);
+                            return;
+                        }
 
                         userBehaviors.push(
                             context.convertItemDatabaseToModel(item, rows)

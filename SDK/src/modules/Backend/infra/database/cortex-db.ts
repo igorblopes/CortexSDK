@@ -1,5 +1,3 @@
-import sqlite3 from 'sqlite3';
-import { Fingerprint, FraudAssessment, UserBehavior } from '../../interfaces';
 import { FingerprintDB } from './cortext-db-fingerprint';
 import { FraudDB } from './cortext-db-fraud';
 import { UserBehaviorDB } from './cortext-db-user-behavior';
@@ -20,7 +18,7 @@ export class CortexDatabase {
         private rootDB: RootDatabase,
     )
     {
-        this.db = rootDB.getDbInstance();
+        this.db = this.rootDB.getDbInstance();
         this.fingerprintDB = new FingerprintDB(this.db);
         this.fraudDB = new FraudDB(this.db);
         this.userBehaviorDB = new UserBehaviorDB(this.db);

@@ -1,4 +1,4 @@
-import sqlite3 from 'sqlite3';
+import * as sqlite3 from 'sqlite3';
 import { SenseScoreModelDB } from '../../interfaces-db';
 
 export class SenseScoreDB {
@@ -27,6 +27,11 @@ export class SenseScoreDB {
         await this.db.all<string>(`
             SELECT level FROM sense_score WHERE score = ${score}
         `, function(err, rows) {
+
+            if (err) {
+                console.error('Erro ao Buscar:', err.message);
+                return;
+            }
             
             level = rows[0];
             
@@ -56,6 +61,8 @@ export class SenseScoreDB {
         if(score <= 39) return "allow";
         if(score > 39 && score <= 79) return "review";
         if(score > 79) return "deny";
+
+        return "deny";
     }
 
 
@@ -66,6 +73,11 @@ export class SenseScoreDB {
             await this.db.all<SenseScoreModelDB>(`
                 SELECT * FROM sense_score
             `, function(err, rows) {
+
+                if (err) {
+                    console.error('Erro ao Buscar:', err.message);
+                    return;
+                }
 
                 for(let row of rows) {
                     allSenseScore.push({

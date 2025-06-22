@@ -1,4 +1,4 @@
-import sqlite3 from 'sqlite3';
+import * as sqlite3 from 'sqlite3';
 import { Fingerprint, UserLocality } from '../../interfaces';
 import { ConfigModelDB, FingerprintModelDB } from '../../interfaces-db';
 
@@ -29,6 +29,11 @@ export class FingerprintDB {
             await this.db.all<ConfigModelDB>(`
                 SELECT * FROM fingerprint_score
             `, function(err, rows) {
+
+                if (err) {
+                    console.error('Erro ao Buscar:', err.message);
+                    return;
+                }
 
                 for(let row of rows) {
                     all.push({
@@ -178,6 +183,11 @@ export class FingerprintDB {
         await this.db.all<FingerprintModelDB>(`
            SELECT * FROM fingerprint WHERE account_hash = ${accountHash}
         `, function(err, rows) {
+
+            if (err) {
+                console.error('Erro ao Buscar:', err.message);
+                return;
+            }
             
             for(let item of rows){
                 if(item != null){

@@ -1,4 +1,4 @@
-import sqlite3 from 'sqlite3';
+import * as sqlite3 from 'sqlite3';
 import { Checkout, CheckoutItens } from '../../interfaces';
 import { CheckoutItensModelDB, CheckoutModelDB, ConfigModelDB } from '../../interfaces-db';
 
@@ -86,6 +86,11 @@ export class CheckoutDB {
         await this.db.all<CheckoutModelDB>(`
             SELECT * FROM checkout WHERE account_hash = ${accountHash}
         `, function(err, rows) {
+
+            if (err) {
+                console.error('Erro ao Buscar:', err.message);
+                return;
+            }
             
             for(let item of rows){
                 if(item != null){
@@ -93,6 +98,11 @@ export class CheckoutDB {
                     context.db.all<CheckoutItensModelDB>(`
                         SELECT * FROM checkout_itens WHERE checkout_id = ${item.id}
                     `, function(err, rowsItens) {
+
+                        if (err) {
+                            console.error('Erro ao Buscar:', err.message);
+                            return;
+                        }
 
                         checkouts.push(
                             context.convertItemDatabaseToModel(item, rowsItens)
@@ -151,6 +161,11 @@ export class CheckoutDB {
             await this.db.all<ConfigModelDB>(`
                 SELECT * FROM checkout_score
             `, function(err, rows) {
+
+                if (err) {
+                    console.error('Erro ao Buscar:', err.message);
+                    return;
+                }
 
                 for(let row of rows) {
                     all.push({
