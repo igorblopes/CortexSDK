@@ -1,10 +1,12 @@
 {
   "name": "backend-sdk",
   "version": "1.0.0",
+  "type": "commonjs",
   "description": "desc",
-  "main": "Backend/index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "jsbuild": "tsc --build",
     "build": "jsii",
     "build:watch": "jsii --watch",
     "package": "jsii-pacmak"
@@ -20,7 +22,7 @@
   },
   "homepage": "https://github.com/igorblopes/CortexSDK#readme",
   "stability": "experimental",
-  "types": "Backend/index.ts",
+  "types": "dist/index.d.js",
   "jsii": {
     "versionFormat": "full",
     "outdir": "distjsii",
@@ -35,7 +37,7 @@
       }
     },
     "tsc": {
-      "outDir": "distJava"
+      "outDir": "dist"
     }
   },
   "dependencies": {

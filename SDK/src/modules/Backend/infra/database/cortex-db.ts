@@ -65,10 +65,9 @@ export class CortexDatabase {
             await this.senseScoreDB.seedSenseScore();
             
         } catch (err) {
-            console.error('Error creating database or table:', err);
+            return err;
         } finally {
             this.db.close();
-            console.log('Database connection closed.');
         }
     }
 

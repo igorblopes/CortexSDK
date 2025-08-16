@@ -1,8 +1,7 @@
 import { CortexDatabase } from './infra/database/cortex-db';
 import { RootDatabase } from './infra/database/root-db';
-import { FraudAssessment } from './interfaces';
-import { SenseScoreModelDB } from './interfaces-db';
-import { FraudServices } from './services/fraud-services';
+//import { FraudAssessment } from './interfaces';
+//import { FraudServices } from './services/fraud-services';
 import { SenseServices } from './services/sense-services';
 
 
@@ -11,33 +10,71 @@ export class BackendSDK {
     db = new CortexDatabase(this.rootDB);
 
     init() {
-        console.log("Backend SDK iniciando...");
-        
         this.db.init();
-
-        console.log("Backend SDK iniciado!");
     }
 
-    test(): any {
+    testa(): any {
         return {
-            "Teste": "teste"
+            "Teste": "testesasdwasd"
         };
     }
 
-    async getAllSenseScores(): Promise<SenseScoreModelDB[]>{
-        let senseService = new SenseServices(this.db.senseScoreDB);
-        return await senseService.getAllSenseScore();
+
+    bla(): any {
+        return {"a": "a"};
     }
 
-     async getLevelByScore(score: string): Promise<string> {
-        let senseService = new SenseServices(this.db.senseScoreDB);
-        return await senseService.getLevelByScore(score);
-     }
-
-    async getFraudByAccountHash(accountHash: string): Promise<FraudAssessment[]> {
-        let fraudService = new FraudServices(this.db.fraudDB);
-        return await fraudService.findFraudByAccountHash(accountHash);
+    blb(): any {
+        return {"b": "b"};
     }
+
+    blc(): any {
+        return {"c": "c"};
+    }
+
+    bld(): any {
+        return {"d": "d"};
+    }
+
+
+    /*
+     * id: number;
+     * score: number;
+     * level: string;
+    */
+    getAllSenseScores(): any{
+        let senseService = new SenseServices(this.db.senseScoreDB);
+        let done = false;
+        let result: any[] = [];
+
+        senseService.getAllSenseScore().then((res) => {
+            result = res;
+            done = true;
+        }).catch((err) => {
+            done = true
+        });
+
+        while(!done){
+            
+        }
+
+        return {
+            "data": result.length
+        };
+
+    }
+
+
+
+    //  async getLevelByScore(score: string): Promise<string> {
+    //     let senseService = new SenseServices(this.db.senseScoreDB);
+    //     return await senseService.getLevelByScore(score);
+    //  }
+
+    // async getFraudByAccountHash(accountHash: string): Promise<FraudAssessment[]> {
+    //     let fraudService = new FraudServices(this.db.fraudDB);
+    //     return await fraudService.findFraudByAccountHash(accountHash);
+    // }
 
     
     
