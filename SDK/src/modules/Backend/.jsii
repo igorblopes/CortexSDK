@@ -71,7 +71,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 56
+            "line": 38
           },
           "name": "allSenseScores",
           "returns": {
@@ -86,64 +86,23 @@
           }
         },
         {
+          "async": true,
           "docs": {
             "stability": "experimental"
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 34
+            "line": 93
           },
-          "name": "bla",
-          "returns": {
-            "type": {
-              "primitive": "any"
+          "name": "createCheckout",
+          "parameters": [
+            {
+              "name": "request",
+              "type": {
+                "primitive": "any"
+              }
             }
-          }
-        },
-        {
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "src/index.ts",
-            "line": 38
-          },
-          "name": "blb",
-          "returns": {
-            "type": {
-              "primitive": "any"
-            }
-          }
-        },
-        {
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "src/index.ts",
-            "line": 42
-          },
-          "name": "blc",
-          "returns": {
-            "type": {
-              "primitive": "any"
-            }
-          }
-        },
-        {
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "src/index.ts",
-            "line": 46
-          },
-          "name": "bld",
-          "returns": {
-            "type": {
-              "primitive": "any"
-            }
-          }
+          ]
         },
         {
           "async": true,
@@ -152,24 +111,28 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 20
+            "line": 69
           },
-          "name": "init"
+          "name": "createFingerprint",
+          "parameters": [
+            {
+              "name": "request",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ]
         },
         {
+          "async": true,
           "docs": {
             "stability": "experimental"
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 27
+            "line": 23
           },
-          "name": "testa",
-          "returns": {
-            "type": {
-              "primitive": "any"
-            }
-          }
+          "name": "init"
         }
       ],
       "name": "BackendSDK",
@@ -398,5 +361,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "Z8JszZwIfoMrWQnPjprH6CGh9PzJWkh9HD+cx0dg5lk="
+  "fingerprint": "Ja4RMkhPGxFM5M37qx36t7dzePhaeii309NvfK4RjnI="
 }

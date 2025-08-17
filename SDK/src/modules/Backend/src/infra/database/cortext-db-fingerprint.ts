@@ -39,11 +39,14 @@ export class FingerprintDB {
     }
 
 
-    async createFingerprintEntity(fingerprint: Fingerprint) {
-        try {
+    async createFingerprintEntity(fingerprint: Fingerprint): Promise<void> {
+
+        return await new Promise<void>((resolve, reject) => {
+            
             let locality = fingerprint.locality != null ? `${fingerprint.locality.lat} , ${fingerprint.locality.long}` : "";
             let screenResolution = `${fingerprint.screenResolution[0]} , ${fingerprint.screenResolution[1]}`;
-            await this.db.run(`
+            
+            this.db.run(`
                 INSERT INTO fingerprint (account_hash, ip, connection_type, screen_resolution, locality, device, timezone, language, operating_system, so_version, device_type, browser_agent, created_at)
                 VALUES (
                     ${fingerprint.accountHash}, 
@@ -58,14 +61,17 @@ export class FingerprintDB {
                     ${fingerprint.soVersion},
                     ${fingerprint.deviceType},
                     ${fingerprint.browserAgent},
-                    ${fingerprint.createdAt}
+                    ${fingerprint.createdAt.toString()}
                 )
-            `);
-
+            `,(err: any) => {
+                if(err) {
+                    reject(err);
+                }   
+                resolve();
+            });
+        });
             
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
+        
     }
 
     async findFingerprintsByAccountHash(accountHash: string): Promise<Fingerprint[]> {

@@ -8,31 +8,49 @@ export class CheckoutDB {
 
     
     async createCheckoutEntity(checkout: Checkout) {
-        try {
+        
+        return await new Promise<void>((resolve, reject) => {
             let db = this.db;
-            await this.db.run(`
+            this.db.run(`
                 INSERT INTO checkout (account_hash, created_at)
                 VALUES (${checkout.accountHash}, ${checkout.createdAt})
-            `,
-            function(err) {
+            `,(err: any, row: any) => {
 
-                if (err) {
-                    console.error('Erro ao inserir:', err.message);
-                    return;
-                }
+                if(err) reject(err);
+
+                let lastID = row.lastID;
+
+                let inserts = [];
+                let errors = [];
 
                 for(let item of checkout.itens){
+
                     db.run(`
-                        INSERT INTO checkout_itens (type, quantity, unity_value, checkout_id)
-                        VALUES (${item.type}, ${item.quantity}, ${item.unitValue}, ${this.lastID}) 
-                    `);
+                         INSERT INTO checkout_itens (type, quantity, unity_value, checkout_id)
+                         VALUES (${item.type}, ${item.quantity}, ${item.unitValue}, ${lastID}) 
+                    `,(err: any, rows: any) => {
+
+                        if(err) errors.push(err);
+
+                        inserts.push(rows);
+
+                        resolve();
+                    });
                 }
+
+
+                let totalItens = inserts.length + errors.length;
+                let checkoutItens = checkout.itens ? checkout.itens.length : 0;
+                while(totalItens < checkoutItens){
+                    totalItens = inserts.length + errors.length;
+                    checkoutItens = checkout.itens ? checkout.itens.length : 0;
+                }
+
+                resolve();
+
             });
 
-            
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
+        });
     }
 
 
