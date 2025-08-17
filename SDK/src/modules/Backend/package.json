@@ -4,6 +4,7 @@
   "type": "commonjs",
   "description": "desc",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "jsbuild": "tsc --build",
@@ -22,7 +23,6 @@
   },
   "homepage": "https://github.com/igorblopes/CortexSDK#readme",
   "stability": "experimental",
-  "types": "dist/index.d.js",
   "jsii": {
     "versionFormat": "full",
     "outdir": "distjsii",
@@ -37,13 +37,12 @@
       }
     },
     "tsc": {
-      "outDir": "dist"
+      "outDir": "dist",
+      "rootDir": "src"
     }
   },
   "dependencies": {
     "sqlite3": "^5.1.7"
   },
-  "bundledDependencies": [
-    "sqlite3"
-  ]
+  "bundledDependencies": ["sqlite3"]
 }

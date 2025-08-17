@@ -1,9 +1,5 @@
 {
-  "dependencies": {
-    "sqlite3": "^5.1.7"
-  },
   "devDependencies": {
-    "@types/sqlite3": "^3.1.11",
     "eslint": "^9.29.0",
     "jsii": "^5.8.12",
     "jsii-pacmak": "^1.112.0",

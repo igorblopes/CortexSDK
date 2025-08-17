@@ -20,12 +20,10 @@
       "pacmak": {
         "hasDefaultInterfaces": true
       }
-    }
+    },
+    "tscRootDir": "src"
   },
   "name": "backend-sdk",
-  "readme": {
-    "markdown": ""
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/igorblopes/CortexSDK.git"
@@ -54,12 +52,16 @@
       "initializer": {
         "docs": {
           "stability": "experimental"
+        },
+        "locationInModule": {
+          "filename": "src/index.ts",
+          "line": 15
         }
       },
       "kind": "class",
       "locationInModule": {
-        "filename": "index.ts",
-        "line": 1
+        "filename": "src/index.ts",
+        "line": 12
       },
       "methods": [
         {
@@ -67,8 +69,83 @@
             "stability": "experimental"
           },
           "locationInModule": {
-            "filename": "index.ts",
-            "line": 3
+            "filename": "src/index.ts",
+            "line": 56
+          },
+          "name": "allSenseScores",
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 34
+          },
+          "name": "bla",
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 38
+          },
+          "name": "blb",
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 42
+          },
+          "name": "blc",
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 46
+          },
+          "name": "bld",
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 20
           },
           "name": "init"
         },
@@ -77,10 +154,10 @@
             "stability": "experimental"
           },
           "locationInModule": {
-            "filename": "index.ts",
-            "line": 7
+            "filename": "src/index.ts",
+            "line": 27
           },
-          "name": "test",
+          "name": "testa",
           "returns": {
             "type": {
               "primitive": "any"
@@ -89,9 +166,204 @@
         }
       ],
       "name": "BackendSDK",
-      "symbolId": "index:BackendSDK"
+      "properties": [
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 14
+          },
+          "name": "db",
+          "type": {
+            "primitive": "any"
+          }
+        }
+      ],
+      "symbolId": "src/index:BackendSDK"
+    },
+    "backend-sdk.CortexDatabase": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.CortexDatabase",
+      "initializer": {
+        "docs": {
+          "stability": "experimental"
+        },
+        "locationInModule": {
+          "filename": "src/infra/database/cortex-db.ts",
+          "line": 17
+        }
+      },
+      "kind": "class",
+      "locationInModule": {
+        "filename": "src/infra/database/cortex-db.ts",
+        "line": 8
+      },
+      "methods": [
+        {
+          "async": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/cortex-db.ts",
+            "line": 28
+          },
+          "name": "init",
+          "parameters": [
+            {
+              "name": "rootDB",
+              "type": {
+                "fqn": "backend-sdk.RootDatabase"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "CortexDatabase",
+      "properties": [
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/cortex-db.ts",
+            "line": 14
+          },
+          "name": "checkoutDB",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/cortex-db.ts",
+            "line": 10
+          },
+          "name": "db",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/cortex-db.ts",
+            "line": 11
+          },
+          "name": "fingerprintDB",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/cortex-db.ts",
+            "line": 12
+          },
+          "name": "fraudDB",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/cortex-db.ts",
+            "line": 15
+          },
+          "name": "senseScoreDB",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/cortex-db.ts",
+            "line": 13
+          },
+          "name": "userBehaviorDB",
+          "type": {
+            "primitive": "any"
+          }
+        }
+      ],
+      "symbolId": "src/infra/database/cortex-db:CortexDatabase"
+    },
+    "backend-sdk.RootDatabase": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.RootDatabase",
+      "initializer": {
+        "docs": {
+          "stability": "experimental"
+        }
+      },
+      "kind": "class",
+      "locationInModule": {
+        "filename": "src/infra/database/root-db.ts",
+        "line": 12
+      },
+      "methods": [
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/root-db.ts",
+            "line": 19
+          },
+          "name": "dbInstance",
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "RootDatabase",
+      "properties": [
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/root-db.ts",
+            "line": 16
+          },
+          "name": "path",
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ],
+      "symbolId": "src/infra/database/root-db:RootDatabase"
     }
   },
   "version": "1.0.0",
-  "fingerprint": "+3IQw/5EC5qx2wLH8cerR4REIFTV+QJA/3FLXPtyIrc="
+  "fingerprint": "TtqAzf2UgVnkoWdi6MXfjzpIE0VffBG8OAI1Wq2PCh0="
 }

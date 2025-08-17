@@ -9,8 +9,11 @@ public class SenseScoreGateway {
     public void getAllSenseScore() {
         var sdk = new BackendSDK();
 
-        sdk.init();
-        var json = sdk.test();
+
+        //sdk.init();
+        var a = sdk.bla();
+        var es = sdk.testa();
+        var all = sdk.allSenseScores();
 
 
 
