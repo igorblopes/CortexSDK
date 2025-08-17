@@ -39,30 +39,30 @@ export class SenseScoreDB {
     async getAllSenseScore(): Promise<SenseScoreModelDB[]> {
         let allSenseScore: SenseScoreModelDB[] = [];
 
-        try {
-            await this.db.all<SenseScoreModelDB>(`
+        return await new Promise<SenseScoreModelDB[]>((resolve, reject) => {
+            this.db.all(
+                `
                 SELECT * FROM sense_score
-            `, function(err, rows) {
+                ` 
+                ,(err: any, rows: any[]) => {
+                    if(err) {
+                        reject(err);
+                    }   
 
-                if (err) {
-                    console.error('Erro ao Buscar:', err.message);
-                    return;
+                    for(let row of rows) {
+                        allSenseScore.push({
+                            id: row.id,
+                            min_score: row.min_score,
+                            max_score: row.max_score,
+                            level: row.level
+                        });
+                    }
+                    
+                    resolve(allSenseScore);
                 }
-
-                for(let row of rows) {
-                    allSenseScore.push({
-                        id: row.id,
-                        score: row.score,
-                        level: row.level
-                    });
-                }
-
-            });
-        } catch (err) {
-            console.error('Error creating seed sense_score:', err);
-        }
-
-        return allSenseScore;
+                    
+            )
+        });
     }
 
 
@@ -72,7 +72,9 @@ export class SenseScoreDB {
         let map: Map<number, string> = new Map<number, string>();
         
         for(let score of allScores){
-            map.set(score.score, score.level);
+            for(let i = score.min_score; i < score.max_score; i++){
+                map.set(i, score.level);
+            }
         }
 
 

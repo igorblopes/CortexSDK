@@ -65,6 +65,7 @@
       },
       "methods": [
         {
+          "async": true,
           "docs": {
             "stability": "experimental"
           },
@@ -75,7 +76,12 @@
           "name": "allSenseScores",
           "returns": {
             "type": {
-              "primitive": "any"
+              "collection": {
+                "elementtype": {
+                  "primitive": "any"
+                },
+                "kind": "array"
+              }
             }
           }
         },
@@ -140,6 +146,7 @@
           }
         },
         {
+          "async": true,
           "docs": {
             "stability": "experimental"
           },
@@ -195,13 +202,13 @@
         },
         "locationInModule": {
           "filename": "src/infra/database/cortex-db.ts",
-          "line": 17
+          "line": 19
         }
       },
       "kind": "class",
       "locationInModule": {
         "filename": "src/infra/database/cortex-db.ts",
-        "line": 8
+        "line": 9
       },
       "methods": [
         {
@@ -211,7 +218,7 @@
           },
           "locationInModule": {
             "filename": "src/infra/database/cortex-db.ts",
-            "line": 28
+            "line": 31
           },
           "name": "init",
           "parameters": [
@@ -221,12 +228,25 @@
                 "fqn": "backend-sdk.RootDatabase"
               }
             }
-          ],
-          "returns": {
-            "type": {
-              "primitive": "any"
+          ]
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/cortex-db.ts",
+            "line": 44
+          },
+          "name": "loadDependecies",
+          "parameters": [
+            {
+              "name": "rootDB",
+              "type": {
+                "fqn": "backend-sdk.RootDatabase"
+              }
             }
-          }
+          ]
         }
       ],
       "name": "CortexDatabase",
@@ -237,7 +257,7 @@
           },
           "locationInModule": {
             "filename": "src/infra/database/cortex-db.ts",
-            "line": 14
+            "line": 16
           },
           "name": "checkoutDB",
           "type": {
@@ -250,7 +270,7 @@
           },
           "locationInModule": {
             "filename": "src/infra/database/cortex-db.ts",
-            "line": 10
+            "line": 11
           },
           "name": "db",
           "type": {
@@ -263,7 +283,7 @@
           },
           "locationInModule": {
             "filename": "src/infra/database/cortex-db.ts",
-            "line": 11
+            "line": 13
           },
           "name": "fingerprintDB",
           "type": {
@@ -276,7 +296,7 @@
           },
           "locationInModule": {
             "filename": "src/infra/database/cortex-db.ts",
-            "line": 12
+            "line": 14
           },
           "name": "fraudDB",
           "type": {
@@ -289,7 +309,20 @@
           },
           "locationInModule": {
             "filename": "src/infra/database/cortex-db.ts",
-            "line": 15
+            "line": 12
+          },
+          "name": "seedDB",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/infra/database/cortex-db.ts",
+            "line": 17
           },
           "name": "senseScoreDB",
           "type": {
@@ -302,7 +335,7 @@
           },
           "locationInModule": {
             "filename": "src/infra/database/cortex-db.ts",
-            "line": 13
+            "line": 15
           },
           "name": "userBehaviorDB",
           "type": {
@@ -365,5 +398,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "TtqAzf2UgVnkoWdi6MXfjzpIE0VffBG8OAI1Wq2PCh0="
+  "fingerprint": "Z8JszZwIfoMrWQnPjprH6CGh9PzJWkh9HD+cx0dg5lk="
 }

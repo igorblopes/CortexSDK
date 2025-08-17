@@ -66,6 +66,7 @@ export interface ConfigModelDB {
 
 export interface SenseScoreModelDB {
     id: number;
-    score: number;
+    min_score: number;
+    max_score: number;
     level: string;
 }

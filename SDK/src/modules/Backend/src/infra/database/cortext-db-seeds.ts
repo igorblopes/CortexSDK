@@ -11,6 +11,8 @@ export class SeedDB {
                 `
                     BEGIN;
                     
+                    DROP TABLE IF EXISTS fingerprint_score;
+
                     CREATE TABLE IF NOT EXISTS fingerprint_score (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         name TEXT NOT NULL,
@@ -48,6 +50,8 @@ export class SeedDB {
                     INSERT INTO fingerprint_score (name, score, status)
                     VALUES ('Its new browser agent', 10, 1);
 
+                    DROP TABLE IF EXISTS fraud;
+
                     CREATE TABLE IF NOT EXISTS fraud ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         account_hash TEXT, 
@@ -55,12 +59,16 @@ export class SeedDB {
                         created_at TEXT
                     );
 
+                    DROP TABLE IF EXISTS fraud_reason;
+
                     CREATE TABLE IF NOT EXISTS fraud_reason ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         reason TEXT, 
                         fraud_id INTEGER,
                         FOREIGN KEY (fraud_id) REFERENCES fraud(id)
                     );
+
+                    DROP TABLE IF EXISTS sense_score;
 
                     CREATE TABLE IF NOT EXISTS sense_score ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,7 +86,7 @@ export class SeedDB {
                     INSERT INTO sense_score (min_score, max_score, level)
                     VALUES (79, 100, 'review');
 
-
+                    DROP TABLE IF EXISTS fingerprint;
 
                     CREATE TABLE IF NOT EXISTS fingerprint ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -97,12 +105,16 @@ export class SeedDB {
                         created_at TEXT
                     );
 
+                    DROP TABLE IF EXISTS user_behavior;
+
                     CREATE TABLE IF NOT EXISTS user_behavior ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         account_hash TEXT,
                         session_duration integer
                         created_at TEXT
                     );
+
+                    DROP TABLE IF EXISTS user_behavior_clicks;
 
                     CREATE TABLE IF NOT EXISTS user_behavior_clicks ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -112,11 +124,15 @@ export class SeedDB {
                         FOREIGN KEY (user_behavior_id) REFERENCES user_behavior(id)
                     );
 
+                    DROP TABLE IF EXISTS checkout;
+
                     CREATE TABLE IF NOT EXISTS checkout ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         account_hash TEXT,
                         created_at TEXT
                     );
+
+                    DROP TABLE IF EXISTS checkout_itens;
 
                     CREATE TABLE IF NOT EXISTS checkout_itens ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -127,6 +143,8 @@ export class SeedDB {
                         created_at TEXT,
                         FOREIGN KEY (checkout_id) REFERENCES checkout(id)
                     );
+
+                    DROP TABLE IF EXISTS user_behavior_score;
 
                     CREATE TABLE IF NOT EXISTS user_behavior_score ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -146,6 +164,8 @@ export class SeedDB {
 
                     INSERT INTO user_behavior_score (name, score, status)
                     VALUES ('Mean clicks less than 2 seconds', 20, 1);
+
+                    DROP TABLE IF EXISTS checkout_score;
 
                     CREATE TABLE IF NOT EXISTS checkout_score ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -168,8 +188,6 @@ export class SeedDB {
 
                     INSERT INTO checkout_score (name, score, status)
                     VALUES ('Total value 100% of purchase above mean', 10, 1);
-
-
                     
                     COMMIT;
                 `,

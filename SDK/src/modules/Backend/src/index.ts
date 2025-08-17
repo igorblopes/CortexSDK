@@ -53,25 +53,26 @@ export class BackendSDK {
      * score: number;
      * level: string;
     */
-    allSenseScores(): any{
+    async allSenseScores() {
         let senseService = new SenseServices(this.db.senseScoreDB);
-        let done = false;
-        let result: any[] = [];
 
-        senseService.getAllSenseScore().then((res) => {
-            result = res;
-            done = true;
-        }).catch(() => {
-            done = true
+        return await new Promise<any[]>((resolve, reject) => {
+
+            senseService.getAllSenseScore()
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
         });
+        // let senseService = new SenseServices(this.db.senseScoreDB);
 
-        while(!done){
-            
-        }
+        // //let resp = await senseService.getAllSenseScore();
 
-        return {
-            "data": result.length
-        };
+        // return {
+        //     "data": 0
+        // };
 
     }
 
