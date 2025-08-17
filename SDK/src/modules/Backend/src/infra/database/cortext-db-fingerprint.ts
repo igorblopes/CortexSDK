@@ -6,21 +6,7 @@ export class FingerprintDB {
 
     constructor(private db: sqlite3.Database){}
 
-
-    async createTableFingerprintScore() {
-        try {
-            await this.db.run(`CREATE TABLE IF NOT EXISTS fingerprint_score ( 
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT, 
-                score INTEGER, 
-                status INTEGER)
-            `);            
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
-    }
-
-    
+   
     async findAllFingerprintScore(): Promise<ConfigModelDB[]> {
         let all: ConfigModelDB[] = [];
         
@@ -51,99 +37,6 @@ export class FingerprintDB {
 
         return all;
     }
-    
-    async seedFingerprintScore() {
-
-        try {
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its new locality", 90, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its new locality");
-            `);
-
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its new device", 20, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its new device");
-            `);
-
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its new ip", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its new ip");
-            `);
-
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its new language", 5, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its new language");
-            `);
-
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its new timezone", 5, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its new timezone");
-            `);
-
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its different wifi connection", -10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its different wifi connection");
-            `);
-
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its new screen resolution", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its new screen resolution");
-            `);
-
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its new system operation", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its new system operation");
-            `);
-
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its new so version", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its new so version");
-            `);
-
-            await this.db.run(`
-                INSERT INTO fingerprint_score (name, score, status)
-                SELECT "Its new browser agent", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM fingerprint_score WHERE name = "Its new browser agent");
-            `);
-            
-        } catch (err) {
-            console.error('Error creating seed fingerprint_score:', err);
-        }
-    }
-
-    async createTableFingerprint() {
-        try {
-            await this.db.run(`CREATE TABLE IF NOT EXISTS fingerprint ( 
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                account_hash TEXT,
-                ip TEXT,
-                connection_type TEXT,
-                screen_resolution TEXT,
-                locality TEXT,
-                device TEXT,
-                timezone TEXT,
-                language TEXT,
-                operating_system TEXT,
-                so_version TEXT,
-                device_type TEXT,
-                browser_agent TEXT,
-                created_at TEXT)
-            `);     
-            
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
-    }
-    
 
 
     async createFingerprintEntity(fingerprint: Fingerprint) {

@@ -6,39 +6,7 @@ export class CheckoutDB {
 
     constructor(private db: sqlite3.Database){}
 
-    async createTableCheckout() {
-        try {
-            await this.db.run(`CREATE TABLE IF NOT EXISTS checkout ( 
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                account_hash TEXT,
-                created_at TEXT)
-            `);   
-            
-            await this.createTableCheckoutItens();
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
-    }
-
-    async createTableCheckoutItens() {
-        try {
-            await this.db.run(`CREATE TABLE IF NOT EXISTS checkout_itens ( 
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                type TEXT, 
-                quantity INTEGER, 
-                unity_value REAL,
-                checkout_id INTEGER,
-                FOREIGN KEY (checkout_id) REFERENCES checkout(id)
-                created_at TEXT)
-            `);   
-            
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
-    }
-
-
-
+    
     async createCheckoutEntity(checkout: Checkout) {
         try {
             let db = this.db;
@@ -66,16 +34,6 @@ export class CheckoutDB {
             console.error('Error creating database or table:', err);
         }
     }
-
-
-
-
-
-
-    
-
-
-
 
 
     async findCheckoutsByAccountHash(accountHash: string): Promise<Checkout[]> {
@@ -143,16 +101,6 @@ export class CheckoutDB {
         return checkout;
     }
 
-
-
-
-
-
-
-
-
-
-
     async findAllCheckoutScore(): Promise<ConfigModelDB[]> {
         let all: ConfigModelDB[] = [];
         
@@ -185,57 +133,6 @@ export class CheckoutDB {
     }
 
 
-    async createTableCheckoutScore() {
-        try {
-            await this.db.run(`CREATE TABLE IF NOT EXISTS checkout_score ( 
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT, 
-                score INTEGER, 
-                status INTEGER)
-            `);            
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
-    }
-
-    async seedCheckoutScore() {
     
-        try {
-            await this.db.run(`
-                INSERT INTO checkout_score (name, score, status)
-                SELECT "Itens types never purchased before", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM checkout_score WHERE name = "Itens types never purchased before");
-            `);
-
-            await this.db.run(`
-                INSERT INTO checkout_score (name, score, status)
-                SELECT "Quantity itens never purchased before", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM checkout_score WHERE name = "Quantity itens never purchased before");
-            `);
-
-            await this.db.run(`
-                INSERT INTO checkout_score (name, score, status)
-                SELECT "Total value 30% of purchase above mean", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM checkout_score WHERE name = "Total value 30% of purchase above mean");
-            `);
-
-            await this.db.run(`
-                INSERT INTO checkout_score (name, score, status)
-                SELECT "Total value 50% of purchase above mean", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM checkout_score WHERE name = "Total value 50% of purchase above mean");
-            `);
-
-            await this.db.run(`
-                INSERT INTO checkout_score (name, score, status)
-                SELECT "Total value 100% of purchase above mean", 10, 1
-                WHERE NOT EXISTS(SELECT 1 FROM checkout_score WHERE name = "Total value 100% of purchase above mean");
-            `);
-
-            
-            
-        } catch (err) {
-            console.error('Error creating seed checkout_score:', err);
-        }
-    }
 
 }

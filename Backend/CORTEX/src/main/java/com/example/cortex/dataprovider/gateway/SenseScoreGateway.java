@@ -10,10 +10,10 @@ public class SenseScoreGateway {
         var sdk = new BackendSDK();
 
 
-        //sdk.init();
+        sdk.init();
         var a = sdk.bla();
         var es = sdk.testa();
-        var all = sdk.allSenseScores();
+        //var all = sdk.allSenseScores();
 
 
 

@@ -17,11 +17,11 @@ export class BackendSDK {
     }
 
     
-    init() {
+    async init() {
         let rootDB = new RootDatabase();
         this.db = new CortexDatabase();
 
-        this.db.init(rootDB);
+        await this.db.init(rootDB);
     }
 
     testa(): any {

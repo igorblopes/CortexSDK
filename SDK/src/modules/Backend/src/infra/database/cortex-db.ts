@@ -4,10 +4,12 @@ import { UserBehaviorDB } from './cortext-db-user-behavior';
 import { CheckoutDB } from './cortext-db-checkout';
 import { RootDatabase } from './root-db';
 import { SenseScoreDB } from './cortext-db-sense-score';
+import { SeedDB } from './cortext-db-seeds';
 
 export class CortexDatabase {
 
     db: any = null;
+    seedDB: any | SeedDB = null;
     fingerprintDB: any | FingerprintDB = null;
     fraudDB: any | FraudDB = null;
     userBehaviorDB: any | UserBehaviorDB = null;
@@ -17,6 +19,7 @@ export class CortexDatabase {
     constructor(
     )
     {
+        this.seedDB = new SeedDB(this.db);
         this.fingerprintDB = new FingerprintDB(this.db);
         this.fraudDB = new FraudDB(this.db);
         this.userBehaviorDB = new UserBehaviorDB(this.db);
@@ -24,52 +27,28 @@ export class CortexDatabase {
         this.senseScoreDB = new SenseScoreDB(this.db);
     }
     
-    
-    async init(rootDB: RootDatabase) {
 
-        try {
-            this.db = rootDB.dbInstance();
+    async init(rootDB: RootDatabase): Promise<void> {
+
+        return await new Promise<void>((resolve, reject) => {
+            this.loadDependecies(rootDB);
             this.db.run(`PRAGMA foreign_keys = ON`);
+            this.seedDB.createTablesAndSeed()
+                .then(() => resolve())
+                .catch(() => reject());
+        });
 
-            // Criacao da tabela principal de fraude
-            await this.fraudDB.createTableFraud();
-
-            // Criacao da tabela de sensiblidade do score
-            await this.senseScoreDB.createTableSenseScore();
+    }
 
 
-
-            // Criacao da tabela de fingerprint
-            await this.fingerprintDB.createTableFingerprint();
-
-            // Criacao da tabela de user behavior
-            await this.userBehaviorDB.createTableUserBehavior();
-
-            // Criacao da table de checkout
-            await this.checkoutDB.createTableCheckout();
-            
-
-            
-            // Criacao das tabela de config de scores
-            await this.fingerprintDB.createTableFingerprintScore();
-            await this.userBehaviorDB.createTableUserBehaviorScore();
-            await this.checkoutDB.createTableCheckoutScore();
-
-            // Seed das tabelas de config de scores
-            await this.fingerprintDB.seedFingerprintScore();
-            await this.userBehaviorDB.seedUserBehaviorScore();
-            await this.checkoutDB.seedCheckoutScore();
-
-            // Seed da tabela de sensibilidade de score
-            await this.senseScoreDB.seedSenseScore();
-
-            return {};
-            
-        } catch (err) {
-            return err;
-        } finally {
-            this.db.close();
-        }
+    loadDependecies(rootDB: RootDatabase){
+        this.db = rootDB.dbInstance();
+        this.seedDB = new SeedDB(this.db);
+        this.fingerprintDB = new FingerprintDB(this.db);
+        this.fraudDB = new FraudDB(this.db);
+        this.userBehaviorDB = new UserBehaviorDB(this.db);
+        this.checkoutDB = new CheckoutDB(this.db);
+        this.senseScoreDB = new SenseScoreDB(this.db);
     }
 
     
