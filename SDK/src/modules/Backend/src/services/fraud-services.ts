@@ -1,12 +1,12 @@
-import { FraudDB } from "../infra/database/cortext-db-fraud";
 import { FraudAssessment } from "../interfaces";
+import { FraudAnalyzer } from "../validations/fraud-analyzer";
 
 export class FraudServices {
 
-    constructor(private fraudDB: FraudDB){}
+    constructor(private fraudAnalyzer: FraudAnalyzer){}
 
-    async findFraudByAccountHash(accountHash: string): Promise<FraudAssessment[]> {
-        return await this.fraudDB.findFraudByAccountHash(accountHash);
+    async getAnalyzerFromAccountHash(accountHash: string): Promise<FraudAssessment> {
+        return await this.fraudAnalyzer.analyze(accountHash);
     }
 
 }

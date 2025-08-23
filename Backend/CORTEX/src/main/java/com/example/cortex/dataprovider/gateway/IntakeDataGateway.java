@@ -1,20 +1,16 @@
 package com.example.cortex.dataprovider.gateway;
 
 import com.br.CortexSDK.BackendSDK;
+import com.example.cortex.entrypoint.dto.request.IntakeRequest;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SenseScoreGateway {
+public class IntakeDataGateway {
 
-    public void getAllSenseScore() {
+    public void sendDataGateway(IntakeRequest intakeRequest) {
         var sdk = new BackendSDK();
 
-
         sdk.init();
-        var all = sdk.allSenseScores();
-
-
-
-        var e = 3;
+        sdk.intakeData(intakeRequest);
     }
 }

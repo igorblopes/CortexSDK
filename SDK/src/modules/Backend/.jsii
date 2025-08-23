@@ -55,13 +55,13 @@
         },
         "locationInModule": {
           "filename": "src/index.ts",
-          "line": 15
+          "line": 17
         }
       },
       "kind": "class",
       "locationInModule": {
         "filename": "src/index.ts",
-        "line": 12
+        "line": 14
       },
       "methods": [
         {
@@ -71,7 +71,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 38
+            "line": 40
           },
           "name": "allSenseScores",
           "returns": {
@@ -92,7 +92,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 93
+            "line": 132
           },
           "name": "createCheckout",
           "parameters": [
@@ -111,7 +111,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 69
+            "line": 108
           },
           "name": "createFingerprint",
           "parameters": [
@@ -130,9 +130,52 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 23
+            "line": 25
           },
           "name": "init"
+        },
+        {
+          "async": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 57
+          },
+          "name": "intakeData",
+          "parameters": [
+            {
+              "name": "request",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ]
+        },
+        {
+          "async": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 161
+          },
+          "name": "validateFraud",
+          "parameters": [
+            {
+              "name": "accountHash",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
         }
       ],
       "name": "BackendSDK",
@@ -143,7 +186,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 14
+            "line": 16
           },
           "name": "db",
           "type": {
@@ -361,5 +404,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "Ja4RMkhPGxFM5M37qx36t7dzePhaeii309NvfK4RjnI="
+  "fingerprint": "9a/zJkPGIjH6hvxoK8XAa5A9+B9pNSP4xf26ghH0JaQ="
 }
