@@ -38,32 +38,50 @@ export class UserBehaviorDB {
     }
 
     async createUserBehaviorEntity(userBehavior: UserBehavior) {
-        try {
+
+        return await new Promise<void>((resolve, reject) => {
+        
             let db = this.db;
-            await db.run(`
+
+            this.createUserBehavior(userBehavior)
+                .then((resp) => {
+
+                    for(let click of userBehavior.clicks){
+                    
+                        db.run(`
+                            INSERT INTO user_behavior_clicks (element_click, created_at, user_behavior_id)
+                            VALUES ('${click.elementClick}', '${click.createdAt}' ,'${resp}') 
+                        `,function (err) {
+
+                            if(err) reject(err);
+
+                            resolve();
+                        });
+                    }
+
+
+                })
+                .catch((err) => reject(err))
+
+        });
+    }
+
+
+    async createUserBehavior(userBehavior: UserBehavior) {
+        return await new Promise<number>((resolve, reject) => {
+        
+            this.db.run(`
                 INSERT INTO user_behavior (account_hash, session_duration, created_at)
-                VALUES (${userBehavior.accountHash}, ${userBehavior.sessionDuration}, ${userBehavior.createdAt})
-            `, 
-            function(err) {
+                VALUES ('${userBehavior.accountHash}', '${userBehavior.sessionDuration}', '${userBehavior.createdAt}')
+            `,function (err) {
 
-                if (err) {
-                    console.error('Erro ao inserir:', err.message);
-                    return;
-                }
+                if(err) reject(err);
 
-                for(let click of userBehavior.clicks){
-                    db.run(`
-                        INSERT INTO user_behavior_clicks (element_click, created_at, user_behavior_id)
-                        VALUES (${click.elementClick}, ${click.createdAt} , ${this.lastID}) 
-                    `);
-                }
-
+                resolve(this.lastID);
             });
 
-            
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
+        });
+
     }
 
 
@@ -106,7 +124,8 @@ export class UserBehaviorDB {
 
         });
 
-        userBehaviors.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+        //TODO: Validate sort with string
+        //userBehaviors.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
         return userBehaviors;
     }
@@ -114,11 +133,11 @@ export class UserBehaviorDB {
     
     convertItemDatabaseToModel(item: UserBehaviorModelDB, rows: UserBehaviorClicksModelDB[]): UserBehavior{
     
-        let dateCreatedAt = new Date(item.created_at);
+        let dateCreatedAt = item.created_at;
         let clicks: UserBehaviorClicks[] = [];
         
         for(let row of rows) {
-            let dateCreatedAt = new Date(row.created_at);
+            let dateCreatedAt = row.created_at;
             clicks.push({
                 elementClick: row.element_click,
                 createdAt: dateCreatedAt

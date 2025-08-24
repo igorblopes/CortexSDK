@@ -11,46 +11,44 @@ export class CheckoutDB {
         
         return await new Promise<void>((resolve, reject) => {
             let db = this.db;
+
+            this.createCheckout(checkout)
+                .then((resp) => {
+
+                     for(let item of checkout.itens){
+
+                        db.run(`
+                            INSERT INTO checkout_itens (type, quantity, unity_value, checkout_id)
+                            VALUES ('${item.type}', '${item.quantity}', '${item.unitValue}', '${resp}') 
+                        `,function (err) {
+
+                            if(err) reject(err);
+
+                            resolve();
+                        });
+                    }
+
+                })
+                .catch((err) => reject(err))
+
+        });
+    }
+
+
+    async createCheckout(checkout: Checkout) {
+        return await new Promise<number>((resolve, reject) => {
             this.db.run(`
                 INSERT INTO checkout (account_hash, created_at)
-                VALUES (${checkout.accountHash}, ${checkout.createdAt})
-            `,(err: any, row: any) => {
+                VALUES ('${checkout.accountHash}', '${checkout.createdAt}')
+            `,function (err) {
 
                 if(err) reject(err);
 
-                let lastID = row.lastID;
-
-                let inserts = [];
-                let errors = [];
-
-                for(let item of checkout.itens){
-
-                    db.run(`
-                         INSERT INTO checkout_itens (type, quantity, unity_value, checkout_id)
-                         VALUES (${item.type}, ${item.quantity}, ${item.unitValue}, ${lastID}) 
-                    `,(err: any, rows: any) => {
-
-                        if(err) errors.push(err);
-
-                        inserts.push(rows);
-
-                        resolve();
-                    });
-                }
-
-
-                let totalItens = inserts.length + errors.length;
-                let checkoutItens = checkout.itens ? checkout.itens.length : 0;
-                while(totalItens < checkoutItens){
-                    totalItens = inserts.length + errors.length;
-                    checkoutItens = checkout.itens ? checkout.itens.length : 0;
-                }
-
-                resolve();
-
+                resolve(this.lastID);
             });
 
         });
+
     }
 
 

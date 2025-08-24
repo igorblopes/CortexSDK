@@ -5,6 +5,7 @@ import { CheckoutServices } from './services/checkout-services';
 import { FingerprintServices } from './services/fingerprint-services';
 import { FraudServices } from './services/fraud-services';
 import { SenseServices } from './services/sense-services';
+import { UserServices } from './services/user-services';
 import { FraudAnalyzer } from './validations/fraud-analyzer';
 
 export { CortexDatabase } from './infra/database/cortex-db';
@@ -59,11 +60,16 @@ export class BackendSDK {
         return await new Promise<void>((resolve, reject) => {
             switch (request.typeData) {
                 case "IntakeUserBehavior":
-                    //TODO: criar todo os metodos do user behavior
-                    resolve();
+                    this.createUserBehavior(request)
+                        .then(() => {
+                            resolve()
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
                     break;
                 case "IntakeLogin":
-                    this.createFingerprint(request.data)
+                    this.createFingerprint(request)
                         .then(() => {
                             resolve()
                         })
@@ -72,7 +78,7 @@ export class BackendSDK {
                         });
                     break;
                 case "IntakeCheckout":
-                    this.createCheckout(request.data)
+                    this.createCheckout(request)
                         .then(() => {
                             resolve()
                         })
@@ -133,7 +139,33 @@ export class BackendSDK {
         let checkoutServices = new CheckoutServices(this.db.checkoutDB);
 
         return await new Promise<void>((resolve, reject) => {
-            checkoutServices.createFingerprint(request)
+            checkoutServices.createCheckout(request)
+                .then(() => {
+                    resolve()
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+
+        });
+    }
+
+
+    /*
+     * REQUEST
+     *
+     * accountHash: string;
+     * pageVisit: string;
+     * clicks: UserBehaviorClicks[];
+     * sessionDuration: number;
+     * createdAt: Date;
+     * 
+     */
+    async createUserBehavior(request: any) {
+        let userServices = new UserServices(this.db.userBehaviorDB);
+
+        return await new Promise<void>((resolve, reject) => {
+            userServices.createUserBehavior(request)
                 .then(() => {
                     resolve()
                 })

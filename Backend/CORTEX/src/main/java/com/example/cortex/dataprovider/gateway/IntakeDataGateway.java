@@ -1,16 +1,17 @@
 package com.example.cortex.dataprovider.gateway;
 
-import com.br.CortexSDK.BackendSDK;
+import com.example.cortex.config.BackendSDKStarter;
 import com.example.cortex.entrypoint.dto.request.IntakeRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class IntakeDataGateway {
 
-    public void sendDataGateway(IntakeRequest intakeRequest) {
-        var sdk = new BackendSDK();
+    @Autowired
+    BackendSDKStarter backendSDKStarter;
 
-        sdk.init();
-        sdk.intakeData(intakeRequest);
+    public void sendDataGateway(IntakeRequest intakeRequest) {
+        backendSDKStarter.getBackendSDK().intakeData(intakeRequest);
     }
 }

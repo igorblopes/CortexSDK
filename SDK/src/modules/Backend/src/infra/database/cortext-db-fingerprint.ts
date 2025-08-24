@@ -43,26 +43,27 @@ export class FingerprintDB {
 
         return await new Promise<void>((resolve, reject) => {
             
-            let locality = fingerprint.locality != null ? `${fingerprint.locality.lat} , ${fingerprint.locality.long}` : "";
-            let screenResolution = `${fingerprint.screenResolution[0]} , ${fingerprint.screenResolution[1]}`;
-            
+            let locality = fingerprint.locality != null ? `${fingerprint.locality.lat} , ${fingerprint.locality.long}` : "0x0";
+
             this.db.run(`
                 INSERT INTO fingerprint (account_hash, ip, connection_type, screen_resolution, locality, device, timezone, language, operating_system, so_version, device_type, browser_agent, created_at)
                 VALUES (
-                    ${fingerprint.accountHash}, 
-                    ${fingerprint.ip},
-                    ${fingerprint.connectionType},
-                    ${screenResolution},
-                    ${locality},
-                    ${fingerprint.device},
-                    ${fingerprint.timezone},
-                    ${fingerprint.language},
-                    ${fingerprint.operatingSystem},
-                    ${fingerprint.soVersion},
-                    ${fingerprint.deviceType},
-                    ${fingerprint.browserAgent},
-                    ${fingerprint.createdAt.toString()}
-                )
+                    '${fingerprint.accountHash}', 
+                    '${fingerprint.ip}',
+                    '${fingerprint.connectionType}',
+                    '${fingerprint.screenResolution}',
+                    '${locality}',
+                    '${fingerprint.device}',
+                    '${fingerprint.timezone}',
+                    '${fingerprint.language}',
+                    '${fingerprint.operatingSystem}',
+                    '${fingerprint.soVersion}',
+                    '${fingerprint.deviceType}',
+                    '${fingerprint.browserAgent}',
+                    '${fingerprint.createdAt}'
+                );
+
+            
             `,(err: any) => {
                 if(err) {
                     reject(err);
@@ -98,7 +99,9 @@ export class FingerprintDB {
 
         });
 
-        fingerprints.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
+        //TODO: Validate sort with string
+        //fingerprints.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
         return fingerprints;
 
@@ -112,17 +115,13 @@ export class FingerprintDB {
             long: Number(localityArray[1])
         };
 
-        let dateCreatedAt = new Date(item.created_at);
-
-        let screenResolutionArray = item.screen_resolution.split(",");
-        let screenResolution = [Number(screenResolutionArray[0]), Number(screenResolutionArray[1])];
-
+        let dateCreatedAt = item.created_at;
 
         let fingerprint: Fingerprint = {
             accountHash: item.account_hash,
             ip: item.ip,
             connectionType: item.connection_type,
-            screenResolution: screenResolution,
+            screenResolution: item.screen_resolution,
             locality: locality,
             device: item.device,
             timezone: item.timezone,

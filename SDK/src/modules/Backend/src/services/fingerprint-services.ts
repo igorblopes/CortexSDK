@@ -8,19 +8,19 @@ export class FingerprintServices {
     
     async createFingerprint(request: any): Promise<void> {
         let entity: Fingerprint = {
-            accountHash: request.accountHash,
-            browserAgent: request.browserAgent,
-            connectionType: request.connectionType,
-            device: request.device,
-            deviceType: request.deviceType,
-            ip: request.ip,
-            language: request.language,
-            locality: request.locality,
-            operatingSystem: request.operatingSystem,
-            screenResolution: request.screenResolution,
-            soVersion: request.soVersion,
-            timezone: request.timezone,
-            createdAt: new Date()
+            accountHash: request.data.accountHash,
+            browserAgent: request.data.browserAgent,
+            connectionType: request.data.connectionType,
+            device: request.data.device,
+            deviceType: request.data.deviceType,
+            ip: request.data.ip,
+            language: request.data.language,
+            locality: request.data.locality,
+            operatingSystem: request.data.operatingSystem,
+            screenResolution: request.data.screenResolution,
+            soVersion: request.data.soVersion,
+            timezone: request.data.timezone,
+            createdAt: request.data.createdAt
         };
 
         return await this.fingerprintDB.createFingerprintEntity(entity);

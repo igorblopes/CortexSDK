@@ -6,11 +6,11 @@ export class CheckoutServices {
     constructor(private checkoutDB: CheckoutDB){}
 
     
-    async createFingerprint(request: any): Promise<void> {
+    async createCheckout(request: any): Promise<void> {
         let entity: Checkout = {
-            accountHash: request.accountHash,
-            itens: request.itens,
-            createdAt: new Date()
+            accountHash: request.data.accountHash,
+            itens: request.data.itens,
+            createdAt: request.data.createdAt
         };
 
         return await this.checkoutDB.createCheckoutEntity(entity);

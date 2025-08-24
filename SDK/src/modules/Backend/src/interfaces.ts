@@ -2,7 +2,7 @@ export interface Fingerprint {
     accountHash: string;
     ip: string;
     connectionType: string;
-    screenResolution: number[];
+    screenResolution: string;
     locality: UserLocality;
     device: string;
     timezone: string;
@@ -11,7 +11,7 @@ export interface Fingerprint {
     soVersion: string;
     deviceType: string;
     browserAgent: string;
-    createdAt: Date;
+    createdAt: string;
 }
 
 export interface UserLocality {
@@ -24,12 +24,12 @@ export interface UserBehavior {
   pageVisit: string;
   clicks: UserBehaviorClicks[];
   sessionDuration: number;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export interface UserBehaviorClicks {
     elementClick: string;
-    createdAt: Date;
+    createdAt: string;
 }
 
 export interface Checkout {

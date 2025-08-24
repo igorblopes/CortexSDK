@@ -86,8 +86,6 @@ export class SeedDB {
                     INSERT INTO sense_score (min_score, max_score, level)
                     VALUES (79, 100, 'review');
 
-                    DROP TABLE IF EXISTS fingerprint;
-
                     CREATE TABLE IF NOT EXISTS fingerprint ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         account_hash TEXT,
@@ -105,16 +103,12 @@ export class SeedDB {
                         created_at TEXT
                     );
 
-                    DROP TABLE IF EXISTS user_behavior;
-
                     CREATE TABLE IF NOT EXISTS user_behavior ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         account_hash TEXT,
-                        session_duration integer
+                        session_duration integer,
                         created_at TEXT
                     );
-
-                    DROP TABLE IF EXISTS user_behavior_clicks;
 
                     CREATE TABLE IF NOT EXISTS user_behavior_clicks ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -124,15 +118,11 @@ export class SeedDB {
                         FOREIGN KEY (user_behavior_id) REFERENCES user_behavior(id)
                     );
 
-                    DROP TABLE IF EXISTS checkout;
-
                     CREATE TABLE IF NOT EXISTS checkout ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         account_hash TEXT,
                         created_at TEXT
                     );
-
-                    DROP TABLE IF EXISTS checkout_itens;
 
                     CREATE TABLE IF NOT EXISTS checkout_itens ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,

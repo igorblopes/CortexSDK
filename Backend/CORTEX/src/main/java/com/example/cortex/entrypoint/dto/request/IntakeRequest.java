@@ -4,15 +4,15 @@ import com.example.cortex.core.TypeData;
 
 public class IntakeRequest {
 
-    private TypeData typeData;
+    private String typeData;
     private Object data;
 
 
-    public TypeData getTypeData() {
+    public String getTypeData() {
         return typeData;
     }
 
-    public void setTypeData(TypeData typeData) {
+    public void setTypeData(String typeData) {
         this.typeData = typeData;
     }
 

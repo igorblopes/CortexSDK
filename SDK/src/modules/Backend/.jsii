@@ -55,13 +55,13 @@
         },
         "locationInModule": {
           "filename": "src/index.ts",
-          "line": 17
+          "line": 18
         }
       },
       "kind": "class",
       "locationInModule": {
         "filename": "src/index.ts",
-        "line": 14
+        "line": 15
       },
       "methods": [
         {
@@ -71,7 +71,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 40
+            "line": 41
           },
           "name": "allSenseScores",
           "returns": {
@@ -92,7 +92,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 132
+            "line": 138
           },
           "name": "createCheckout",
           "parameters": [
@@ -111,7 +111,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 108
+            "line": 114
           },
           "name": "createFingerprint",
           "parameters": [
@@ -130,7 +130,26 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 25
+            "line": 164
+          },
+          "name": "createUserBehavior",
+          "parameters": [
+            {
+              "name": "request",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ]
+        },
+        {
+          "async": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 26
           },
           "name": "init"
         },
@@ -141,7 +160,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 57
+            "line": 58
           },
           "name": "intakeData",
           "parameters": [
@@ -160,7 +179,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 161
+            "line": 193
           },
           "name": "validateFraud",
           "parameters": [
@@ -186,7 +205,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 16
+            "line": 17
           },
           "name": "db",
           "type": {
@@ -404,5 +423,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "9a/zJkPGIjH6hvxoK8XAa5A9+B9pNSP4xf26ghH0JaQ="
+  "fingerprint": "qDicoGqHzMthf7TJo8xCYIz7AakBB57WvIkk+WsXW9E="
 }
