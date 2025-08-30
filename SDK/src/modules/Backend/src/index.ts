@@ -27,13 +27,19 @@ export { RootDatabase } from './infra/database/root-db';
 export class BackendSDK {
 
     private db: any = new CortexDatabase();
+     /**
+     * @hidden 
+     */
     constructor(){
 
     }
 
 
     /**
-     * Realiza a inicializacao do SDK Backend e faz a verificacao de integridade do banco de dados
+     * @category [00.INICIALIZAÇÃO] - Start do SDK
+     * @remarks
+     * 
+     * Realiza a inicialização do SDK Backend e faz a verificação de integridade do banco de dados.
      */
     async init() {
         let rootDB = new RootDatabase();
@@ -70,9 +76,13 @@ export class BackendSDK {
 
 
     /**
-     * Recebe os dados do SDK Frontend para futuras analises. Ponto de entrada da coleta de dados.
-     * 
-     * @param request -> Dados de coleta para futuras analises.
+     *
+     * @category [01.INGESTÃO DE DADOS] - Ingestão de dados por tipo
+     *  
+     * @remarks
+     * Recebe os dados do SDK Frontend para futuras análises. Ponto de entrada da coleta de dados.
+     *
+     * @param request -> Dados de coleta para futuras análises.
      * 
      *
      */
@@ -115,21 +125,41 @@ export class BackendSDK {
         
     }
 
-    /*
-     * REQUEST
+
+
+    /**
+     * @category [02.FRAUDE] - Validações
+     * 
+     * @remarks
+     * Cria a validação de fraud de uma conta, salva no banco de dados e responde com a validação feita. 
      *
-     * accountHash: string;
-     * browserAgent: string;
-     * connectionType: string;
-     * device: string;
-     * deviceType: string;
-     * ip: string;
-     * language: string;
-     * locality: UserLocality;
-     * operatingSystem: string;
-     * screenResolution: number[];
-     * soVersion: string;
-     * timezone: string;
+     * @param accountHash -> Hash da conta que deseja ser analisada
+     * 
+     * 
+     */
+    async validateFraud(accountHash: string): Promise<IFraudAssessment> {
+        let fraudAnalyzer = new FraudAnalyzer(this.db.checkoutDB, this.db.fingerprintDB, this.db.userBehaviorDB, this.db.fraudDB, this.db.senseScoreDB);
+        let fraudServices = new FraudServices(fraudAnalyzer);
+        return await new Promise<IFraudAssessment>((resolve, reject) => {
+            fraudServices.getAnalyzerFromAccountHash(accountHash)
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
+    /**
+     * 
+     * @category [03.AUXILIAR] - Ingestão de dados de fingerprint.
+     * 
+     * @remarks
+     * Cria ingestão de fingerprint do usuário
+     * 
+     * @param request -> Dados de coleta do fingerprint do usuário
      * 
      */
     async createFingerprint(request: IIntakeData) {
@@ -148,12 +178,13 @@ export class BackendSDK {
         });
     }
 
-    /*
-     * REQUEST
+    /**
+     * @category [03.AUXILIAR] - Ingestão de dados de checkout da compra.
      *
-     * accountHash: string;
-     * browserAgent: string;
-     * itens: CheckoutItens[];
+     * @remarks
+     * Cria ingestão de checkout de compras do usuário
+     * 
+     * @param request -> Dados de coleta do checkout de compras do usuário
      * 
      */
     async createCheckout(request: IIntakeData) {
@@ -172,14 +203,13 @@ export class BackendSDK {
     }
 
 
-    /*
-     * REQUEST
-     *
-     * accountHash: string;
-     * pageVisit: string;
-     * clicks: UserBehaviorClicks[];
-     * sessionDuration: number;
-     * createdAt: Date;
+    /**
+     * @category [03.AUXILIAR] - Ingestão de dados de comportamento do usuário.
+     * 
+     * @remarks
+     * Cria ingestão de dados de comportamentos do usuário
+     * 
+     * @param request -> Dados de coleta do comportamento do usuário
      * 
      */
     async createUserBehavior(request: IIntakeData) {
@@ -197,27 +227,7 @@ export class BackendSDK {
         });
     }
 
-    /**
-     * 
-     * Cria a validacao de fraud de uma conta, salva no banco de dados e responde com a validacao feita 
-     *
-     * @param accountHash -> hash da conta que deseja ser analisada
-     * 
-     * 
-     */
-    async validateFraud(accountHash: string): Promise<IFraudAssessment> {
-        let fraudAnalyzer = new FraudAnalyzer(this.db.checkoutDB, this.db.fingerprintDB, this.db.userBehaviorDB, this.db.fraudDB, this.db.senseScoreDB);
-        let fraudServices = new FraudServices(fraudAnalyzer);
-        return await new Promise<IFraudAssessment>((resolve, reject) => {
-            fraudServices.getAnalyzerFromAccountHash(accountHash)
-                .then((resp) => {
-                    resolve(resp)
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
-    }
+ 
 
 
 
