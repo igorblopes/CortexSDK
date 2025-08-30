@@ -1,4 +1,4 @@
-import { UserLocality } from "../../../Backend/src/interfaces";
+import { UserLocality } from "../../../../Backend/src/interfaces";
 
 export class CollectLocality {
 

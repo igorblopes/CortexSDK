@@ -1,4 +1,3 @@
-import { UserLocality } from "../Backend/src/interfaces";
 import { CollectConnections } from "./collectors/connections/collect-connections";
 import { CollectDevice } from "./collectors/device/collect-device";
 import { CollectIp } from "./collectors/ip/collect-ip";
@@ -81,7 +80,19 @@ export class FrontendSDK {
     }
 
 
-
+    
+    async backendPing() {
+        return await new Promise<void>((resolve, reject) => {
+            fetch(this.serviceBase + "/api/v1/ping", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(() => resolve())
+            .catch((err) => reject(err));
+        });
+    }
 
 
 

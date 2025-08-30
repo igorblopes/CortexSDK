@@ -1,0 +1,14 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "SDK frontend",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm,cjs",
+    "test": "vitest",
+    "lint": "eslint .",
+    "dev": "tsup src/index.ts --dts --format esm,cjs --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}
