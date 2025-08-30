@@ -3,7 +3,7 @@ import { FingerprintDB } from "../infra/database/cortext-db-fingerprint";
 import { FraudDB } from "../infra/database/cortext-db-fraud";
 import { SenseScoreDB } from "../infra/database/cortext-db-sense-score";
 import { UserBehaviorDB } from "../infra/database/cortext-db-user-behavior";
-import { FraudAssessment } from "../interfaces";
+import { IFraudAssessment } from "../interfaces";
 import { ScoreMappers } from "./score-mappers";
 
 export class FraudAnalyzer {
@@ -20,7 +20,7 @@ export class FraudAnalyzer {
         
     }
 
-    async analyze(accountHash: string): Promise<FraudAssessment> {
+    async analyze(accountHash: string): Promise<IFraudAssessment> {
 
         let mapScores = await this.senseScoreDB.getMapAllSenseScore();
 
@@ -39,7 +39,7 @@ export class FraudAnalyzer {
 
         let reasons = fingerprintResult.reasons.concat(checkoutResult.reasons, userBehaviorResult.reasons);
 
-        let fraudResult: FraudAssessment = {
+        let fraudResult: IFraudAssessment = {
             accountHash: accountHash,
             score: score,
             level: mapScores.has(score) ? mapScores.get(score) : "allow",
@@ -54,7 +54,7 @@ export class FraudAnalyzer {
     }
 
 
-    async analyzeFingerprints(accountHash: string, mapScores: Map<number, string>): Promise<FraudAssessment> {
+    async analyzeFingerprints(accountHash: string, mapScores: Map<number, string>): Promise<IFraudAssessment> {
 
         let fingerprints = await this.fingerprintDB.findFingerprintsByAccountHash(accountHash);
 
@@ -83,7 +83,7 @@ export class FraudAnalyzer {
     }
 
 
-    async analyzeCheckouts(accountHash: string, mapScores: Map<number, string>): Promise<FraudAssessment> {
+    async analyzeCheckouts(accountHash: string, mapScores: Map<number, string>): Promise<IFraudAssessment> {
 
         let checkouts = await this.checkoutDB.findCheckoutsByAccountHash(accountHash);
 
@@ -112,7 +112,7 @@ export class FraudAnalyzer {
     }
 
 
-    async analyzeUserBehaviors(accountHash: string, mapScores: Map<number, string>): Promise<FraudAssessment> {
+    async analyzeUserBehaviors(accountHash: string, mapScores: Map<number, string>): Promise<IFraudAssessment> {
 
         let userBehaviors = await this.userBehaviorDB.findUserBehaviorByAccountHash(accountHash);
 

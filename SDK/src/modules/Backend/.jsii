@@ -55,23 +55,26 @@
         },
         "locationInModule": {
           "filename": "src/index.ts",
-          "line": 18
+          "line": 30
         }
       },
       "kind": "class",
       "locationInModule": {
         "filename": "src/index.ts",
-        "line": 15
+        "line": 27
       },
       "methods": [
         {
           "async": true,
           "docs": {
+            "custom": {
+              "hidden": "RESPONSE\r\n\r\nid: number;\r\nscore: number;\r\nlevel: string;"
+            },
             "stability": "experimental"
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 41
+            "line": 56
           },
           "name": "allSenseScores",
           "returns": {
@@ -92,14 +95,14 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 138
+            "line": 159
           },
           "name": "createCheckout",
           "parameters": [
             {
               "name": "request",
               "type": {
-                "primitive": "any"
+                "fqn": "backend-sdk.IIntakeData"
               }
             }
           ]
@@ -111,14 +114,14 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 114
+            "line": 135
           },
           "name": "createFingerprint",
           "parameters": [
             {
               "name": "request",
               "type": {
-                "primitive": "any"
+                "fqn": "backend-sdk.IIntakeData"
               }
             }
           ]
@@ -130,14 +133,14 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 164
+            "line": 185
           },
           "name": "createUserBehavior",
           "parameters": [
             {
               "name": "request",
               "type": {
-                "primitive": "any"
+                "fqn": "backend-sdk.IIntakeData"
               }
             }
           ]
@@ -145,29 +148,35 @@
         {
           "async": true,
           "docs": {
-            "stability": "experimental"
+            "stability": "experimental",
+            "summary": "Realiza a inicializacao do SDK Backend e faz a verificacao de integridade do banco de dados."
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 26
+            "line": 38
           },
           "name": "init"
         },
         {
           "async": true,
           "docs": {
-            "stability": "experimental"
+            "remarks": "Ponto de entrada da coleta de dados.",
+            "stability": "experimental",
+            "summary": "Recebe os dados do SDK Frontend para futuras analises."
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 58
+            "line": 79
           },
           "name": "intakeData",
           "parameters": [
             {
+              "docs": {
+                "summary": "-> Requisicao de coleta vinda do SDK Frontend."
+              },
               "name": "request",
               "type": {
-                "primitive": "any"
+                "fqn": "backend-sdk.IIntakeData"
               }
             }
           ]
@@ -175,44 +184,33 @@
         {
           "async": true,
           "docs": {
-            "stability": "experimental"
+            "stability": "experimental",
+            "summary": "Cria a validacao de fraud de uma conta, salva no banco de dados e responde com a validacao feita."
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 193
+            "line": 208
           },
           "name": "validateFraud",
           "parameters": [
             {
+              "docs": {
+                "summary": "-> hash da conta que deseja ser analisada."
+              },
               "name": "accountHash",
               "type": {
-                "primitive": "any"
+                "primitive": "string"
               }
             }
           ],
           "returns": {
             "type": {
-              "primitive": "any"
+              "fqn": "backend-sdk.IFraudAssessment"
             }
           }
         }
       ],
       "name": "BackendSDK",
-      "properties": [
-        {
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "src/index.ts",
-            "line": 17
-          },
-          "name": "db",
-          "type": {
-            "primitive": "any"
-          }
-        }
-      ],
       "symbolId": "src/index:BackendSDK"
     },
     "backend-sdk.CortexDatabase": {
@@ -370,6 +368,646 @@
       ],
       "symbolId": "src/infra/database/cortex-db:CortexDatabase"
     },
+    "backend-sdk.ICheckout": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.ICheckout",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 35
+      },
+      "name": "ICheckout",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 36
+          },
+          "name": "accountHash",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 38
+          },
+          "name": "createdAt",
+          "type": {
+            "primitive": "date"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 37
+          },
+          "name": "itens",
+          "type": {
+            "collection": {
+              "elementtype": {
+                "fqn": "backend-sdk.ICheckoutItens"
+              },
+              "kind": "array"
+            }
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:ICheckout"
+    },
+    "backend-sdk.ICheckoutItens": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.ICheckoutItens",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 41
+      },
+      "name": "ICheckoutItens",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 43
+          },
+          "name": "quantity",
+          "type": {
+            "primitive": "number"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 42
+          },
+          "name": "typeItem",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 44
+          },
+          "name": "unitValue",
+          "type": {
+            "primitive": "number"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:ICheckoutItens"
+    },
+    "backend-sdk.IFingerprint": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IFingerprint",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 1
+      },
+      "name": "IFingerprint",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 2
+          },
+          "name": "accountHash",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 13
+          },
+          "name": "browserAgent",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 4
+          },
+          "name": "connectionType",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 14
+          },
+          "name": "createdAt",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 7
+          },
+          "name": "device",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 12
+          },
+          "name": "deviceType",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 3
+          },
+          "name": "ip",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 9
+          },
+          "name": "language",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 6
+          },
+          "name": "locality",
+          "type": {
+            "fqn": "backend-sdk.IUserLocality"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 10
+          },
+          "name": "operatingSystem",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 5
+          },
+          "name": "screenResolution",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 11
+          },
+          "name": "soVersion",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 8
+          },
+          "name": "timezone",
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IFingerprint"
+    },
+    "backend-sdk.IFraudAssessment": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IFraudAssessment",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 47
+      },
+      "name": "IFraudAssessment",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 48
+          },
+          "name": "accountHash",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 52
+          },
+          "name": "createdAt",
+          "type": {
+            "primitive": "date"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 51
+          },
+          "name": "reasons",
+          "type": {
+            "collection": {
+              "elementtype": {
+                "primitive": "string"
+              },
+              "kind": "array"
+            }
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 49
+          },
+          "name": "score",
+          "type": {
+            "primitive": "number"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 50
+          },
+          "name": "level",
+          "optional": true,
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IFraudAssessment"
+    },
+    "backend-sdk.IIntakeData": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "custom": {
+          "remarks": "Esta interface e o ponto de entrada da coleta de dados. Contendo o tipo de dados a ser ingerido e os dados propriamente dito."
+        },
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IIntakeData",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 61
+      },
+      "name": "IIntakeData",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental",
+            "summary": "Dados referente a coleta para futuras verificacoes de fraude."
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 76
+          },
+          "name": "data",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "remarks": "(IntakeUserBehavior) - Dados de comportamento do usuario.\r\n   (IntakeLogin) - Dados de Fingerprint do usuario.\r\n   (IntakeCheckout) - Dados de checkout da compra de usuario.",
+            "stability": "experimental",
+            "summary": "Tipo de dados que sera ingerido."
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 69
+          },
+          "name": "typeData",
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IIntakeData"
+    },
+    "backend-sdk.IUserBehavior": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IUserBehavior",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 22
+      },
+      "name": "IUserBehavior",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 23
+          },
+          "name": "accountHash",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 25
+          },
+          "name": "clicks",
+          "type": {
+            "collection": {
+              "elementtype": {
+                "fqn": "backend-sdk.IUserBehaviorClicks"
+              },
+              "kind": "array"
+            }
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 27
+          },
+          "name": "createdAt",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 24
+          },
+          "name": "pageVisit",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 26
+          },
+          "name": "sessionDuration",
+          "type": {
+            "primitive": "number"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IUserBehavior"
+    },
+    "backend-sdk.IUserBehaviorClicks": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IUserBehaviorClicks",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 30
+      },
+      "name": "IUserBehaviorClicks",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 32
+          },
+          "name": "createdAt",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 31
+          },
+          "name": "elementClick",
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IUserBehaviorClicks"
+    },
+    "backend-sdk.IUserLocality": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IUserLocality",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 17
+      },
+      "name": "IUserLocality",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 18
+          },
+          "name": "latitude",
+          "type": {
+            "primitive": "number"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 19
+          },
+          "name": "longitude",
+          "type": {
+            "primitive": "number"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IUserLocality"
+    },
     "backend-sdk.RootDatabase": {
       "assembly": "backend-sdk",
       "docs": {
@@ -423,5 +1061,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "qDicoGqHzMthf7TJo8xCYIz7AakBB57WvIkk+WsXW9E="
+  "fingerprint": "w3Wq4PAOth3iKxztJ3PSyIp1h200hsJfVonO0ivYPNY="
 }

@@ -1,5 +1,5 @@
 import * as sqlite3 from 'sqlite3';
-import { FraudAssessment } from '../../interfaces';
+import { IFraudAssessment } from '../../interfaces';
 import { FraudAssessmentModelDB, FraudAssessmentReasonModelDB } from '../../interfaces-db';
 
 export class FraudDB {
@@ -7,7 +7,7 @@ export class FraudDB {
     constructor(private db: sqlite3.Database){}
 
      
-    async createFraudEntity(fraud: FraudAssessment) {
+    async createFraudEntity(fraud: IFraudAssessment) {
         try {
             let db = this.db;
             await db.run(`
@@ -37,9 +37,9 @@ export class FraudDB {
     }
 
 
-    async findFraudByAccountHash(accountHash: string): Promise<FraudAssessment[]> {
+    async findFraudByAccountHash(accountHash: string): Promise<IFraudAssessment[]> {
     
-        let frauds: FraudAssessment[] = [];
+        let frauds: IFraudAssessment[] = [];
         let context = this;
 
         await this.db.all<FraudAssessmentModelDB>(`
@@ -79,12 +79,12 @@ export class FraudDB {
         return frauds;
     }
 
-    convertItemDatabaseToModel(item: FraudAssessmentModelDB, rows: FraudAssessmentReasonModelDB[]): FraudAssessment{
+    convertItemDatabaseToModel(item: FraudAssessmentModelDB, rows: FraudAssessmentReasonModelDB[]): IFraudAssessment{
     
         let dateCreatedAt = new Date(item.created_at);
         let reasons = rows.map(m => m.reason);
 
-        let fraud: FraudAssessment = {
+        let fraud: IFraudAssessment = {
             accountHash: item.account_hash,
             score: item.score,
             level: item.level,

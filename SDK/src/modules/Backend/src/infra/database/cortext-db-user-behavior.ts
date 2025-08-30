@@ -1,5 +1,5 @@
 import * as sqlite3 from 'sqlite3';
-import { UserBehavior, UserBehaviorClicks } from '../../interfaces';
+import { IUserBehavior, IUserBehaviorClicks } from '../../interfaces';
 import { ConfigModelDB, UserBehaviorClicksModelDB, UserBehaviorModelDB } from '../../interfaces-db';
 
 export class UserBehaviorDB {
@@ -37,7 +37,7 @@ export class UserBehaviorDB {
         return all;
     }
 
-    async createUserBehaviorEntity(userBehavior: UserBehavior) {
+    async createUserBehaviorEntity(userBehavior: IUserBehavior) {
 
         return await new Promise<void>((resolve, reject) => {
         
@@ -67,7 +67,7 @@ export class UserBehaviorDB {
     }
 
 
-    async createUserBehavior(userBehavior: UserBehavior) {
+    async createUserBehavior(userBehavior: IUserBehavior) {
         return await new Promise<number>((resolve, reject) => {
         
             this.db.run(`
@@ -87,9 +87,9 @@ export class UserBehaviorDB {
 
 
 
-    async findUserBehaviorByAccountHash(accountHash: string): Promise<UserBehavior[]> {
+    async findUserBehaviorByAccountHash(accountHash: string): Promise<IUserBehavior[]> {
         
-        let userBehaviors: UserBehavior[] = [];
+        let userBehaviors: IUserBehavior[] = [];
         let context = this;
 
         await this.db.all<UserBehaviorModelDB>(`
@@ -131,10 +131,10 @@ export class UserBehaviorDB {
     }
 
     
-    convertItemDatabaseToModel(item: UserBehaviorModelDB, rows: UserBehaviorClicksModelDB[]): UserBehavior{
+    convertItemDatabaseToModel(item: UserBehaviorModelDB, rows: UserBehaviorClicksModelDB[]): IUserBehavior{
     
         let dateCreatedAt = item.created_at;
-        let clicks: UserBehaviorClicks[] = [];
+        let clicks: IUserBehaviorClicks[] = [];
         
         for(let row of rows) {
             let dateCreatedAt = row.created_at;
@@ -144,7 +144,7 @@ export class UserBehaviorDB {
             })
         }
 
-        let userBehavior: UserBehavior = {
+        let userBehavior: IUserBehavior = {
             accountHash: item.account_hash,
             pageVisit: item.page_visit,
             sessionDuration: item.session_duration,

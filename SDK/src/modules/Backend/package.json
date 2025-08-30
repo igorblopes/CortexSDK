@@ -44,5 +44,13 @@
   "dependencies": {
     "sqlite3": "^5.1.7"
   },
-  "bundledDependencies": ["sqlite3"]
+  "bundledDependencies": [
+    "sqlite3"
+  ],
+  "devDependencies": {
+    "typedoc": "^0.28.11"
+  },
+  "bundleDependencies": [
+    "sqlite3"
+  ]
 }

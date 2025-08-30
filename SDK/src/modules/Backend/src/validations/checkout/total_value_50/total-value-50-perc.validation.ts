@@ -1,9 +1,9 @@
-import { Checkout } from "../../../interfaces";
+import { ICheckout } from "../../../interfaces";
 import { Validation } from "../../validation.interface";
 
 export class TotalValue50PercentValidation implements Validation{
     
-    validation(checkouts: Checkout[], score: number): number{
+    validation(checkouts: ICheckout[], score: number): number{
         if(checkouts.length <= 1) {return 0}
 
         let lastCheckout = checkouts[0];
@@ -24,7 +24,7 @@ export class TotalValue50PercentValidation implements Validation{
         return possibleFraud ? score : 0 ;
     }
 
-    calculateMeanOtherPurchases(checkouts: Checkout[]): number {
+    calculateMeanOtherPurchases(checkouts: ICheckout[]): number {
         let copiedCheckouts = Array.from(checkouts);
         copiedCheckouts.shift();
 

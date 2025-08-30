@@ -1,13 +1,13 @@
 import { UserBehaviorDB } from "../infra/database/cortext-db-user-behavior";
-import { UserBehavior } from "../interfaces";
+import { IIntakeData, IUserBehavior } from "../interfaces";
 
 export class UserServices {
 
     constructor(private userBehaviorDB: UserBehaviorDB){}
 
     
-    async createUserBehavior(request: any): Promise<void> {
-        let entity: UserBehavior = {
+    async createUserBehavior(request: IIntakeData): Promise<void> {
+        let entity: IUserBehavior = {
             accountHash: request.data.accountHash,
             clicks: request.data.clicks,
             pageVisit: request.data.pageVisit,

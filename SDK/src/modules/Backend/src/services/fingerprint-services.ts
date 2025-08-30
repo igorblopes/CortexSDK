@@ -1,13 +1,13 @@
 import { FingerprintDB } from "../infra/database/cortext-db-fingerprint";
-import { Fingerprint } from "../interfaces";
+import { IFingerprint, IIntakeData } from "../interfaces";
 
 export class FingerprintServices {
 
     constructor(private fingerprintDB: FingerprintDB){}
 
     
-    async createFingerprint(request: any): Promise<void> {
-        let entity: Fingerprint = {
+    async createFingerprint(request: IIntakeData): Promise<void> {
+        let entity: IFingerprint = {
             accountHash: request.data.accountHash,
             browserAgent: request.data.browserAgent,
             connectionType: request.data.connectionType,

@@ -1,5 +1,5 @@
 import * as sqlite3 from 'sqlite3';
-import { Fingerprint, UserLocality } from '../../interfaces';
+import { IFingerprint, IUserLocality } from '../../interfaces';
 import { ConfigModelDB, FingerprintModelDB } from '../../interfaces-db';
 
 export class FingerprintDB {
@@ -39,11 +39,11 @@ export class FingerprintDB {
     }
 
 
-    async createFingerprintEntity(fingerprint: Fingerprint): Promise<void> {
+    async createFingerprintEntity(fingerprint: IFingerprint): Promise<void> {
 
         return await new Promise<void>((resolve, reject) => {
             
-            let locality = fingerprint.locality != null ? `${fingerprint.locality.lat} , ${fingerprint.locality.long}` : "0x0";
+            let locality = fingerprint.locality != null ? `${fingerprint.locality.latitude} , ${fingerprint.locality.longitude}` : "0x0";
 
             this.db.run(`
                 INSERT INTO fingerprint (account_hash, ip, connection_type, screen_resolution, locality, device, timezone, language, operating_system, so_version, device_type, browser_agent, created_at)
@@ -75,9 +75,9 @@ export class FingerprintDB {
         
     }
 
-    async findFingerprintsByAccountHash(accountHash: string): Promise<Fingerprint[]> {
+    async findFingerprintsByAccountHash(accountHash: string): Promise<IFingerprint[]> {
 
-        let fingerprints: Fingerprint[] = [];
+        let fingerprints: IFingerprint[] = [];
         let context = this;
 
         await this.db.all<FingerprintModelDB>(`
@@ -107,17 +107,17 @@ export class FingerprintDB {
 
     }
 
-    convertItemDatabaseToModel(item: FingerprintModelDB): Fingerprint{
+    convertItemDatabaseToModel(item: FingerprintModelDB): IFingerprint{
 
         let localityArray = item.locality.split(",");
-        let locality: UserLocality = {
-            lat: Number(localityArray[0]),
-            long: Number(localityArray[1])
+        let locality: IUserLocality = {
+            latitude: Number(localityArray[0]),
+            longitude: Number(localityArray[1])
         };
 
         let dateCreatedAt = item.created_at;
 
-        let fingerprint: Fingerprint = {
+        let fingerprint: IFingerprint = {
             accountHash: item.account_hash,
             ip: item.ip,
             connectionType: item.connection_type,

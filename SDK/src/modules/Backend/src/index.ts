@@ -1,6 +1,7 @@
 
 import { CortexDatabase } from './infra/database/cortex-db';
 import { RootDatabase } from './infra/database/root-db';
+import { IFraudAssessment, IIntakeData } from './interfaces';
 import { CheckoutServices } from './services/checkout-services';
 import { FingerprintServices } from './services/fingerprint-services';
 import { FraudServices } from './services/fraud-services';
@@ -8,21 +9,32 @@ import { SenseServices } from './services/sense-services';
 import { UserServices } from './services/user-services';
 import { FraudAnalyzer } from './validations/fraud-analyzer';
 
+
+export { IFraudAssessment, IIntakeData, IUserBehavior, ICheckout, ICheckoutItens, IFingerprint, IUserBehaviorClicks, IUserLocality } from './interfaces';
+
+
+/**
+ * @hidden
+ */
 export { CortexDatabase } from './infra/database/cortex-db';
+/**
+ * @hidden
+ */
 export { RootDatabase } from './infra/database/root-db';
+
 
 
 export class BackendSDK {
 
-    db: any = new CortexDatabase();
+    private db: any = new CortexDatabase();
     constructor(){
 
     }
 
 
-    /*
-     * initialize database and seed the tables
-    */
+    /**
+     * Realiza a inicializacao do SDK Backend e faz a verificacao de integridade do banco de dados
+     */
     async init() {
         let rootDB = new RootDatabase();
         this.db = new CortexDatabase();
@@ -31,7 +43,10 @@ export class BackendSDK {
     }
 
 
-    /*
+    /**
+     *
+     * @hidden 
+     *
      * RESPONSE
      *
      * id: number;
@@ -54,8 +69,14 @@ export class BackendSDK {
     }
 
 
-    
-    async intakeData(request: any) {
+    /**
+     * Recebe os dados do SDK Frontend para futuras analises. Ponto de entrada da coleta de dados.
+     * 
+     * @param request -> Dados de coleta para futuras analises.
+     * 
+     *
+     */
+    async intakeData(request: IIntakeData): Promise<void> {
 
         return await new Promise<void>((resolve, reject) => {
             switch (request.typeData) {
@@ -111,7 +132,7 @@ export class BackendSDK {
      * timezone: string;
      * 
      */
-    async createFingerprint(request: any) {
+    async createFingerprint(request: IIntakeData) {
         let fingerprintService = new FingerprintServices(this.db.fingerprintDB);
 
         return await new Promise<void>((resolve, reject) => {
@@ -135,7 +156,7 @@ export class BackendSDK {
      * itens: CheckoutItens[];
      * 
      */
-    async createCheckout(request: any) {
+    async createCheckout(request: IIntakeData) {
         let checkoutServices = new CheckoutServices(this.db.checkoutDB);
 
         return await new Promise<void>((resolve, reject) => {
@@ -161,7 +182,7 @@ export class BackendSDK {
      * createdAt: Date;
      * 
      */
-    async createUserBehavior(request: any) {
+    async createUserBehavior(request: IIntakeData) {
         let userServices = new UserServices(this.db.userBehaviorDB);
 
         return await new Promise<void>((resolve, reject) => {
@@ -176,24 +197,18 @@ export class BackendSDK {
         });
     }
 
-    /*
-     * REQUEST
+    /**
+     * 
+     * Cria a validacao de fraud de uma conta, salva no banco de dados e responde com a validacao feita 
      *
-     * accountHash: string;
+     * @param accountHash -> hash da conta que deseja ser analisada
      * 
-     * RESPONSE
-     * 
-     * accountHash: string;
-     * score: number;
-     * level: string | undefined;
-     * reasons: string[];
-     * createdAt: Date;
      * 
      */
-    async validateFraud(accountHash: any) {
+    async validateFraud(accountHash: string): Promise<IFraudAssessment> {
         let fraudAnalyzer = new FraudAnalyzer(this.db.checkoutDB, this.db.fingerprintDB, this.db.userBehaviorDB, this.db.fraudDB, this.db.senseScoreDB);
         let fraudServices = new FraudServices(fraudAnalyzer);
-        return await new Promise<any>((resolve, reject) => {
+        return await new Promise<IFraudAssessment>((resolve, reject) => {
             fraudServices.getAnalyzerFromAccountHash(accountHash)
                 .then((resp) => {
                     resolve(resp)

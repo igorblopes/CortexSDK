@@ -1,5 +1,5 @@
 import * as sqlite3 from 'sqlite3';
-import { Checkout, CheckoutItens } from '../../interfaces';
+import { ICheckout, ICheckoutItens } from '../../interfaces';
 import { CheckoutItensModelDB, CheckoutModelDB, ConfigModelDB } from '../../interfaces-db';
 
 export class CheckoutDB {
@@ -7,7 +7,7 @@ export class CheckoutDB {
     constructor(private db: sqlite3.Database){}
 
     
-    async createCheckoutEntity(checkout: Checkout) {
+    async createCheckoutEntity(checkout: ICheckout) {
         
         return await new Promise<void>((resolve, reject) => {
             let db = this.db;
@@ -19,7 +19,7 @@ export class CheckoutDB {
 
                         db.run(`
                             INSERT INTO checkout_itens (type, quantity, unity_value, checkout_id)
-                            VALUES ('${item.type}', '${item.quantity}', '${item.unitValue}', '${resp}') 
+                            VALUES ('${item.typeItem}', '${item.quantity}', '${item.unitValue}', '${resp}') 
                         `,function (err) {
 
                             if(err) reject(err);
@@ -35,7 +35,7 @@ export class CheckoutDB {
     }
 
 
-    async createCheckout(checkout: Checkout) {
+    async createCheckout(checkout: ICheckout) {
         return await new Promise<number>((resolve, reject) => {
             this.db.run(`
                 INSERT INTO checkout (account_hash, created_at)
@@ -52,9 +52,9 @@ export class CheckoutDB {
     }
 
 
-    async findCheckoutsByAccountHash(accountHash: string): Promise<Checkout[]> {
+    async findCheckoutsByAccountHash(accountHash: string): Promise<ICheckout[]> {
     
-        let checkouts: Checkout[] = [];
+        let checkouts: ICheckout[] = [];
         let context = this;
 
         await this.db.all<CheckoutModelDB>(`
@@ -94,21 +94,21 @@ export class CheckoutDB {
 
     }
 
-    convertItemDatabaseToModel(itemCheckout: CheckoutModelDB, itemCheckoutItens: CheckoutItensModelDB[]): Checkout{
+    convertItemDatabaseToModel(itemCheckout: CheckoutModelDB, itemCheckoutItens: CheckoutItensModelDB[]): ICheckout{
     
         let dateCreatedAt = new Date(itemCheckout.created_at);
 
-        let checkoutItens: CheckoutItens[] = [];
+        let checkoutItens: ICheckoutItens[] = [];
 
         itemCheckoutItens.forEach((f) => {
             checkoutItens.push({
                 quantity: f.quantity,
-                type: f.type,
+                typeItem: f.type,
                 unitValue: f.unit_value
             });
         });
 
-        let checkout: Checkout = {
+        let checkout: ICheckout = {
             accountHash: itemCheckout.account_hash,
             itens: checkoutItens,
             createdAt: dateCreatedAt

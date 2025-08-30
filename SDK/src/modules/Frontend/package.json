@@ -18,5 +18,8 @@
     "lint": "eslint .",
     "dev": "tsup src/index.ts --dts --format esm,cjs --watch"
   },
-  "author": ""
+  "author": "",
+  "devDependencies": {
+    "typedoc": "^0.28.11"
+  }
 }

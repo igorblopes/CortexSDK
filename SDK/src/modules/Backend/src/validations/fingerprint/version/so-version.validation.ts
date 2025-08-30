@@ -1,9 +1,9 @@
-import { Fingerprint } from "../../../interfaces";
+import { IFingerprint } from "../../../interfaces";
 import { Validation } from "../../validation.interface";
 
 export class SOVersionValidation implements Validation{
     
-    validation(fingerprints: Fingerprint[], score: number): number{
+    validation(fingerprints: IFingerprint[], score: number): number{
         if(fingerprints.length <= 1) {return 0}
 
         let lastFingerprint = fingerprints[0];
