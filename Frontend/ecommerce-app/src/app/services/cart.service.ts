@@ -13,6 +13,15 @@ export class CartService {
     }
   }
 
+  getTotalItens() {
+    let total = 0;
+    for(let item of this.items){
+      total += item.quantity;
+    }
+
+    return total;
+  }
+
   getCart() {
     return this.items;
   }

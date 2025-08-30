@@ -3,7 +3,7 @@
     <img [src]="product.image" alt="{{ product.name }}" />
     <h3>{{ product.name }}</h3>
     <p>R$ {{ product.price }}</p>
-    <input type="number" min="1" [(ngModel)]="quantities[product.id]" />
+    <input type="number" min="1" [(ngModel)]="quantities[product.id]" /> <br>
     <button (click)="addToCart(product)">Adicionar ao Carrinho</button>
   </div>
 </div>
@@ -13,4 +13,10 @@
   
 </div>
 
-<button (click)="goToCheckout()">Ir para o Checkout</button>
+<div class="fab-container">
+  <button (click)="goToCheckout()" class="fab">
+    <i class="fas fa-shopping-cart"></i>
+    🛒
+  </button>
+  <span *ngIf="quantity > 0" class="badge">{{quantity}}</span>
+</div>
