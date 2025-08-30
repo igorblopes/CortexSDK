@@ -6,10 +6,8 @@ export class CollectScreenResolution {
     }
    
 
-    getScreenResolution(): number[]{
-        return [1024, 768];
-
-        
+    getScreenResolution(): string{
+        return screen.width + "x" + screen.height;   
     }
     
 }

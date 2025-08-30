@@ -1,3 +1,4 @@
+import { ICheckout } from "../../Backend/src/interfaces";
 import { CollectConnections } from "./collectors/connections/collect-connections";
 import { CollectDevice } from "./collectors/device/collect-device";
 import { CollectIp } from "./collectors/ip/collect-ip";
@@ -8,29 +9,58 @@ import { CollectScreenResolution } from "./collectors/resolution/collect-resolut
 import { CollectTimezone } from "./collectors/timezone/collect-timezone";
 import { CollectVersion } from "./collectors/version/collect-version";
 
+export { ICheckout } from "../../Backend/src/interfaces";
+
 export class FrontendSDK {
 
-    serviceBase: any = null;
+    private serviceBase: any = null;
 
-    collectConnection: CollectConnections = new CollectConnections();
-    collectIp: CollectIp = new CollectIp();
-    collectResolution: CollectScreenResolution = new CollectScreenResolution();
-    collectLocality: CollectLocality = new CollectLocality();
-    collectDevice: CollectDevice = new CollectDevice();
-    collectTimezone: CollectTimezone = new CollectTimezone();
-    collectLanguage: CollectLanguage = new CollectLanguage();
-    collectOperationSystem: CollectOperationSystem = new CollectOperationSystem();
-    collectVersion: CollectVersion = new CollectVersion();
+    
+    private collectConnection: CollectConnections = new CollectConnections();
+    private collectIp: CollectIp = new CollectIp();
+    private collectResolution: CollectScreenResolution = new CollectScreenResolution();
+    private collectLocality: CollectLocality = new CollectLocality();
+    private collectDevice: CollectDevice = new CollectDevice();
+    private collectTimezone: CollectTimezone = new CollectTimezone();
+    private collectLanguage: CollectLanguage = new CollectLanguage();
+    private collectOperationSystem: CollectOperationSystem = new CollectOperationSystem();
+    private collectVersion: CollectVersion = new CollectVersion();
 
+    /**
+     * @hidden 
+     */
     constructor(){
 
     }
 
+
+     /**
+     * @category [00.INICIALIZAÇÃO] - Start do SDK
+     * 
+     * @remarks
+     * Realiza a inicialização do SDK Frontend e seta a base url do seu backend.
+     * 
+     * @param serviceBase -> Url do serviço base onde está localizado o seu SDK Backend
+     * 
+     * 
+     */
     init(serviceBase: any) {
         this.serviceBase = serviceBase;
     }
 
-    async sendFingerprintData(accountHash: any) {
+
+    /**
+     *
+     * @category [01.INGESTÃO DE DADOS] - Ingestão de dados de Fingerprint
+     *  
+     * @remarks
+     * Coleta os dados para fingerprint e envia automaticamente para o SDK de BACKEND
+     *
+     * @param accountHash -> Hash da conta que esta sendo coletado os dados
+     * 
+     *
+     */
+    async sendFingerprintData(accountHash: string) {
         return await new Promise<void>((resolve, reject) => {
             
             let body = {
@@ -59,7 +89,19 @@ export class FrontendSDK {
         });
     }    
 
-    async sendCheckoutData(request: any) {
+
+    /**
+     *
+     * @category [01.INGESTÃO DE DADOS] - Ingestão de dados do Checkout da compra
+     *  
+     * @remarks
+     * Coleta os dados para checkout de compra e envia automaticamente para o SDK de BACKEND
+     *
+     * @param accountHash -> Hash da conta que esta sendo coletado os dados
+     * 
+     *
+     */
+    async sendCheckoutData(request: ICheckout) {
 
         return await new Promise<void>((resolve, reject) => {
 
@@ -81,22 +123,10 @@ export class FrontendSDK {
 
 
     
-    async backendPing() {
-        return await new Promise<void>((resolve, reject) => {
-            fetch(this.serviceBase + "/api/v1/ping", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(() => resolve())
-            .catch((err) => reject(err));
-        });
-    }
-
-
-
-     async makeIntakeDataRequest(body: { typeData: string; data: any }) {
+     /**
+     * @hidden 
+     */
+    async makeIntakeDataRequest(body: { typeData: string; data: any }) {
         return await new Promise<void>((resolve, reject) => {
             fetch(this.serviceBase + "/api/v1/intake/data", {
                 method: 'POST',
@@ -104,6 +134,23 @@ export class FrontendSDK {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(body),
+            })
+            .then(() => resolve())
+            .catch((err) => reject(err));
+        });
+    }
+
+
+     /**
+     * @hidden 
+     */
+    async backendPing() {
+        return await new Promise<void>((resolve, reject) => {
+            fetch(this.serviceBase + "/api/v1/ping", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             })
             .then(() => resolve())
             .catch((err) => reject(err));

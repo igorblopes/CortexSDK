@@ -7,7 +7,7 @@ export class CollectTimezone {
    
 
     getTimezone(): any{
-        return "timezone";
+        return Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
     
 }

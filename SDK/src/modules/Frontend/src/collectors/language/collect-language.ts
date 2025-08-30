@@ -7,7 +7,7 @@ export class CollectLanguage {
    
 
     getLanguage(): any{
-        return "language";
+        return navigator.language;
     }
     
 }
