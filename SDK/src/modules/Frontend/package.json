@@ -1,14 +1,22 @@
 {
-  "name": "frontend",
+  "name": "cortexsdk-frontend",
   "version": "1.0.0",
-  "description": "SDK frontend",
+  "description": "Cortex SDK frontend",
   "main": "index.ts",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "scripts": {
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "test": "vitest",
     "lint": "eslint .",
     "dev": "tsup src/index.ts --dts --format esm,cjs --watch"
   },
-  "author": "",
-  "license": "ISC"
+  "author": ""
 }
