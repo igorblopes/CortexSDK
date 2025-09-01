@@ -58,7 +58,7 @@
         },
         "locationInModule": {
           "filename": "src/index.ts",
-          "line": 33
+          "line": 34
         }
       },
       "kind": "class",
@@ -77,7 +77,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 62
+            "line": 67
           },
           "name": "allSenseScores",
           "returns": {
@@ -102,7 +102,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 190
+            "line": 212
           },
           "name": "createCheckout",
           "parameters": [
@@ -113,6 +113,15 @@
               "name": "request",
               "type": {
                 "fqn": "backend-sdk.IIntakeData"
+              }
+            },
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
               }
             }
           ]
@@ -128,7 +137,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 165
+            "line": 181
           },
           "name": "createFingerprint",
           "parameters": [
@@ -139,6 +148,15 @@
               "name": "request",
               "type": {
                 "fqn": "backend-sdk.IIntakeData"
+              }
+            },
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
               }
             }
           ]
@@ -154,7 +172,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 215
+            "line": 243
           },
           "name": "createUserBehavior",
           "parameters": [
@@ -165,6 +183,15 @@
               "name": "request",
               "type": {
                 "fqn": "backend-sdk.IIntakeData"
+              }
+            },
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
               }
             }
           ]
@@ -180,9 +207,20 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 44
+            "line": 47
           },
-          "name": "init"
+          "name": "init",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ]
         },
         {
           "async": true,
@@ -195,7 +233,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 89
+            "line": 95
           },
           "name": "intakeData",
           "parameters": [
@@ -206,6 +244,15 @@
               "name": "request",
               "type": {
                 "fqn": "backend-sdk.IIntakeData"
+              }
+            },
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
               }
             }
           ]
@@ -221,7 +268,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 140
+            "line": 150
           },
           "name": "validateFraud",
           "parameters": [
@@ -230,6 +277,15 @@
                 "summary": "-> Hash da conta que deseja ser analisada."
               },
               "name": "accountHash",
+              "type": {
+                "primitive": "string"
+              }
+            },
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
               "type": {
                 "primitive": "string"
               }
@@ -1094,5 +1150,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "k7hwkPYumJ/b5sMDWPgmv1MKS4hVI2PVZjBPwTIzqP0="
+  "fingerprint": "sZObY3ntAZ+wHuMxjcCY8JLZPKtDF00SMvrdm1LPcLs="
 }

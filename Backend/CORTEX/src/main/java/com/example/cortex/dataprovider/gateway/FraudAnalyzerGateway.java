@@ -10,14 +10,16 @@ import org.springframework.stereotype.Service;
 public class FraudAnalyzerGateway {
 
     public FraudValidationResponse getFraudValidation(String accountHash) {
-        var sdk = new BackendSDK();
+//        var sdk = new BackendSDK();
+//
+//        sdk.init();
+//        var fraudValidation = sdk.validateFraud(accountHash);
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        return mapper.convertValue(fraudValidation, FraudValidationResponse.class);
 
-        sdk.init();
-        var fraudValidation = sdk.validateFraud(accountHash);
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        return mapper.convertValue(fraudValidation, FraudValidationResponse.class);
+        return null;
 
     }
 }

@@ -3,6 +3,7 @@ package com.example.cortex.entrypoint.api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PingApi {
 
     @PostMapping("/ping")
-    public ResponseEntity makePing() {
+    public ResponseEntity makePing(@RequestHeader("x-api-key") String token) {
         return new ResponseEntity(HttpStatus.OK);
     }
 }
