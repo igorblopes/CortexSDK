@@ -1,1 +1,3 @@
 node_modules/
+Backend/CORTEX/.env
+Backend/CORTEX/cortex.db

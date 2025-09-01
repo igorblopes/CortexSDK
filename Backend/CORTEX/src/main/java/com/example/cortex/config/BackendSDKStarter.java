@@ -9,8 +9,8 @@ public class BackendSDKStarter {
 
     BackendSDK backendSDK = new BackendSDK();
 
-    public BackendSDKStarter(){
-        backendSDK = new BackendSDK();
+    public BackendSDKStarter(String sdktoken){
+        backendSDK = new BackendSDK(sdktoken);
         backendSDK.init();
     }
 

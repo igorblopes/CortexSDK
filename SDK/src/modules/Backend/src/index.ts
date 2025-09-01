@@ -27,6 +27,7 @@ export { RootDatabase } from './infra/database/root-db';
 export class BackendSDK {
 
     private db: any = new CortexDatabase();
+    private token: string = "";
      /**
      * @hidden 
      */
@@ -37,13 +38,17 @@ export class BackendSDK {
 
     /**
      * @category [00.INICIALIZAÇÃO] - Start do SDK
-     * @remarks
      * 
+     * @remarks
      * Realiza a inicialização do SDK Backend e faz a verificação de integridade do banco de dados.
+     * 
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      */
-    async init() {
+    async init(token: string) {
         let rootDB = new RootDatabase();
         this.db = new CortexDatabase();
+
+        this.token = token;
 
         await this.db.init(rootDB);
     }
@@ -83,15 +88,20 @@ export class BackendSDK {
      * Recebe os dados do SDK Frontend para futuras análises. Ponto de entrada da coleta de dados.
      *
      * @param request -> Dados de coleta para futuras análises.
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * 
      *
      */
-    async intakeData(request: IIntakeData): Promise<void> {
-
+    async intakeData(request: IIntakeData, token: string): Promise<void> {
         return await new Promise<void>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
             switch (request.typeData) {
                 case "IntakeUserBehavior":
-                    this.createUserBehavior(request)
+                    this.createUserBehavior(request, token)
                         .then(() => {
                             resolve()
                         })
@@ -100,7 +110,7 @@ export class BackendSDK {
                         });
                     break;
                 case "IntakeLogin":
-                    this.createFingerprint(request)
+                    this.createFingerprint(request, token)
                         .then(() => {
                             resolve()
                         })
@@ -109,7 +119,7 @@ export class BackendSDK {
                         });
                     break;
                 case "IntakeCheckout":
-                    this.createCheckout(request)
+                    this.createCheckout(request, token)
                         .then(() => {
                             resolve()
                         })
@@ -134,13 +144,18 @@ export class BackendSDK {
      * Cria a validação de fraud de uma conta, salva no banco de dados e responde com a validação feita. 
      *
      * @param accountHash -> Hash da conta que deseja ser analisada
-     * 
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * 
      */
-    async validateFraud(accountHash: string): Promise<IFraudAssessment> {
+    async validateFraud(accountHash: string, token: string): Promise<IFraudAssessment> {
         let fraudAnalyzer = new FraudAnalyzer(this.db.checkoutDB, this.db.fingerprintDB, this.db.userBehaviorDB, this.db.fraudDB, this.db.senseScoreDB);
         let fraudServices = new FraudServices(fraudAnalyzer);
         return await new Promise<IFraudAssessment>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
             fraudServices.getAnalyzerFromAccountHash(accountHash)
                 .then((resp) => {
                     resolve(resp)
@@ -160,12 +175,18 @@ export class BackendSDK {
      * Cria ingestão de fingerprint do usuário
      * 
      * @param request -> Dados de coleta do fingerprint do usuário
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * 
      */
-    async createFingerprint(request: IIntakeData) {
+    async createFingerprint(request: IIntakeData, token: string) {
         let fingerprintService = new FingerprintServices(this.db.fingerprintDB);
 
         return await new Promise<void>((resolve, reject) => {
+            
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
             fingerprintService.createFingerprint(request)
                 .then(() => {
                     resolve()
@@ -185,12 +206,18 @@ export class BackendSDK {
      * Cria ingestão de checkout de compras do usuário
      * 
      * @param request -> Dados de coleta do checkout de compras do usuário
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * 
      */
-    async createCheckout(request: IIntakeData) {
+    async createCheckout(request: IIntakeData, token: string) {
         let checkoutServices = new CheckoutServices(this.db.checkoutDB);
 
         return await new Promise<void>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
             checkoutServices.createCheckout(request)
                 .then(() => {
                     resolve()
@@ -210,12 +237,18 @@ export class BackendSDK {
      * Cria ingestão de dados de comportamentos do usuário
      * 
      * @param request -> Dados de coleta do comportamento do usuário
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * 
      */
-    async createUserBehavior(request: IIntakeData) {
+    async createUserBehavior(request: IIntakeData, token: string) {
         let userServices = new UserServices(this.db.userBehaviorDB);
 
         return await new Promise<void>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
             userServices.createUserBehavior(request)
                 .then(() => {
                     resolve()
