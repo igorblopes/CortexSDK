@@ -154,6 +154,7 @@ export class FrontendSDK {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': this.token
                 }
             })
             .then(() => resolve())
