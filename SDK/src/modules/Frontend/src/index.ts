@@ -14,6 +14,7 @@ export { ICheckout } from "../../Backend/src/interfaces";
 export class FrontendSDK {
 
     private serviceBase: any = null;
+    private token: string = "";
 
     
     private collectConnection: CollectConnections = new CollectConnections();
@@ -41,11 +42,13 @@ export class FrontendSDK {
      * Realiza a inicialização do SDK Frontend e seta a base url do seu backend.
      * 
      * @param serviceBase -> Url do serviço base onde está localizado o seu SDK Backend
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * 
      * 
      */
-    init(serviceBase: any) {
+    init(serviceBase: any, token: string) {
         this.serviceBase = serviceBase;
+        this.token = token;
     }
 
 
@@ -132,6 +135,7 @@ export class FrontendSDK {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': this.token
                 },
                 body: JSON.stringify(body),
             })

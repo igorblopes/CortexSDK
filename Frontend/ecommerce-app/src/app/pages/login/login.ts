@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FrontendSDK } from 'cortexsdk-frontend';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -13,13 +14,14 @@ import { FrontendSDK } from 'cortexsdk-frontend';
 export class Login {
   
   private sdk?: FrontendSDK;
+  private token = environment.token;
 
   email = '';
   password = '';
 
   constructor(private router: Router) {
     this.sdk = new FrontendSDK();
-    this.sdk.init("http://localhost:8080");
+    this.sdk.init("http://localhost:8080", this.token);
   }
 
   login() {
