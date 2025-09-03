@@ -15,9 +15,10 @@ public class FraudDetectionApi {
 
     @GetMapping("/fraud/detect")
     public ResponseEntity makeFraudDetection(
-            @RequestHeader("accountHash") String accountHash
+            @RequestHeader("accountHash") String accountHash,
+            @RequestHeader("x-api-key") String token
     ) {
-        var response = fraudAnalyzerGateway.getFraudValidation(accountHash);
+        var response = fraudAnalyzerGateway.getFraudValidation(accountHash, token);
 
         if(response != null){
             return new ResponseEntity(response,HttpStatus.OK);

@@ -1,7 +1,7 @@
 
 import { CortexDatabase } from './infra/database/cortex-db';
 import { RootDatabase } from './infra/database/root-db';
-import { IFraudAssessment, IIntakeData } from './interfaces';
+import { IIntakeData } from './interfaces';
 import { CheckoutServices } from './services/checkout-services';
 import { FingerprintServices } from './services/fingerprint-services';
 import { FraudServices } from './services/fraud-services';
@@ -10,7 +10,7 @@ import { UserServices } from './services/user-services';
 import { FraudAnalyzer } from './validations/fraud-analyzer';
 
 
-export { IFraudAssessment, IIntakeData, IUserBehavior, ICheckout, ICheckoutItens, IFingerprint, IUserBehaviorClicks, IUserLocality } from './interfaces';
+export { IIntakeData, IUserBehavior, ICheckout, ICheckoutItens, IFingerprint, IUserBehaviorClicks, IUserLocality } from './interfaces';
 
 
 /**
@@ -147,10 +147,10 @@ export class BackendSDK {
      * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * 
      */
-    async validateFraud(accountHash: string, token: string): Promise<IFraudAssessment> {
+    async validateFraud(accountHash: string, token: string): Promise<any> {
         let fraudAnalyzer = new FraudAnalyzer(this.db.checkoutDB, this.db.fingerprintDB, this.db.userBehaviorDB, this.db.fraudDB, this.db.senseScoreDB);
         let fraudServices = new FraudServices(fraudAnalyzer);
-        return await new Promise<IFraudAssessment>((resolve, reject) => {
+        return await new Promise<any>((resolve, reject) => {
 
             if(this.token != null && token != this.token) {
                 reject("Token nulo ou inválido.")
@@ -158,11 +158,32 @@ export class BackendSDK {
 
             fraudServices.getAnalyzerFromAccountHash(accountHash)
                 .then((resp) => {
-                    resolve(resp)
+                    resolve(resp);
                 })
                 .catch((err) => {
                     reject(err);
                 });
+        });
+    }
+
+
+    async teste() {
+        
+        return await new Promise<any>((resolve, reject) => {
+            try{
+                let resp = {
+                    accaaountHash: "aa",
+                    level: "allow",
+                    score: 0,
+                    createdAt: new Date(),
+                    reasons: []
+                };
+                resolve(resp);
+
+            }catch(err){
+                reject(err);
+            }
+
         });
     }
 

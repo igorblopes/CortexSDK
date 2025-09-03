@@ -1,10 +1,14 @@
 package com.example.cortex.entrypoint.dto.response;
 
+
+import java.time.Instant;
+import java.util.List;
+
 public class FraudValidationResponse {
     private String accountHash;
-    private Integer number;
+    private Integer score;
     private String level;
-    private String[] reasons;
+    private List<String> reasons;
     private String createdAt;
 
     public String getAccountHash() {
@@ -15,12 +19,12 @@ public class FraudValidationResponse {
         this.accountHash = accountHash;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getScore() {
+        return score;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public String getLevel() {
@@ -31,11 +35,11 @@ public class FraudValidationResponse {
         this.level = level;
     }
 
-    public String[] getReasons() {
+    public List<String> getReasons() {
         return reasons;
     }
 
-    public void setReasons(String[] reasons) {
+    public void setReasons(List<String> reasons) {
         this.reasons = reasons;
     }
 

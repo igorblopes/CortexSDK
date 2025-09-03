@@ -21,36 +21,91 @@ export class FraudAnalyzer {
     }
 
     async analyze(accountHash: string): Promise<IFraudAssessment> {
+        return await new Promise<IFraudAssessment>((resolve, reject) => {
 
-        let mapScores = await this.senseScoreDB.getMapAllSenseScore();
+            try{
+                this.senseScoreDB.getMapAllSenseScore()
+                    .then((mapScores) => {
 
-        const results = await Promise.all([
-            this.analyzeFingerprints(accountHash, mapScores),
-            this.analyzeCheckouts(accountHash, mapScores),
-            this.analyzeUserBehaviors(accountHash, mapScores)
-        ]);
+                        this.getAnalyseResults(accountHash, mapScores)
+                            .then((results) => {
+
+                                let fingerprintIndice = 0;
+                                let checkoutIndice = 1;
+                                let userBehaviorIndice = 2;
+
+                                let score = 0;
+                                let reasons: string[] = [];
+
+                                this.processResult(results, fingerprintIndice, score, reasons);
+                                this.processResult(results, checkoutIndice, score, reasons);
+                                this.processResult(results, userBehaviorIndice, score, reasons);
 
 
-        let fingerprintResult = results[0];
-        let checkoutResult = results[1];
-        let userBehaviorResult = results[2];
+                                let fraudResult: IFraudAssessment = {
+                                    accountHash: accountHash,
+                                    score: score,
+                                    level: mapScores.has(score) ? mapScores.get(score) : "allow",
+                                    reasons: reasons,
+                                    createdAt: new Date()
+                                };
 
-        let score = fingerprintResult.score + checkoutResult.score + userBehaviorResult.score;
+                                this.fraudDB.createFraudEntity(fraudResult)
+                                    .then(() => resolve(fraudResult))
+                                    .catch((err) => reject(err));
 
-        let reasons = fingerprintResult.reasons.concat(checkoutResult.reasons, userBehaviorResult.reasons);
+                                
 
-        let fraudResult: IFraudAssessment = {
-            accountHash: accountHash,
-            score: score,
-            level: mapScores.has(score) ? mapScores.get(score) : "allow",
-            reasons: reasons,
-            createdAt: new Date()
-        };
+                            })
+                            .catch((err) => reject(err));
 
-        this.fraudDB.createFraudEntity(fraudResult);
 
-        return fraudResult;
+                    })
+                    .catch((err) => reject(err));
+            }catch(err){
+                reject(err)
+            }
+        });
+    }
 
+    processResult(results: any[], indice: number, score: number, reasons: string[]) {
+        if(results.length > indice){
+            let result = results[indice];
+            score += result.score;
+            for(let reason of result.reasons){
+                reasons.push(reason)
+
+            }
+        }
+    }
+
+    async getAnalyseResults(accountHash:string, mapScores: Map<number, string>): Promise<any[]>{
+        return await new Promise<any[]>((resolve, reject) => {
+            let results = [];
+            
+            this.analyzeFingerprints(accountHash, mapScores)
+                .then((respFingerprint) => {
+
+                    results.push(respFingerprint);
+                    this.analyzeCheckouts(accountHash, mapScores)
+                        .then((respCheckouts) => {
+
+                            results.push(respCheckouts);
+                            this.analyzeUserBehaviors(accountHash, mapScores)
+                                .then((respUserBehaviors) => {
+
+                                    results.push(respUserBehaviors);
+                                    resolve(results);                                
+
+                                })
+                                .catch((err) => reject(err))
+
+                        })
+                        .catch((err) => reject(err))
+
+                })
+                .catch((err) => reject(err))
+        });
     }
 
 

@@ -102,7 +102,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 212
+            "line": 233
           },
           "name": "createCheckout",
           "parameters": [
@@ -137,7 +137,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 181
+            "line": 202
           },
           "name": "createFingerprint",
           "parameters": [
@@ -172,7 +172,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 243
+            "line": 264
           },
           "name": "createUserBehavior",
           "parameters": [
@@ -260,6 +260,22 @@
         {
           "async": true,
           "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 170
+          },
+          "name": "teste",
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "async": true,
+          "docs": {
             "custom": {
               "category": "[02.FRAUDE] - Validações",
               "remarks": "Cria a validação de fraud de uma conta, salva no banco de dados e responde com a validação feita."
@@ -293,7 +309,7 @@
           ],
           "returns": {
             "type": {
-              "fqn": "backend-sdk.IFraudAssessment"
+              "primitive": "any"
             }
           }
         }
@@ -775,98 +791,6 @@
       ],
       "symbolId": "src/interfaces:IFingerprint"
     },
-    "backend-sdk.IFraudAssessment": {
-      "assembly": "backend-sdk",
-      "docs": {
-        "stability": "experimental"
-      },
-      "fqn": "backend-sdk.IFraudAssessment",
-      "kind": "interface",
-      "locationInModule": {
-        "filename": "src/interfaces.ts",
-        "line": 47
-      },
-      "name": "IFraudAssessment",
-      "properties": [
-        {
-          "abstract": true,
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "src/interfaces.ts",
-            "line": 48
-          },
-          "name": "accountHash",
-          "type": {
-            "primitive": "string"
-          }
-        },
-        {
-          "abstract": true,
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "src/interfaces.ts",
-            "line": 52
-          },
-          "name": "createdAt",
-          "type": {
-            "primitive": "date"
-          }
-        },
-        {
-          "abstract": true,
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "src/interfaces.ts",
-            "line": 51
-          },
-          "name": "reasons",
-          "type": {
-            "collection": {
-              "elementtype": {
-                "primitive": "string"
-              },
-              "kind": "array"
-            }
-          }
-        },
-        {
-          "abstract": true,
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "src/interfaces.ts",
-            "line": 49
-          },
-          "name": "score",
-          "type": {
-            "primitive": "number"
-          }
-        },
-        {
-          "abstract": true,
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "src/interfaces.ts",
-            "line": 50
-          },
-          "name": "level",
-          "optional": true,
-          "type": {
-            "primitive": "string"
-          }
-        }
-      ],
-      "symbolId": "src/interfaces:IFraudAssessment"
-    },
     "backend-sdk.IIntakeData": {
       "assembly": "backend-sdk",
       "docs": {
@@ -1150,5 +1074,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "sZObY3ntAZ+wHuMxjcCY8JLZPKtDF00SMvrdm1LPcLs="
+  "fingerprint": "heC+KPX953fHzUYRC1ZBpKiCA84tyFHazk8/hsXVZPU="
 }

@@ -67,18 +67,30 @@ export class SenseScoreDB {
 
 
     async getMapAllSenseScore(): Promise<Map<number, string>> {
-        let allScores = await this.getAllSenseScore();
+        return await new Promise<Map<number, string>>((resolve, reject) => {
+            try{
 
-        let map: Map<number, string> = new Map<number, string>();
-        
-        for(let score of allScores){
-            for(let i = score.min_score; i < score.max_score; i++){
-                map.set(i, score.level);
+                this.getAllSenseScore()
+                    .then((allScores) => {
+
+                        let map: Map<number, string> = new Map<number, string>();
+                    
+                        for(let score of allScores){
+                            for(let i = score.min_score; i < score.max_score; i++){
+                                map.set(i, score.level);
+                            }
+                        }
+
+                        resolve(map);
+
+                    })
+                    .catch((err) => reject(err))
+
+                
+            }catch(err){
+                reject(err)
             }
-        }
-
-
-        return map;
+        });
     }
      
 

@@ -6,34 +6,45 @@ export class FraudDB {
 
     constructor(private db: sqlite3.Database){}
 
+
+    async createFraud(fraud: IFraudAssessment) {
+        return await new Promise<number>((resolve, reject) => {
+
+            this.db.run(`
+                    INSERT INTO fraud (account_hash, score, created_at)
+                    VALUES ('${fraud.accountHash}', '${fraud.score}', '${fraud.createdAt}')
+                `,function (err) {
+
+                    if(err) reject(err);
+
+                    resolve(this.lastID);
+                });
+
+        });
+    }
      
     async createFraudEntity(fraud: IFraudAssessment) {
-        try {
-            let db = this.db;
-            await db.run(`
-                INSERT INTO fraud (account_hash, score, created_at)
-                VALUES (${fraud.accountHash}, ${fraud.score}, ${fraud.createdAt})
-            `, 
-            function(err) {
+        return await new Promise<void>((resolve, reject) => {
 
-                if (err) {
-                    console.error('Erro ao inserir:', err.message);
-                    return;
-                }
 
-                for(let reason of fraud.reasons){
-                    db.run(`
-                        INSERT INTO fraud_reason (reason, fraud_id)
-                        VALUES (${reason}, ${this.lastID}) 
-                    `);
-                }
+            this.createFraud(fraud)
+                .then((lastID) => {
 
-            });
+                    for(let reason of fraud.reasons){
+                        this.db.run(`
+                            INSERT INTO fraud_reason (reason, fraud_id)
+                            VALUES ('${reason}', '${lastID}') 
+                        `);
+                    }
 
-            
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
+                    resolve();
+
+
+                })
+                .catch((err) => reject(err))
+           
+               
+        });
     }
 
 
