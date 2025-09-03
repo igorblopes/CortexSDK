@@ -9,7 +9,7 @@ import { CollectScreenResolution } from "./collectors/resolution/collect-resolut
 import { CollectTimezone } from "./collectors/timezone/collect-timezone";
 import { CollectVersion } from "./collectors/version/collect-version";
 
-export { ICheckout } from "../../Backend/src/interfaces";
+export { ICheckout, ICheckoutItens } from "../../Backend/src/interfaces";
 
 export class FrontendSDK {
 

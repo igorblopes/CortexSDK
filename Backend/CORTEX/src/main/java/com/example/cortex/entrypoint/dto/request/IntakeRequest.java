@@ -1,8 +1,9 @@
 package com.example.cortex.entrypoint.dto.request;
 
+import com.br.CortexSDK.IIntakeData;
 import com.example.cortex.core.TypeData;
 
-public class IntakeRequest {
+public class IntakeRequest implements IIntakeData {
 
     private String typeData;
     private Object data;
