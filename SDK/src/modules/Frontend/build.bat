@@ -9,9 +9,7 @@ call npm pack
 
 REM Passo 3 - Copiar arquivo JAR
 echo Copiando arquivo tgz...
-cd D:\Projects\FIAP\Challenge 2\CortexSDK\SDK\src\modules\Frontend
-move "cortexsdk-frontend-1.0.0.tgz" "D:\Projects\FIAP\Challenge 2\CortexSDK\Frontend\ecommerce-app\libs" 
-cd D:\Projects\FIAP\Challenge 2\CortexSDK\SDK\src\modules\Frontend
+move "cortexsdk-frontend-1.0.0.tgz" "..\..\..\..\Frontend\ecommerce-app\libs" 
 /Y
 
 

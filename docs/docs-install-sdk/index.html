@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>CortexSDK</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e1e2f, #2e2e4f);
+      color: #f5f5f5;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #00d4ff;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 30px;
+      line-height: 1.5;
+      text-align: justify;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: #00d4ff;
+      color: #1e1e2f;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #00aacc;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CortexSDK</h1>
+    <p>
+        Para gerar o SDK de Frontend basta utilizar o script build.bat localizado na seguinte diretório: <b>SDK/src/modules/Frontend</b>.<br>
+        Será disponibilizado o arquivo <b>cortexsdk-frontend-1.0.0.tgz</b> no seguinte diretório: <b>Frontend/ecommerce-app/libs</b><br><br>
+
+        Para gerar o SDK de Backend basta utilizar o script build.bat localizado na seguinte diretório: <b>SDK/src/modules/Backend</b>.<br>
+        Será disponibilizado o arquivo <b>Backend-CortexSDK-1.0.0.jar</b> no seguinte diretório: <b>Backend/CORTEX/libs</b><br>
+    </p>
+
+    <div class="buttons">
+      <a href="../index.html" class="btn">Voltar</a>
+    </div>
+  </div>
+</body>
