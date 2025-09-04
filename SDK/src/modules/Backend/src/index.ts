@@ -1,7 +1,7 @@
 
 import { CortexDatabase } from './infra/database/cortex-db';
 import { RootDatabase } from './infra/database/root-db';
-import { IIntakeData } from './interfaces';
+import { IIntakeData, IUpdateSenseScore } from './interfaces';
 import { CheckoutServices } from './services/checkout-services';
 import { FingerprintServices } from './services/fingerprint-services';
 import { FraudServices } from './services/fraud-services';
@@ -10,7 +10,7 @@ import { UserServices } from './services/user-services';
 import { FraudAnalyzer } from './validations/fraud-analyzer';
 
 
-export { IIntakeData, IUserBehavior, ICheckout, ICheckoutItens, IFingerprint, IUserBehaviorClicks, IUserLocality } from './interfaces';
+export { IIntakeData, IUpdateSenseScore, IUserBehavior, ICheckout, ICheckoutItens, IFingerprint, IUserBehaviorClicks, IUserLocality } from './interfaces';
 
 
 /**
@@ -51,32 +51,6 @@ export class BackendSDK {
         this.token = token;
 
         await this.db.init(rootDB);
-    }
-
-
-    /**
-     *
-     * @hidden 
-     *
-     * RESPONSE
-     *
-     * id: number;
-     * score: number;
-     * level: string;
-     */
-    async allSenseScores() {
-        let senseService = new SenseServices(this.db.senseScoreDB);
-
-        return await new Promise<any[]>((resolve, reject) => {
-
-            senseService.getAllSenseScore()
-                .then((resp) => {
-                    resolve(resp)
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
     }
 
 
@@ -163,27 +137,6 @@ export class BackendSDK {
                 .catch((err) => {
                     reject(err);
                 });
-        });
-    }
-
-
-    async teste() {
-        
-        return await new Promise<any>((resolve, reject) => {
-            try{
-                let resp = {
-                    accaaountHash: "aa",
-                    level: "allow",
-                    score: 0,
-                    createdAt: new Date(),
-                    reasons: []
-                };
-                resolve(resp);
-
-            }catch(err){
-                reject(err);
-            }
-
         });
     }
 
@@ -278,6 +231,109 @@ export class BackendSDK {
                     reject(err);
                 });
 
+        });
+    }
+
+
+
+    /**
+     * @hidden
+     * APIS DE GERENCIAMENTO DOS PARAMETROS DOS SDK BACKEND 
+     * 
+     * */
+    
+
+    
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da sensibilidade da validação de fraude
+     *  
+     * @remarks
+     * Retorna todos os dados de sensibilidade da validação de fraude, explicitando qual são os ranges para allow, review e deny
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * 
+     *
+     */
+    async allSenseScores(token: string) {
+        let senseService = new SenseServices(this.db.senseScoreDB);
+
+        return await new Promise<any[]>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            senseService.getAllSenseScore()
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Atualiza dos valores internos da sensibilidade da validação de fraude
+     *  
+     * @remarks
+     * Realiza a atualização dos dados de sensibilidade da validação de fraude pelo id
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * 
+     *
+     */
+    async updateSenseScores(token: string, request: IUpdateSenseScore) {
+        let senseService = new SenseServices(this.db.senseScoreDB);
+
+        return await new Promise<any>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            senseService.setUpdateSenseScore(request)
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Busca o valor de resposta de avaliação de fraude através de um score
+     *  
+     * @remarks
+     * Realiza a busca da resposta de level atraves de um score passado 
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * @param score -> número de pontuação do score para saber o level.
+     * 
+     *
+     */
+    async getSenseScoreByScore(token: string, score: number) {
+        let senseService = new SenseServices(this.db.senseScoreDB);
+
+        return await new Promise<any>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            senseService.getLevelByScore(score)
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
         });
     }
 

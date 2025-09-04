@@ -71,15 +71,27 @@
           "async": true,
           "docs": {
             "custom": {
-              "hidden": "RESPONSE\r\n\r\nid: number;\r\nscore: number;\r\nlevel: string;"
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da sensibilidade da validação de fraude",
+              "remarks": "Retorna todos os dados de sensibilidade da validação de fraude, explicitando qual são os ranges para allow, review e deny"
             },
             "stability": "experimental"
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 67
+            "line": 258
           },
           "name": "allSenseScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ],
           "returns": {
             "type": {
               "collection": {
@@ -102,7 +114,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 233
+            "line": 186
           },
           "name": "createCheckout",
           "parameters": [
@@ -137,7 +149,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 202
+            "line": 155
           },
           "name": "createFingerprint",
           "parameters": [
@@ -172,7 +184,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 264
+            "line": 217
           },
           "name": "createUserBehavior",
           "parameters": [
@@ -195,6 +207,46 @@
               }
             }
           ]
+        },
+        {
+          "async": true,
+          "docs": {
+            "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Busca o valor de resposta de avaliação de fraude através de um score",
+              "remarks": "Realiza a busca da resposta de level atraves de um score passado"
+            },
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 321
+          },
+          "name": "getSenseScoreByScore",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            },
+            {
+              "docs": {
+                "summary": "-> número de pontuação do score para saber o level."
+              },
+              "name": "score",
+              "type": {
+                "primitive": "number"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
         },
         {
           "async": true,
@@ -233,7 +285,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 95
+            "line": 69
           },
           "name": "intakeData",
           "parameters": [
@@ -260,13 +312,34 @@
         {
           "async": true,
           "docs": {
+            "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Atualiza dos valores internos da sensibilidade da validação de fraude",
+              "remarks": "Realiza a atualização dos dados de sensibilidade da validação de fraude pelo id"
+            },
             "stability": "experimental"
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 170
+            "line": 289
           },
-          "name": "teste",
+          "name": "updateSenseScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            },
+            {
+              "name": "request",
+              "type": {
+                "fqn": "backend-sdk.IUpdateSenseScore"
+              }
+            }
+          ],
           "returns": {
             "type": {
               "primitive": "any"
@@ -284,7 +357,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 150
+            "line": 124
           },
           "name": "validateFraud",
           "parameters": [
@@ -481,7 +554,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 35
+        "line": 41
       },
       "name": "ICheckout",
       "properties": [
@@ -492,7 +565,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 36
+            "line": 42
           },
           "name": "accountHash",
           "type": {
@@ -506,7 +579,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 38
+            "line": 44
           },
           "name": "createdAt",
           "type": {
@@ -520,7 +593,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 37
+            "line": 43
           },
           "name": "itens",
           "type": {
@@ -544,7 +617,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 41
+        "line": 47
       },
       "name": "ICheckoutItens",
       "properties": [
@@ -555,7 +628,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 43
+            "line": 49
           },
           "name": "quantity",
           "type": {
@@ -569,7 +642,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 42
+            "line": 48
           },
           "name": "typeItem",
           "type": {
@@ -583,7 +656,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 44
+            "line": 50
           },
           "name": "unitValue",
           "type": {
@@ -803,7 +876,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 61
+        "line": 67
       },
       "name": "IIntakeData",
       "properties": [
@@ -816,7 +889,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 89
+            "line": 95
           },
           "name": "data",
           "type": {
@@ -832,7 +905,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 78
+            "line": 84
           },
           "name": "typeData",
           "type": {
@@ -841,6 +914,64 @@
         }
       ],
       "symbolId": "src/interfaces:IIntakeData"
+    },
+    "backend-sdk.IUpdateSenseScore": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IUpdateSenseScore",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 22
+      },
+      "name": "IUpdateSenseScore",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 23
+          },
+          "name": "id",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 25
+          },
+          "name": "maxScore",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 24
+          },
+          "name": "minScore",
+          "type": {
+            "primitive": "any"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IUpdateSenseScore"
     },
     "backend-sdk.IUserBehavior": {
       "assembly": "backend-sdk",
@@ -851,7 +982,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 22
+        "line": 28
       },
       "name": "IUserBehavior",
       "properties": [
@@ -862,7 +993,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 23
+            "line": 29
           },
           "name": "accountHash",
           "type": {
@@ -876,7 +1007,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 25
+            "line": 31
           },
           "name": "clicks",
           "type": {
@@ -895,7 +1026,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 27
+            "line": 33
           },
           "name": "createdAt",
           "type": {
@@ -909,7 +1040,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 24
+            "line": 30
           },
           "name": "pageVisit",
           "type": {
@@ -923,7 +1054,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 26
+            "line": 32
           },
           "name": "sessionDuration",
           "type": {
@@ -942,7 +1073,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 30
+        "line": 36
       },
       "name": "IUserBehaviorClicks",
       "properties": [
@@ -953,7 +1084,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 32
+            "line": 38
           },
           "name": "createdAt",
           "type": {
@@ -967,7 +1098,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 31
+            "line": 37
           },
           "name": "elementClick",
           "type": {
@@ -1074,5 +1205,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "heC+KPX953fHzUYRC1ZBpKiCA84tyFHazk8/hsXVZPU="
+  "fingerprint": "5o0/DAfPOck9VT24jwB5c6w6A1A4LSvoMQLvflaSE80="
 }

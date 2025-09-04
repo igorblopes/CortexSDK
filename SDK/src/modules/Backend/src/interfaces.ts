@@ -19,6 +19,12 @@ export interface IUserLocality {
     longitude: number;
 }
 
+export interface IUpdateSenseScore {
+  id: number | any;
+  minScore: number | any;
+  maxScore: number | any;
+}
+
 export interface IUserBehavior {
   accountHash: string;
   pageVisit: string;

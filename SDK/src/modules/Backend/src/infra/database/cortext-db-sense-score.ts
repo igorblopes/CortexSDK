@@ -1,31 +1,10 @@
 import * as sqlite3 from 'sqlite3';
 import { SenseScoreModelDB } from '../../interfaces-db';
+import { IUpdateSenseScore } from '../../interfaces';
 
 export class SenseScoreDB {
 
     constructor(private db: sqlite3.Database){}
-
-    async findLevelByScore(score: string): Promise<string> {
-    
-        let level: string = "";
-        
-
-        await this.db.all<string>(`
-            SELECT level FROM sense_score WHERE score = ${score}
-        `, function(err, rows) {
-
-            if (err) {
-                console.error('Erro ao Buscar:', err.message);
-                return;
-            }
-            
-            level = rows[0];
-            
-
-        });
-
-        return level;
-    }
 
     getLevelFromScore(score: number){
         if(score <= 39) return "allow";
@@ -62,6 +41,42 @@ export class SenseScoreDB {
                 }
                     
             )
+        });
+    }
+
+    async setUpdateSenseScore(request: IUpdateSenseScore): Promise<SenseScoreModelDB> {
+        
+        let context = this;
+        return await new Promise<SenseScoreModelDB>((resolve, reject) => {
+            this.db.run(
+                `
+                    UPDATE sense_score set min_score = '${request.minScore}', max_score = '${request.maxScore}' WHERE id = '${request.id}'
+                ` 
+                ,function (err) {
+
+                    if(err) reject(err);
+
+                    context.getById(request.id)
+                        .then((resp) => resolve(resp))
+                        .catch((err) => reject(err))
+                }
+            );
+                    
+        });
+    }
+
+
+    async getById(id: any): Promise<SenseScoreModelDB> {
+        return await new Promise<SenseScoreModelDB>((resolve, reject) => {
+
+            this.getAllSenseScore()
+                .then((resp: SenseScoreModelDB[]) =>{
+
+                    let out = resp.filter(f => f.id == id);
+                    resolve(out[0]);
+
+                })
+                .catch((err) => reject(err))
         });
     }
 
