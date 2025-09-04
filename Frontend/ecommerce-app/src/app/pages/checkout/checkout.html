@@ -3,7 +3,7 @@
     <h3>Seus Produtos</h3>
     <ul>
       <li *ngFor="let item of cartItems" class="list">
-        <button class="btn-delete">
+        <button class="btn-delete" (click)="excluirItem(item)">
           <i class="fas fa-trash"></i> Excluir
         </button>
         <b> {{ item.product.name }}</b> - {{ item.quantity }} x R$ {{ item.product.price }}  

@@ -8,33 +8,30 @@ export class CollectLocality {
     }
    
 
-    getLocality(): IUserLocality{
+    async getLocality(): Promise<IUserLocality>{
 
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    return {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
-                    };
-                    console.log("Latitude:", position.coords.latitude);
-                    console.log("Longitude:", position.coords.longitude);
-                }
-            );
-        } 
+        return await new Promise<IUserLocality>((resolve, reject) => {
+            fetch('https://ipapi.co/json/')
+                .then(ipapi => {
 
-        return {
-            latitude: 0,
-            longitude: 0
-        };
+                    ipapi.json()
+                        .then((apiResponse) => {
+                            let response: IUserLocality = {
+                                latitude: apiResponse.latitude,
+                                longitude: apiResponse.longitude 
+                            };
+
+                            resolve(response);
 
 
-        let locality: IUserLocality = {
-            latitude: 123,
-            longitude: -123
-        };
+                        })
+                        .catch((err) => reject(err))
 
-        return locality;
+                    
+                })
+                .catch((err) => reject(err))
+
+        });
     }
     
 }

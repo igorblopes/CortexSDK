@@ -6,14 +6,16 @@ export class CollectOperationSystem {
     }
    
 
-    getOperationSystem(): any{
-        const ua = navigator.userAgent;
+    getOperationSystem(browserAgent: string): any{
+        const ua = browserAgent;
 
-        if (/Windows NT/i.test(ua)) return "Windows";
-        if (/Mac OS X/i.test(ua)) return "macOS";
-        if (/Linux/i.test(ua)) return "Linux";
-        if (/Android/i.test(ua)) return "Android";
-        if (/iPhone|iPad|iPod/i.test(ua)) return "iOS";
+        if(ua.includes("Windows NT")) return "Windows";
+        if(ua.includes("Mac OS X")) return "macOS";
+        if(ua.includes("Linux")) return "Linux";
+        if(ua.includes("Android")) return "Android";
+        if(ua.includes("iPhone")) return "iOS";
+        if(ua.includes("iPad")) return "iOS";
+        if(ua.includes("iPod")) return "iOS";
 
         return "Desconhecido";
     }

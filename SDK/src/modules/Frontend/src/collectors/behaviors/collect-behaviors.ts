@@ -1,4 +1,5 @@
 import { IUserBehavior, IUserBehaviorClicks } from "../../../../Backend/src/interfaces";
+import { CollectDate } from "../date/collect-date";
 
 export class CollectUserBehaviors {
 
@@ -6,6 +7,7 @@ export class CollectUserBehaviors {
     private clicks: IUserBehaviorClicks[] = [];
     private serviceBase: any = null;
     private token: string = "";
+    private collectDate: CollectDate = new CollectDate();
     
     constructor(){
 
@@ -28,7 +30,7 @@ export class CollectUserBehaviors {
             accountHash: accountHash,
             clicks: this.clicks,
             pageVisit: e.destination?.url,
-            createdAt: new Date().toString(),
+            createdAt: this.collectDate.getActualDate(),
             sessionDuration: 0
           };
 
@@ -53,9 +55,16 @@ export class CollectUserBehaviors {
 
         const target = event.target as HTMLElement; 
 
+        let elementClick = target?.innerText ? target?.innerText : target?.tagName;
+
+        if("INPUT" == elementClick){
+          const input = target?.closest('input') as HTMLInputElement | null;
+          elementClick += " com valor: "+input?.value;
+        }
+
         let click: IUserBehaviorClicks = {
-          elementClick: target?.innerText,
-          createdAt: new Date().toString()
+          elementClick: elementClick,
+          createdAt: this.collectDate.getActualDate()
         };
         this.clicks.push(click);
       });

@@ -1,10 +1,10 @@
 import { ICheckout } from "../../Backend/src/interfaces";
 import { CollectUserBehaviors } from "./collectors/behaviors/collect-behaviors";
 import { CollectConnections } from "./collectors/connections/collect-connections";
+import { CollectDate } from "./collectors/date/collect-date";
 import { CollectDevice } from "./collectors/device/collect-device";
-import { CollectIp } from "./collectors/ip/collect-ip";
+import { CollectIp } from "./collectors/ip_and_locality/collect-ip-and-locality";
 import { CollectLanguage } from "./collectors/language/collect-language";
-import { CollectLocality } from "./collectors/locality/collect-locality";
 import { CollectOperationSystem } from "./collectors/operating_system/collect-operation-system";
 import { CollectScreenResolution } from "./collectors/resolution/collect-resolution";
 import { CollectTimezone } from "./collectors/timezone/collect-timezone";
@@ -21,13 +21,13 @@ export class FrontendSDK {
     private collectConnection: CollectConnections = new CollectConnections();
     private collectIp: CollectIp = new CollectIp();
     private collectResolution: CollectScreenResolution = new CollectScreenResolution();
-    private collectLocality: CollectLocality = new CollectLocality();
     private collectDevice: CollectDevice = new CollectDevice();
     private collectTimezone: CollectTimezone = new CollectTimezone();
     private collectLanguage: CollectLanguage = new CollectLanguage();
     private collectOperationSystem: CollectOperationSystem = new CollectOperationSystem();
     private collectVersion: CollectVersion = new CollectVersion();
     private collectBehaviors: CollectUserBehaviors = new CollectUserBehaviors();
+    private collectDate: CollectDate = new CollectDate();
 
     /**
      * @hidden 
@@ -82,30 +82,40 @@ export class FrontendSDK {
      */
     async sendFingerprintData(accountHash: string) {
         return await new Promise<void>((resolve, reject) => {
-            
-            let body = {
-                "typeData": "IntakeLogin",
-                "data": {
-                    "accountHash": accountHash,
-                    "ip": this.collectIp.getIp(),
-                    "connectionType": this.collectConnection.getConnectionType(),
-                    "screenResolution": this.collectResolution.getScreenResolution(),
-                    "locality": this.collectLocality.getLocality(),
-                    "device": this.collectDevice.getDevice(),
-                    "timezone": this.collectTimezone.getTimezone(),
-                    "language": this.collectLanguage.getLanguage(),
-                    "operationSystem": this.collectOperationSystem.getOperationSystem(),
-                    "soVersion": this.collectVersion.getVersion(),
-                    "deviceType": this.collectDevice.getDeviceType(),
-                    "browserAgent": this.collectDevice.getBrowserAgent(),
-                    "createdAt": new Date().toString()
-                }
-            };
 
-            this.makeIntakeDataRequest(body)
-                .then(() => resolve())
-                .catch((err) => reject(err));
+            this.collectIp.getIpAndLocality()
+                .then((data) => {
 
+                    let browserAgent = this.collectDevice.getBrowserAgent();
+
+                    let body = {
+                        "typeData": "IntakeLogin",
+                        "data": {
+                            "accountHash": accountHash,
+                            "ip": data.ip,
+                            "connectionType": this.collectConnection.getConnectionType(),
+                            "screenResolution": this.collectResolution.getScreenResolution(),
+                            "locality": {latitude: data.latitude, longitude: data.longitude},
+                            "device": this.collectDevice.getDevice(),
+                            "timezone": this.collectTimezone.getTimezone(),
+                            "language": this.collectLanguage.getLanguage(),
+                            "operatingSystem": this.collectOperationSystem.getOperationSystem(browserAgent),
+                            "soVersion": this.collectVersion.getVersion(),
+                            "deviceType": this.collectDevice.getDeviceType(),
+                            "browserAgent": this.collectDevice.getBrowserAgent(),
+                            "createdAt": this.collectDate.getActualDate()
+                        }
+                    };
+
+                    this.makeIntakeDataRequest(body)
+                        .then(() => resolve())
+                        .catch((err) => reject(err));
+
+
+                    
+
+                })
+                .catch((err) => reject(err))
         });
     }    
 
@@ -130,7 +140,7 @@ export class FrontendSDK {
                 "data": {
                     "accountHash": request.accountHash,
                     "itens": request.itens,
-                    "createdAt": new Date().toString()
+                    "createdAt": this.collectDate.getActualDate()
                 }
             };
 

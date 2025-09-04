@@ -39,6 +39,14 @@ export class Checkout {
     this.router.navigate(['/products']);
   }
 
+  excluirItem(item: any){
+    let index = this.cartItems.indexOf(item);
+    this.cartItems.splice(index, 1);
+
+    this.total = this.cartService.getTotal();
+
+  }
+
   makeCheckout() {
     let accountHash = this.usernameService.getUsername();
     let checkout: ICheckout = {
