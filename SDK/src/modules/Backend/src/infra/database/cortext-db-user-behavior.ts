@@ -7,34 +7,33 @@ export class UserBehaviorDB {
     constructor(private db: sqlite3.Database){}
      
     async findAllUserBehaviorScore(): Promise<ConfigModelDB[]> {
-        let all: ConfigModelDB[] = [];
-        
-        try {
+        return await new Promise<ConfigModelDB[]>((resolve, reject) => {
 
-            await this.db.all<ConfigModelDB>(`
+            let all: ConfigModelDB[] = [];
+            this.db.all(
+                `
                 SELECT * FROM user_behavior_score
-            `, function(err, rows) {
+                `
+                ,(err: any, rows: any[]) => {
 
-                if (err) {
-                    console.error('Erro ao Buscar:', err.message);
-                    return;
+                    if (err) {
+                        reject(err);
+                    }
+
+                    for(let row of rows) {
+                        all.push({
+                            id: row.id,
+                            name: row.name,
+                            score: row.score,
+                            status: row.status
+                        });
+                    }
+
+                    resolve(all);
                 }
+            )
 
-                for(let row of rows) {
-                    all.push({
-                        id: row.id,
-                        name: row.name,
-                        score: row.score,
-                        status: row.status
-                    });
-                }
-
-            });            
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
-
-        return all;
+        });
     }
 
     async createUserBehaviorEntity(userBehavior: IUserBehavior) {
@@ -88,46 +87,64 @@ export class UserBehaviorDB {
 
 
     async findUserBehaviorByAccountHash(accountHash: string): Promise<IUserBehavior[]> {
-        
-        let userBehaviors: IUserBehavior[] = [];
-        let context = this;
+        return await new Promise<IUserBehavior[]>((resolve, reject) => {
 
-        await this.db.all<UserBehaviorModelDB>(`
-            SELECT * FROM user_behavior WHERE account_hash = ${accountHash}
-        `, function(err, rows) {
+            let userBehaviors: IUserBehavior[] = [];
+            let context = this;
 
-            if (err) {
-                console.error('Erro ao Buscar:', err.message);
-                return;
-            }
-            
-            for(let item of rows){
-                if(item != null){
+            //TODO: ERRO AQUI
+            //resolve(userBehaviors);
 
-                    context.db.all<UserBehaviorClicksModelDB>(`
-                        SELECT * FROM user_behavior_clicks WHERE user_behavior_id = ${item.id}
-                    `, function(err, rows) {
+            this.db.all(
+                `
+                    SELECT * FROM user_behavior WHERE account_hash = '${accountHash}'
+                `
+                ,(err: any, rows: any[]) => {
 
-                        if (err) {
-                            console.error('Erro ao Buscar:', err.message);
-                            return;
+                    if (err) {
+                        reject(err);
+                    }
+
+                    if(!rows || rows.length == 0) {
+                        resolve(userBehaviors);
+                    }
+                    
+                    for(let item of rows){
+                        if(item != null){
+
+                            context.db.all(
+                                `
+                                    SELECT * FROM user_behavior_clicks WHERE user_behavior_id = '${item.id}'
+                                `
+                                ,(err: any, rows: any[]) => {
+
+                                    if (err) {
+                                        reject(err);
+                                    }
+
+                                    userBehaviors.push(
+                                        context.convertItemDatabaseToModel(item, rows)
+                                    );
+
+
+                                    //TODO: Validate sort with string
+                                    //userBehaviors.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
+                                    resolve(userBehaviors);
+
+
+                                }
+                            )
+
                         }
-
-                        userBehaviors.push(
-                            context.convertItemDatabaseToModel(item, rows)
-                        );
-                        
-                    })
-
+                    }
                 }
-            }
+            );
+
 
         });
-
-        //TODO: Validate sort with string
-        //userBehaviors.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
-        return userBehaviors;
+        
+        
     }
 
     

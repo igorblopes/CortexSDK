@@ -8,34 +8,37 @@ export class FingerprintDB {
 
    
     async findAllFingerprintScore(): Promise<ConfigModelDB[]> {
-        let all: ConfigModelDB[] = [];
+
+        return await new Promise<ConfigModelDB[]>((resolve, reject) => {
+
+            let all: ConfigModelDB[] = [];
+
+            this.db.all(
+                `
+                    SELECT * FROM fingerprint_score
+                `
+                ,(err: any, rows: any[]) => {
+
+                    if (err) {
+                        reject(err);
+                    }
+
+                    for(let row of rows) {
+                        all.push({
+                            id: row.id,
+                            name: row.name,
+                            score: row.score,
+                            status: row.status
+                        });
+                    }
+
+                    resolve(all);
+
+                }
+            );       
+
+        });
         
-        try {
-
-            await this.db.all<ConfigModelDB>(`
-                SELECT * FROM fingerprint_score
-            `, function(err, rows) {
-
-                if (err) {
-                    console.error('Erro ao Buscar:', err.message);
-                    return;
-                }
-
-                for(let row of rows) {
-                    all.push({
-                        id: row.id,
-                        name: row.name,
-                        score: row.score,
-                        status: row.status
-                    });
-                }
-
-            });            
-        } catch (err) {
-            console.error('Error creating database or table:', err);
-        }
-
-        return all;
     }
 
 
@@ -77,42 +80,52 @@ export class FingerprintDB {
 
     async findFingerprintsByAccountHash(accountHash: string): Promise<IFingerprint[]> {
 
-        let fingerprints: IFingerprint[] = [];
-        let context = this;
+        return await new Promise<IFingerprint[]>((resolve, reject) => {
 
-        await this.db.all<FingerprintModelDB>(`
-           SELECT * FROM fingerprint WHERE account_hash = ${accountHash}
-        `, function(err, rows) {
+            let fingerprints: IFingerprint[] = [];
 
-            if (err) {
-                console.error('Erro ao Buscar:', err.message);
-                return;
-            }
-            
-            for(let item of rows){
-                if(item != null){
-                    fingerprints.push(
-                        context.convertItemDatabaseToModel(item)
-                    )
+            let context = this;
+
+            this.db.all(
+            `
+                SELECT * FROM fingerprint WHERE account_hash = '${accountHash}'
+            `
+            ,(err: any, rows: any[]) => {
+
+                if (err) {
+                    reject(err);
                 }
-            }
+
+                if(!rows || rows.length == 0) {
+                    resolve(fingerprints);
+                }
+                
+                for(let item of rows){
+                    if(item != null){
+                        fingerprints.push(
+                            context.convertItemDatabaseToModel(item)
+                        )
+                    }
+                }
+
+                //TODO: Validate sort with string
+                //fingerprints.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+
+                resolve(fingerprints);
+
+            });            
 
         });
-
-
-        //TODO: Validate sort with string
-        //fingerprints.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
-        return fingerprints;
 
     }
 
     convertItemDatabaseToModel(item: FingerprintModelDB): IFingerprint{
 
         let localityArray = item.locality.split(",");
+        
         let locality: IUserLocality = {
-            latitude: Number(localityArray[0]),
-            longitude: Number(localityArray[1])
+            latitude: localityArray.length >= 2 ? Number(localityArray[0]) : 0,
+            longitude: localityArray.length >= 2 ? Number(localityArray[1]) : 0
         };
 
         let dateCreatedAt = item.created_at;

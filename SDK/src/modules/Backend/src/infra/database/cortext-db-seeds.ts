@@ -49,17 +49,13 @@ export class SeedDB {
 
                     INSERT INTO fingerprint_score (name, score, status)
                     VALUES ('Its new browser agent', 10, 1);
-
-                    DROP TABLE IF EXISTS fraud;
-
+                    
                     CREATE TABLE IF NOT EXISTS fraud ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         account_hash TEXT, 
                         score INTEGER, 
                         created_at TEXT
                     );
-
-                    DROP TABLE IF EXISTS fraud_reason;
 
                     CREATE TABLE IF NOT EXISTS fraud_reason ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -84,7 +80,7 @@ export class SeedDB {
                     VALUES (40, 79, 'review');
 
                     INSERT INTO sense_score (min_score, max_score, level)
-                    VALUES (79, 100, 'review');
+                    VALUES (79, 100, 'deny');
 
                     CREATE TABLE IF NOT EXISTS fingerprint ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -24,8 +24,11 @@ export class FraudAnalyzer {
         return await new Promise<IFraudAssessment>((resolve, reject) => {
 
             try{
+
+                
                 this.senseScoreDB.getMapAllSenseScore()
                     .then((mapScores) => {
+                        
 
                         this.getAnalyseResults(accountHash, mapScores)
                             .then((results) => {
@@ -34,12 +37,15 @@ export class FraudAnalyzer {
                                 let checkoutIndice = 1;
                                 let userBehaviorIndice = 2;
 
-                                let score = 0;
-                                let reasons: string[] = [];
 
-                                this.processResult(results, fingerprintIndice, score, reasons);
-                                this.processResult(results, checkoutIndice, score, reasons);
-                                this.processResult(results, userBehaviorIndice, score, reasons);
+                                let fingerprintResult = this.processResult(results, fingerprintIndice);
+                                let checkoutResult = this.processResult(results, checkoutIndice);
+                                let userBehaviorResult = this.processResult(results, userBehaviorIndice);
+
+
+                                
+                                let score = userBehaviorResult.score;
+                                let reasons: string[] = fingerprintResult.reasons.concat(checkoutResult.reasons, userBehaviorResult.reasons);
 
 
                                 let fraudResult: IFraudAssessment = {
@@ -68,15 +74,19 @@ export class FraudAnalyzer {
         });
     }
 
-    processResult(results: any[], indice: number, score: number, reasons: string[]) {
+    processResult(results: any[], indice: number) {
+        let score: number = 0;
+        let reasons: any[] = [];
+
         if(results.length > indice){
             let result = results[indice];
-            score += result.score;
+            score = result.score;
             for(let reason of result.reasons){
-                reasons.push(reason)
-
+                reasons.push(reason);
             }
         }
+
+        return { score: score, reasons: reasons};
     }
 
     async getAnalyseResults(accountHash:string, mapScores: Map<number, string>): Promise<any[]>{
@@ -87,10 +97,12 @@ export class FraudAnalyzer {
                 .then((respFingerprint) => {
 
                     results.push(respFingerprint);
+                    
                     this.analyzeCheckouts(accountHash, mapScores)
                         .then((respCheckouts) => {
 
                             results.push(respCheckouts);
+                            
                             this.analyzeUserBehaviors(accountHash, mapScores)
                                 .then((respUserBehaviors) => {
 
@@ -111,87 +123,127 @@ export class FraudAnalyzer {
 
     async analyzeFingerprints(accountHash: string, mapScores: Map<number, string>): Promise<IFraudAssessment> {
 
-        let fingerprints = await this.fingerprintDB.findFingerprintsByAccountHash(accountHash);
+        return await new Promise<IFraudAssessment>((resolve, reject) => {
 
-        let map = await this.scoreMappers.getMapFingerprint();
+            this.scoreMappers.getMapFingerprint()
+                .then(async (map) => {
+                    this.fingerprintDB.findFingerprintsByAccountHash(accountHash)
+                        .then(async (fingerprints) => {
 
-        let reasons: string[] = [];
-        let score = 0;
+                            let reasons: string[] = [];
+                            let score = 0;
 
-        for( const [chave, valor] of map.entries() ){
-            let scoreValidation = valor != undefined ? valor.validation(fingerprints, chave.score) : 0;
-            
-            if(scoreValidation > 0){
-                score += scoreValidation;
-                reasons.push(chave.name);
-            }
-            
-        }
+                            for( const [chave, valor] of map.entries() ){
+                                let scoreValidation = valor != undefined ? valor.validation(fingerprints, chave.score) : 0;
+                                
+                                if(scoreValidation > 0){
+                                    score += scoreValidation;
+                                    reasons.push(chave.name);
+                                }
+                                
+                            }
 
-        return {
-            accountHash: accountHash,
-            score: score,
-            level: mapScores.has(score) ? mapScores.get(score) : "allow",
-            reasons: reasons,
-            createdAt: new Date()
-        };
+                            let response = {
+                                accountHash: accountHash,
+                                score: score,
+                                level: mapScores.has(score) ? mapScores.get(score) : "allow",
+                                reasons: reasons,
+                                createdAt: new Date()
+                            };
+
+                            resolve(response);
+                            
+                        })
+                        .catch((err) => reject(err));
+                })
+                .catch((err) => reject(err));            
+
+        });        
     }
 
 
     async analyzeCheckouts(accountHash: string, mapScores: Map<number, string>): Promise<IFraudAssessment> {
 
-        let checkouts = await this.checkoutDB.findCheckoutsByAccountHash(accountHash);
+        return await new Promise<IFraudAssessment>((resolve, reject) => {
 
-        let map = await this.scoreMappers.getMapCheckout();
+            this.scoreMappers.getMapCheckout()
+                .then(async (map) => {
 
-        let reasons: string[] = [];
-        let score = 0;
+                    this.checkoutDB.findCheckoutsByAccountHash(accountHash)
+                        .then(async (checkouts) => {
 
-        for( const [chave, valor] of map.entries() ){
-            let scoreValidation = valor != undefined ? valor.validation(checkouts, chave.score) : 0;
-            
-            if(scoreValidation > 0){
-                score += scoreValidation;
-                reasons.push(chave.name);
-            }
-            
-        }
+                            let reasons: string[] = [];
+                            let score = 0;
 
-        return {
-            accountHash: accountHash,
-            score: score,
-            level: mapScores.has(score) ? mapScores.get(score) : "allow",
-            reasons: reasons,
-            createdAt: new Date()
-        };
+                            for( const [chave, valor] of map.entries() ){
+                                let scoreValidation = valor != undefined ? valor.validation(checkouts, chave.score) : 0;
+                                
+                                if(scoreValidation > 0){
+                                    score += scoreValidation;
+                                    reasons.push(chave.name);
+                                }
+                            }
+
+                            let response = {
+                                accountHash: accountHash,
+                                score: score,
+                                level: mapScores.has(score) ? mapScores.get(score) : "allow",
+                                reasons: reasons,
+                                createdAt: new Date()
+                            };
+
+                            resolve(response);
+
+                        })
+                        .catch((err) => reject(err));
+                })
+                .catch((err) => reject(err));
+        });
+
+        
     }
 
 
     async analyzeUserBehaviors(accountHash: string, mapScores: Map<number, string>): Promise<IFraudAssessment> {
 
-        let userBehaviors = await this.userBehaviorDB.findUserBehaviorByAccountHash(accountHash);
+        return await new Promise<IFraudAssessment>((resolve, reject) => {
+            this.scoreMappers.getMapUserBehavior()
+                .then(async (map) => {
 
-        let map = await this.scoreMappers.getMapUserBehavior();
+                    this.userBehaviorDB.findUserBehaviorByAccountHash(accountHash)
+                        .then(async (userBehaviors) => {
 
-        let reasons: string[] = [];
-        let score = 0;
+                            let reasons: string[] = [];
+                            let score = 0;
 
-        for( const [chave, valor] of map.entries() ){
-            let scoreValidation = valor != undefined ? valor.validation(userBehaviors, chave.score) : 0;
-            
-            if(scoreValidation > 0){
-                score += scoreValidation;
-                reasons.push(chave.name);
-            }
-            
-        }
+                            for( const [chave, valor] of map.entries() ){
+                                let scoreValidation = valor != undefined ? valor.validation(userBehaviors, chave.score) : 0;
+                                
+                                if(scoreValidation > 0){
+                                    score += scoreValidation;
+                                    reasons.push(chave.name);
+                                }
+                                
+                            }
 
-        return {
-            accountHash: accountHash,
-            score: score,
-            level: mapScores.has(score) ? mapScores.get(score) : "allow",
-            reasons: reasons,
-            createdAt: new Date()
-        };
+                            let response = {
+                                accountHash: accountHash,
+                                score: score,
+                                level: mapScores.has(score) ? mapScores.get(score) : "allow",
+                                reasons: reasons,
+                                createdAt: new Date()
+                            };
+                            
+                            resolve(response);
+
+                        })
+                        .catch((err) => reject(err));
+
+                    
+
+                })
+                .catch((err) => reject(err));
+        });
+        
     }
 }

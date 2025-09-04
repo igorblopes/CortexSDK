@@ -17,6 +17,10 @@ import { OperatingSystemValidation } from "./fingerprint/operating_system/operat
 import { ResolutionValidation } from "./fingerprint/resolution/resolution.validation";
 import { TimezoneValidation } from "./fingerprint/timezone/timezone.validation";
 import { SOVersionValidation } from "./fingerprint/version/so-version.validation";
+import { MeanClicksLessFiveSeconds } from "./userbehavior/mean_clicks_less_five_seconds/mean-clicks-less-five-seconds.validation";
+import { MeanClicksLessTwoSeconds } from "./userbehavior/mean_clicks_less_two_seconds/mean-clicks-less-two-seconds.validation";
+import { PageDifferenceLessFiveSeconds } from "./userbehavior/page_difference_less_five_seconds/page-difference-less-five-seconds.validation";
+import { PageDifferenceLessTwoSeconds } from "./userbehavior/page_difference_less_two_seconds/page-difference-less-two-seconds.validation";
 import { Validation } from "./validation.interface";
 
 export class ScoreMappers {
@@ -30,62 +34,86 @@ export class ScoreMappers {
 
     async getMapFingerprint(): Promise<Map<ConfigModelDB, Validation | undefined>> {
 
+        return await new Promise<Map<ConfigModelDB, Validation | undefined>>((resolve, reject) => {
+
+            this.fingerprintDB.findAllFingerprintScore()
+                .then((fingerprintScores) => {
+
+                    let mapNameToValidation = this.getMapNameScoreToClassValidation();
+
+                    let map = new Map<ConfigModelDB, Validation | undefined>();        
+
+                    for(let score of fingerprintScores) {
+                        if(score.status != 1) {continue;}
+
+                        if(mapNameToValidation.has(score.name)){
+                            map.set(score, mapNameToValidation.get(score.name));
+                        }
+                    }
+                    
+                    resolve(map);
+                })
+                .catch((err) => reject(err));
+
+        });
+
         
-        let fingerprintScores = await this.fingerprintDB.findAllFingerprintScore();
         
-        let mapNameToValidation = this.getMapNameScoreToClassValidation();
-
-        let map = new Map<ConfigModelDB, Validation | undefined>();        
-
-        for(let score of fingerprintScores) {
-            if(score.status != 1) {continue;}
-
-            if(mapNameToValidation.has(score.name)){
-                map.set(score, mapNameToValidation.get(score.name));
-            }
-        }
-
-
-        return map;
     }
 
     async getMapCheckout(): Promise<Map<ConfigModelDB, Validation | undefined>> {
 
-        let checkoutScores = await this.checkoutDB.findAllCheckoutScore();
+        return await new Promise<Map<ConfigModelDB, Validation | undefined>>((resolve, reject) => {
 
-        let mapNameToValidation = this.getMapNameScoreToClassValidation();
+            this.checkoutDB.findAllCheckoutScore()
+                .then((checkoutScores) => {
 
-        let map = new Map<ConfigModelDB, Validation | undefined>();
+                    let mapNameToValidation = this.getMapNameScoreToClassValidation();
+
+                    let map = new Map<ConfigModelDB, Validation | undefined>();
 
 
-        for(let score of checkoutScores) {
-            if(score.status != 1) {continue;}
+                    for(let score of checkoutScores) {
+                        if(score.status != 1) {continue;}
 
-            if(mapNameToValidation.has(score.name)){
-                map.set(score, mapNameToValidation.get(score.name));
-            }
-        }
+                        if(mapNameToValidation.has(score.name)){
+                            map.set(score, mapNameToValidation.get(score.name));
+                        }
+                    }
 
-        return map;
+                    resolve(map);
+
+                })
+                .catch((err) => reject(err));
+        });
+
+        
     }
 
     async getMapUserBehavior(): Promise<Map<ConfigModelDB, Validation | undefined>> {
+        return await new Promise<Map<ConfigModelDB, Validation | undefined>>((resolve, reject) => {
 
-        let userBehaviorScores = await this.userBehaviorDB.findAllUserBehaviorScore();
+            this.userBehaviorDB.findAllUserBehaviorScore()
+                .then((userBehaviorScores) => {
 
-        let mapNameToValidation = this.getMapNameScoreToClassValidation();
+                    let mapNameToValidation = this.getMapNameScoreToClassValidation();
 
-        let map = new Map<ConfigModelDB, Validation | undefined>();
+                    let map = new Map<ConfigModelDB, Validation | undefined>();
 
-        for(let score of userBehaviorScores) {
-            if(score.status != 1) {continue;}
+                    for(let score of userBehaviorScores) {
+                        if(score.status != 1) {continue;}
 
-            if(mapNameToValidation.has(score.name)){
-                map.set(score, mapNameToValidation.get(score.name));
-            }
-        }
+                        if(mapNameToValidation.has(score.name)){
+                            map.set(score, mapNameToValidation.get(score.name));
+                        }
+                    }
 
-        return map;
+                    resolve(map);
+
+                })
+                .catch((err) => reject(err))
+            
+        });
     }
 
 
@@ -114,10 +142,10 @@ export class ScoreMappers {
 
 
         // User Behaviors
-        //map.set("Page change difference less than 5 seconds", );
-        //map.set("Page change difference less than 2 seconds", );
-        //map.set("Mean clicks less than 5 seconds", );
-        //map.set("Mean clicks less than 2 seconds", );
+        map.set("Page change difference less than 5 seconds", new PageDifferenceLessFiveSeconds());
+        map.set("Page change difference less than 2 seconds", new PageDifferenceLessTwoSeconds());
+        map.set("Mean clicks less than 5 seconds", new MeanClicksLessFiveSeconds());
+        map.set("Mean clicks less than 2 seconds", new MeanClicksLessTwoSeconds());
 
 
         return map;
