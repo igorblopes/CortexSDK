@@ -1,6 +1,5 @@
 package com.example.cortex.entrypoint.api;
 
-import com.br.CortexSDK.IIntakeData;
 import com.example.cortex.dataprovider.gateway.IntakeDataGateway;
 import com.example.cortex.entrypoint.dto.request.IntakeRequest;
 import org.springframework.beans.factory.annotation.Autowired;

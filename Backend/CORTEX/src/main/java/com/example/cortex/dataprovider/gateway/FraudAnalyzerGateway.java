@@ -2,7 +2,6 @@ package com.example.cortex.dataprovider.gateway;
 
 import com.example.cortex.config.BackendSDKStarter;
 import com.example.cortex.entrypoint.dto.response.FraudValidationResponse;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;

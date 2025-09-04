@@ -101,6 +101,7 @@ export class SeedDB {
 
                     CREATE TABLE IF NOT EXISTS user_behavior ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        page_visit TEXT,
                         account_hash TEXT,
                         session_duration integer,
                         created_at TEXT

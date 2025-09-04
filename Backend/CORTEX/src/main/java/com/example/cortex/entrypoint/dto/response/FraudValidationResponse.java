@@ -1,7 +1,6 @@
 package com.example.cortex.entrypoint.dto.response;
 
 
-import java.time.Instant;
 import java.util.List;
 
 public class FraudValidationResponse {

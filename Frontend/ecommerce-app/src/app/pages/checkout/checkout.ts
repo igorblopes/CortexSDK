@@ -21,7 +21,12 @@ export class Checkout {
   cartItems: any[] = [];
   total: number = 0;;
 
-  constructor(private cartService: CartService, private router: Router,private usernameService: UsernameService) {
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private usernameService: UsernameService
+  ) {
+
     this.cartItems = this.cartService.getCart();
     this.total = this.cartService.getTotal();
 

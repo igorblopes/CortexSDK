@@ -1,6 +1,7 @@
 package com.example.cortex.entrypoint.api;
 
 import com.example.cortex.dataprovider.gateway.SenseScoreGateway;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
+@Tag(name = "Sense Score", description = "API`s de gerenciamento da sensibilidade de scores do SDK de validação de fraude")
 public class SenseScoreApi {
 
     @Autowired
@@ -18,8 +20,8 @@ public class SenseScoreApi {
 
     @GetMapping("/sense-scores")
     public ResponseEntity getAllSenseScores() {
-        senseScoreGateway.getAllSenseScore();
-        return new ResponseEntity(HttpStatus.OK);
+        var response = senseScoreGateway.getAllSenseScore();
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @GetMapping("/sense-scores/level/{level}")

@@ -20,16 +20,26 @@ export class Login {
   email = '';
   password = '';
 
-  constructor(private router: Router, private usernameService: UsernameService) {
+  constructor(
+    private router: Router,
+    private usernameService: UsernameService
+  ) {
     this.sdk = new FrontendSDK();
     this.sdk.init("http://localhost:8080", this.token);
   }
 
   login() {
     if (this.email && this.password) {
+
+      
       this.usernameService.setUsername(this.email);
       this.sdk?.sendFingerprintData(this.email);
-      this.router.navigate(['/products']);
+
+      setTimeout(() => {
+        this.sdk?.initializeUserBehaviors(this.email);
+        
+        this.router.navigate(['/products']);
+      }, 2000)
     }
   }
 }

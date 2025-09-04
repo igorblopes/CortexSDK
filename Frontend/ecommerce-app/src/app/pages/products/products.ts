@@ -291,12 +291,13 @@ export class Products implements OnInit {
 
   quantities: { [productId: number]: number } = {};
 
-  constructor(private cartService: CartService, private router: Router) {
- 
+  constructor(
+    private cartService: CartService,
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
-    console.log('Mudanças detectadas:');
     this.quantity = this.cartService.getTotalItens();
   }
 

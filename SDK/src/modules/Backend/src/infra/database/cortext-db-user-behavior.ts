@@ -45,17 +45,22 @@ export class UserBehaviorDB {
             this.createUserBehavior(userBehavior)
                 .then((resp) => {
 
-                    for(let click of userBehavior.clicks){
-                    
-                        db.run(`
-                            INSERT INTO user_behavior_clicks (element_click, created_at, user_behavior_id)
-                            VALUES ('${click.elementClick}', '${click.createdAt}' ,'${resp}') 
-                        `,function (err) {
+                    if(userBehavior.clicks && userBehavior.clicks.length > 0){
 
-                            if(err) reject(err);
+                        for(let click of userBehavior.clicks){
+                        
+                            db.run(`
+                                INSERT INTO user_behavior_clicks (element_click, created_at, user_behavior_id)
+                                VALUES ('${click.elementClick}', '${click.createdAt}' ,'${resp}') 
+                            `,function (err) {
 
-                            resolve();
-                        });
+                                if(err) reject(err);
+
+                                resolve();
+                            });
+                        }
+                    }else{
+                        resolve();
                     }
 
 
@@ -70,8 +75,8 @@ export class UserBehaviorDB {
         return await new Promise<number>((resolve, reject) => {
         
             this.db.run(`
-                INSERT INTO user_behavior (account_hash, session_duration, created_at)
-                VALUES ('${userBehavior.accountHash}', '${userBehavior.sessionDuration}', '${userBehavior.createdAt}')
+                INSERT INTO user_behavior (account_hash, page_visit, session_duration, created_at)
+                VALUES ('${userBehavior.accountHash}', '${userBehavior.pageVisit}', '${userBehavior.sessionDuration}', '${userBehavior.createdAt}')
             `,function (err) {
 
                 if(err) reject(err);
@@ -91,9 +96,6 @@ export class UserBehaviorDB {
 
             let userBehaviors: IUserBehavior[] = [];
             let context = this;
-
-            //TODO: ERRO AQUI
-            //resolve(userBehaviors);
 
             this.db.all(
                 `
@@ -125,7 +127,6 @@ export class UserBehaviorDB {
                                     userBehaviors.push(
                                         context.convertItemDatabaseToModel(item, rows)
                                     );
-
 
                                     //TODO: Validate sort with string
                                     //userBehaviors.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());

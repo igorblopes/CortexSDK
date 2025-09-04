@@ -1,4 +1,5 @@
 import { ICheckout } from "../../Backend/src/interfaces";
+import { CollectUserBehaviors } from "./collectors/behaviors/collect-behaviors";
 import { CollectConnections } from "./collectors/connections/collect-connections";
 import { CollectDevice } from "./collectors/device/collect-device";
 import { CollectIp } from "./collectors/ip/collect-ip";
@@ -26,6 +27,7 @@ export class FrontendSDK {
     private collectLanguage: CollectLanguage = new CollectLanguage();
     private collectOperationSystem: CollectOperationSystem = new CollectOperationSystem();
     private collectVersion: CollectVersion = new CollectVersion();
+    private collectBehaviors: CollectUserBehaviors = new CollectUserBehaviors();
 
     /**
      * @hidden 
@@ -49,6 +51,21 @@ export class FrontendSDK {
     init(serviceBase: any, token: string) {
         this.serviceBase = serviceBase;
         this.token = token;
+    }
+
+
+    /**
+     * @category [00.INICIALIZAÇÃO] - Start da captura do comportamento do usuário
+     * 
+     * @remarks
+     * Realiza a inicialização da captura do comportamento do usuário e a cada passagem de página os valores são enviados para o backend
+     * 
+     * @param accountHash -> Hash da conta que esta sendo coletado os dados.
+     * 
+     * 
+     */
+    initializeUserBehaviors(accountHash: string) {
+        this.collectBehaviors.init(this.serviceBase, this.token, accountHash);
     }
 
 

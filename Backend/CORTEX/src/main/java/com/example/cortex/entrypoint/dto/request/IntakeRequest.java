@@ -1,7 +1,6 @@
 package com.example.cortex.entrypoint.dto.request;
 
 import com.br.CortexSDK.IIntakeData;
-import com.example.cortex.core.TypeData;
 
 public class IntakeRequest implements IIntakeData {
 
