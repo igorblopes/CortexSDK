@@ -1,7 +1,7 @@
 
 import { CortexDatabase } from './infra/database/cortex-db';
 import { RootDatabase } from './infra/database/root-db';
-import { IIntakeData, IUpdateFingerprintScore, IUpdateSenseScore } from './interfaces';
+import { IIntakeData, IUpdateCheckoutScore, IUpdateFingerprintScore, IUpdateSenseScore, IUpdateUserBehaviorScore } from './interfaces';
 import { CheckoutServices } from './services/checkout-services';
 import { FingerprintServices } from './services/fingerprint-services';
 import { FraudServices } from './services/fraud-services';
@@ -10,7 +10,7 @@ import { UserServices } from './services/user-services';
 import { FraudAnalyzer } from './validations/fraud-analyzer';
 
 
-export { IIntakeData, IUpdateSenseScore, IUpdateFingerprintScore, IUserBehavior, ICheckout, ICheckoutItens, IFingerprint, IUserBehaviorClicks, IUserLocality } from './interfaces';
+export { IIntakeData, IUpdateSenseScore, IUpdateFingerprintScore, IUpdateCheckoutScore, IUpdateUserBehaviorScore, IUserBehavior, ICheckout, ICheckoutItens, IFingerprint, IUserBehaviorClicks, IUserLocality } from './interfaces';
 
 
 /**
@@ -318,7 +318,7 @@ export class BackendSDK {
      * @category [04.GERENCIAMENTO DOS DADOS] - Busca o valor de resposta de avaliação de fraude através de um score
      *  
      * @remarks
-     * Realiza a busca da resposta de level atraves de um score passado 
+     * Realiza a busca da resposta de level através de um score passado 
      *
      * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * @param score -> número de pontuação do score para saber o level.
@@ -360,7 +360,7 @@ export class BackendSDK {
      * @category [04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da das validações de fingerprint scores
      *  
      * @remarks
-     * Retorna todos os dados de score das validaççoes de fingerprint.
+     * Retorna todos os dados de score das validações de fingerprint.
      *
      * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * 
@@ -391,7 +391,7 @@ export class BackendSDK {
      * @category [04.GERENCIAMENTO DOS DADOS] - Atualiza os valores internos do score do fingerprint
      *  
      * @remarks
-     * Retorna todos os dados de score das validaççoes de fingerprint.
+     * Atualiza um dado específico de score das validações de fingerprint. E retorna o mesmo atualizado.
      *
      * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
      * @param request -> valor para atualização do item interno de fingerprint score.
@@ -417,7 +417,151 @@ export class BackendSDK {
         });
     }
 
+
+    
+    
+    /**
+     * 
+     * @hidden
+     * USER BEHAVIOR SCORE
+     * 
+     * */
  
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da das validações de user behavior scores
+     *  
+     * @remarks
+     * Retorna todos os dados de score das validações de user behavior.
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * 
+     *
+     */
+    async allUserBehaviorScores(token: string) {
+        let userService = new UserServices(this.db.userBehaviorDB);
+
+        return await new Promise<any[]>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            userService.getAllUserBehaviorScore()
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Atualiza os valores internos do score do user behavior
+     *  
+     * @remarks
+     * Atualiza um dado especifico de score das validações de user behavior. E retorna o mesmo atualizado.
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * @param request -> valor para atualização do item interno de fingerprint score.
+     * 
+     *
+     */
+    async updateUserBehaviorScores(token: string, request: IUpdateUserBehaviorScore) {
+        let userService = new UserServices(this.db.userBehaviorDB);
+
+        return await new Promise<any>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            userService.updateUserBehaviorScore(request)
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
+    /**
+     * 
+     * @hidden
+     * CHECKOUT SCORE
+     * 
+     * */
+ 
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da das validações de checkout scores
+     *  
+     * @remarks
+     * Retorna todos os dados de score das validações de checkout.
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * 
+     *
+     */
+    async allCheckoutScores(token: string) {
+        let checkoutService = new CheckoutServices(this.db.checkoutDB);
+
+        return await new Promise<any[]>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            checkoutService.getAllCheckoutScore()
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Atualiza os valores internos do score do checkout
+     *  
+     * @remarks
+     * Atualiza um dado especifico de score das validações de checkout. E retorna o mesmo atualizado.
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * @param request -> valor para atualização do item interno de checkout score.
+     * 
+     *
+     */
+    async updateCheckoutScores(token: string, request: IUpdateCheckoutScore) {
+        let checkoutService = new CheckoutServices(this.db.checkoutDB);
+
+        return await new Promise<any>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            checkoutService.updateCheckoutScore(request)
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
 
 
 

@@ -31,6 +31,18 @@ export interface IUpdateFingerprintScore {
   status: number | any;
 }
 
+export interface IUpdateUserBehaviorScore {
+  id: number | any;
+  score: number | any;
+  status: number | any;
+}
+
+export interface IUpdateCheckoutScore {
+  id: number | any;
+  score: number | any;
+  status: number | any;
+}
+
 export interface IUserBehavior {
   accountHash: string;
   pageVisit: string;

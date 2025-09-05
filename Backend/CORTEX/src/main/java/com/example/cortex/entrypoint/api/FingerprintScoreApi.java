@@ -19,13 +19,13 @@ public class FingerprintScoreApi {
     private FingerprintScoreGateway fingerprintScoreGateway;
 
     @GetMapping("/fingerprint-scores")
-    public ResponseEntity getAllSenseScores(@RequestHeader("x-api-key") String token) {
+    public ResponseEntity getAllFingerprintScores(@RequestHeader("x-api-key") String token) {
         var response = fingerprintScoreGateway.getAllFingerprintScore(token);
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @PutMapping("/fingerprint-scores")
-    public ResponseEntity updateSenseScores(@RequestHeader("x-api-key") String token, @RequestBody UpdateFingerprintScoreRequest body) {
+    public ResponseEntity updateFingerprintScores(@RequestHeader("x-api-key") String token, @RequestBody UpdateFingerprintScoreRequest body) {
         var response = fingerprintScoreGateway.updateFingerprintScores(token, body);
         return new ResponseEntity(response, HttpStatus.OK);
     }

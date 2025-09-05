@@ -1,9 +1,10 @@
 import { UserBehaviorDB } from "../infra/database/cortext-db-user-behavior";
-import { IIntakeData, IUserBehavior } from "../interfaces";
+import { IIntakeData, IUpdateUserBehaviorScore, IUserBehavior } from "../interfaces";
+import { ConfigModelDB } from "../interfaces-db";
 
 export class UserServices {
 
-    constructor(private userBehaviorDB: UserBehaviorDB){}
+    constructor(private userBehaviorServiceDB: UserBehaviorDB){}
 
     
     async createUserBehavior(request: IIntakeData): Promise<void> {
@@ -15,8 +16,14 @@ export class UserServices {
             createdAt: request.data.createdAt
         };
 
-        return await this.userBehaviorDB.createUserBehaviorEntity(entity)
+        return await this.userBehaviorServiceDB.createUserBehaviorEntity(entity)
     }
 
+    async getAllUserBehaviorScore(): Promise<ConfigModelDB[]> {
+        return await this.userBehaviorServiceDB.allUserBehaviorScore();
+    }
 
+    async updateUserBehaviorScore(request: IUpdateUserBehaviorScore): Promise<ConfigModelDB> {
+        return await this.userBehaviorServiceDB.updateUserBehaviorScore(request);
+    }
 }

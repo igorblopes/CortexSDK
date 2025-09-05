@@ -71,8 +71,44 @@
           "async": true,
           "docs": {
             "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da das validações de checkout scores",
+              "remarks": "Retorna todos os dados de score das validações de checkout."
+            },
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 513
+          },
+          "name": "allCheckoutScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "primitive": "any"
+                },
+                "kind": "array"
+              }
+            }
+          }
+        },
+        {
+          "async": true,
+          "docs": {
+            "custom": {
               "category": "[04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da das validações de fingerprint scores",
-              "remarks": "Retorna todos os dados de score das validaççoes de fingerprint."
+              "remarks": "Retorna todos os dados de score das validações de fingerprint."
             },
             "stability": "experimental"
           },
@@ -117,6 +153,42 @@
             "line": 264
           },
           "name": "allSenseScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "primitive": "any"
+                },
+                "kind": "array"
+              }
+            }
+          }
+        },
+        {
+          "async": true,
+          "docs": {
+            "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da das validações de user behavior scores",
+              "remarks": "Retorna todos os dados de score das validações de user behavior."
+            },
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 442
+          },
+          "name": "allUserBehaviorScores",
           "parameters": [
             {
               "docs": {
@@ -249,7 +321,7 @@
           "docs": {
             "custom": {
               "category": "[04.GERENCIAMENTO DOS DADOS] - Busca o valor de resposta de avaliação de fraude através de um score",
-              "remarks": "Realiza a busca da resposta de level atraves de um score passado"
+              "remarks": "Realiza a busca da resposta de level através de um score passado"
             },
             "stability": "experimental"
           },
@@ -349,8 +421,48 @@
           "async": true,
           "docs": {
             "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Atualiza os valores internos do score do checkout",
+              "remarks": "Atualiza um dado especifico de score das validações de checkout. E retorna o mesmo atualizado."
+            },
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 545
+          },
+          "name": "updateCheckoutScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            },
+            {
+              "docs": {
+                "summary": "-> valor para atualização do item interno de checkout score."
+              },
+              "name": "request",
+              "type": {
+                "fqn": "backend-sdk.IUpdateCheckoutScore"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "async": true,
+          "docs": {
+            "custom": {
               "category": "[04.GERENCIAMENTO DOS DADOS] - Atualiza os valores internos do score do fingerprint",
-              "remarks": "Retorna todos os dados de score das validaççoes de fingerprint."
+              "remarks": "Atualiza um dado específico de score das validações de fingerprint. E retorna o mesmo atualizado."
             },
             "stability": "experimental"
           },
@@ -416,6 +528,46 @@
               "name": "request",
               "type": {
                 "fqn": "backend-sdk.IUpdateSenseScore"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "async": true,
+          "docs": {
+            "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Atualiza os valores internos do score do user behavior",
+              "remarks": "Atualiza um dado especifico de score das validações de user behavior. E retorna o mesmo atualizado."
+            },
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 474
+          },
+          "name": "updateUserBehaviorScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            },
+            {
+              "docs": {
+                "summary": "-> valor para atualização do item interno de fingerprint score."
+              },
+              "name": "request",
+              "type": {
+                "fqn": "backend-sdk.IUpdateUserBehaviorScore"
               }
             }
           ],
@@ -633,7 +785,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 47
+        "line": 59
       },
       "name": "ICheckout",
       "properties": [
@@ -644,7 +796,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 48
+            "line": 60
           },
           "name": "accountHash",
           "type": {
@@ -658,7 +810,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 50
+            "line": 62
           },
           "name": "createdAt",
           "type": {
@@ -672,7 +824,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 49
+            "line": 61
           },
           "name": "itens",
           "type": {
@@ -696,7 +848,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 53
+        "line": 65
       },
       "name": "ICheckoutItens",
       "properties": [
@@ -707,7 +859,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 55
+            "line": 67
           },
           "name": "quantity",
           "type": {
@@ -721,7 +873,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 54
+            "line": 66
           },
           "name": "typeItem",
           "type": {
@@ -735,7 +887,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 56
+            "line": 68
           },
           "name": "unitValue",
           "type": {
@@ -955,7 +1107,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 73
+        "line": 85
       },
       "name": "IIntakeData",
       "properties": [
@@ -968,7 +1120,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 101
+            "line": 113
           },
           "name": "data",
           "type": {
@@ -984,7 +1136,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 90
+            "line": 102
           },
           "name": "typeData",
           "type": {
@@ -993,6 +1145,64 @@
         }
       ],
       "symbolId": "src/interfaces:IIntakeData"
+    },
+    "backend-sdk.IUpdateCheckoutScore": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IUpdateCheckoutScore",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 40
+      },
+      "name": "IUpdateCheckoutScore",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 41
+          },
+          "name": "id",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 42
+          },
+          "name": "score",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 43
+          },
+          "name": "status",
+          "type": {
+            "primitive": "any"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IUpdateCheckoutScore"
     },
     "backend-sdk.IUpdateFingerprintScore": {
       "assembly": "backend-sdk",
@@ -1110,6 +1320,64 @@
       ],
       "symbolId": "src/interfaces:IUpdateSenseScore"
     },
+    "backend-sdk.IUpdateUserBehaviorScore": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IUpdateUserBehaviorScore",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 34
+      },
+      "name": "IUpdateUserBehaviorScore",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 35
+          },
+          "name": "id",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 36
+          },
+          "name": "score",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 37
+          },
+          "name": "status",
+          "type": {
+            "primitive": "any"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IUpdateUserBehaviorScore"
+    },
     "backend-sdk.IUserBehavior": {
       "assembly": "backend-sdk",
       "docs": {
@@ -1119,7 +1387,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 34
+        "line": 46
       },
       "name": "IUserBehavior",
       "properties": [
@@ -1130,7 +1398,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 35
+            "line": 47
           },
           "name": "accountHash",
           "type": {
@@ -1144,7 +1412,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 37
+            "line": 49
           },
           "name": "clicks",
           "type": {
@@ -1163,7 +1431,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 39
+            "line": 51
           },
           "name": "createdAt",
           "type": {
@@ -1177,7 +1445,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 36
+            "line": 48
           },
           "name": "pageVisit",
           "type": {
@@ -1191,7 +1459,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 38
+            "line": 50
           },
           "name": "sessionDuration",
           "type": {
@@ -1210,7 +1478,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 42
+        "line": 54
       },
       "name": "IUserBehaviorClicks",
       "properties": [
@@ -1221,7 +1489,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 44
+            "line": 56
           },
           "name": "createdAt",
           "type": {
@@ -1235,7 +1503,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 43
+            "line": 55
           },
           "name": "elementClick",
           "type": {
@@ -1342,5 +1610,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "0GU2tWL1RiRE6oColGlg2ZyAMX0BinY5Pli62YXRNBA="
+  "fingerprint": "e8VJRXgljJYPkcfXPoTdwlbLrL7FKR+1vDNgRUgtzjs="
 }

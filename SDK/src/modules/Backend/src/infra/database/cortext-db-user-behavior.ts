@@ -1,15 +1,16 @@
 import * as sqlite3 from 'sqlite3';
-import { IUserBehavior, IUserBehaviorClicks } from '../../interfaces';
+import { IUpdateUserBehaviorScore, IUserBehavior, IUserBehaviorClicks } from '../../interfaces';
 import { ConfigModelDB, UserBehaviorClicksModelDB, UserBehaviorModelDB } from '../../interfaces-db';
 
 export class UserBehaviorDB {
 
     constructor(private db: sqlite3.Database){}
      
-    async findAllUserBehaviorScore(): Promise<ConfigModelDB[]> {
+    async allUserBehaviorScore(): Promise<ConfigModelDB[]> {
+        
+        let all: ConfigModelDB[] = [];
         return await new Promise<ConfigModelDB[]>((resolve, reject) => {
 
-            let all: ConfigModelDB[] = [];
             this.db.all(
                 `
                 SELECT * FROM user_behavior_score
@@ -147,6 +148,44 @@ export class UserBehaviorDB {
         
         
     }
+
+
+    async updateUserBehaviorScore(request: IUpdateUserBehaviorScore): Promise<ConfigModelDB> {
+            
+        let context = this;
+        return await new Promise<ConfigModelDB>((resolve, reject) => {
+            this.db.run(
+                `
+                    UPDATE user_behavior_score set score = '${request.score}', status = '${request.status}' WHERE id = '${request.id}'
+                ` 
+                ,function (err) {
+
+                    if(err) reject(err);
+
+                    context.getById(request.id)
+                        .then((resp) => resolve(resp))
+                        .catch((err) => reject(err))
+                }
+            );
+                    
+        });
+    }
+
+    async getById(id: any): Promise<ConfigModelDB> {
+        return await new Promise<ConfigModelDB>((resolve, reject) => {
+
+            this.allUserBehaviorScore()
+                .then((resp: ConfigModelDB[]) =>{
+
+                    let out = resp.filter(f => f.id == id);
+                    resolve(out[0]);
+
+                })
+                .catch((err) => reject(err))
+        });
+    }
+
+
 
     
     convertItemDatabaseToModel(item: UserBehaviorModelDB, rows: UserBehaviorClicksModelDB[]): IUserBehavior{

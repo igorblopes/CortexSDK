@@ -1,5 +1,5 @@
 import * as sqlite3 from 'sqlite3';
-import { ICheckout, ICheckoutItens } from '../../interfaces';
+import { ICheckout, ICheckoutItens, IUpdateCheckoutScore } from '../../interfaces';
 import { CheckoutModelDB, ConfigModelDB } from '../../interfaces-db';
 
 export class CheckoutDB {
@@ -33,6 +33,50 @@ export class CheckoutDB {
 
         });
     }
+
+
+
+
+
+    async updateCheckoutScore(request: IUpdateCheckoutScore): Promise<ConfigModelDB> {
+                
+            let context = this;
+            return await new Promise<ConfigModelDB>((resolve, reject) => {
+                this.db.run(
+                    `
+                        UPDATE checkout_score set score = '${request.score}', status = '${request.status}' WHERE id = '${request.id}'
+                    ` 
+                    ,function (err) {
+    
+                        if(err) reject(err);
+    
+                        context.getById(request.id)
+                            .then((resp) => resolve(resp))
+                            .catch((err) => reject(err))
+                    }
+                );
+                        
+            });
+        }
+    
+        async getById(id: any): Promise<ConfigModelDB> {
+            return await new Promise<ConfigModelDB>((resolve, reject) => {
+    
+                this.findAllCheckoutScore()
+                    .then((resp: ConfigModelDB[]) =>{
+    
+                        let out = resp.filter(f => f.id == id);
+                        resolve(out[0]);
+    
+                    })
+                    .catch((err) => reject(err))
+            });
+        }
+
+
+
+
+
 
 
     async createCheckout(checkout: ICheckout) {

@@ -94,7 +94,7 @@ export class ScoreMappers {
     async getMapUserBehavior(): Promise<Map<ConfigModelDB, Validation | undefined>> {
         return await new Promise<Map<ConfigModelDB, Validation | undefined>>((resolve, reject) => {
 
-            this.userBehaviorDB.findAllUserBehaviorScore()
+            this.userBehaviorDB.allUserBehaviorScore()
                 .then((userBehaviorScores) => {
 
                     let mapNameToValidation = this.getMapUserBehaviorsScoreToClassValidation();

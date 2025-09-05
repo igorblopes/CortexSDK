@@ -1,5 +1,6 @@
 import { CheckoutDB } from "../infra/database/cortext-db-checkout";
-import { ICheckout, IIntakeData } from "../interfaces";
+import { ICheckout, IIntakeData, IUpdateCheckoutScore } from "../interfaces";
+import { ConfigModelDB } from "../interfaces-db";
 
 export class CheckoutServices {
 
@@ -14,6 +15,14 @@ export class CheckoutServices {
         };
 
         return await this.checkoutDB.createCheckoutEntity(entity);
+    }
+
+    async getAllCheckoutScore(): Promise<ConfigModelDB[]> {
+        return await this.checkoutDB.findAllCheckoutScore();
+    }
+
+    async updateCheckoutScore(request: IUpdateCheckoutScore): Promise<ConfigModelDB> {
+        return await this.checkoutDB.updateCheckoutScore(request);
     }
 
 
