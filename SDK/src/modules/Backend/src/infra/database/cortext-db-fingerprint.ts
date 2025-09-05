@@ -1,5 +1,5 @@
 import * as sqlite3 from 'sqlite3';
-import { IFingerprint, IUserLocality } from '../../interfaces';
+import { IFingerprint, IUpdateFingerprintScore, IUserLocality } from '../../interfaces';
 import { ConfigModelDB, FingerprintModelDB } from '../../interfaces-db';
 
 export class FingerprintDB {
@@ -40,6 +40,45 @@ export class FingerprintDB {
         });
         
     }
+
+
+    async updateFingerprintScore(request: IUpdateFingerprintScore): Promise<ConfigModelDB> {
+
+        return await new Promise<ConfigModelDB>((resolve, reject) => {
+
+            let context = this;
+
+            this.db.all(
+                `
+                    UPDATE fingerprint_score set score = '${request.score}', status = '${request.status}' WHERE id = '${request.id}'
+                `
+                ,function (err) {
+
+                    if(err) reject(err);
+
+                    context.getById(request.id)
+                        .then((resp) => resolve(resp))
+                        .catch((err) => reject(err))
+                }
+            );       
+
+        });
+    }
+
+    
+    async getById(id: any): Promise<ConfigModelDB> {
+            return await new Promise<ConfigModelDB>((resolve, reject) => {
+    
+                this.findAllFingerprintScore()
+                    .then((resp: ConfigModelDB[]) =>{
+    
+                        let out = resp.filter(f => f.id == id);
+                        resolve(out[0]);
+    
+                    })
+                    .catch((err) => reject(err))
+            });
+        }
 
 
     async createFingerprintEntity(fingerprint: IFingerprint): Promise<void> {

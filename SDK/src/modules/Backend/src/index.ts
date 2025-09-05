@@ -1,7 +1,7 @@
 
 import { CortexDatabase } from './infra/database/cortex-db';
 import { RootDatabase } from './infra/database/root-db';
-import { IIntakeData, IUpdateSenseScore } from './interfaces';
+import { IIntakeData, IUpdateFingerprintScore, IUpdateSenseScore } from './interfaces';
 import { CheckoutServices } from './services/checkout-services';
 import { FingerprintServices } from './services/fingerprint-services';
 import { FraudServices } from './services/fraud-services';
@@ -10,7 +10,7 @@ import { UserServices } from './services/user-services';
 import { FraudAnalyzer } from './validations/fraud-analyzer';
 
 
-export { IIntakeData, IUpdateSenseScore, IUserBehavior, ICheckout, ICheckoutItens, IFingerprint, IUserBehaviorClicks, IUserLocality } from './interfaces';
+export { IIntakeData, IUpdateSenseScore, IUpdateFingerprintScore, IUserBehavior, ICheckout, ICheckoutItens, IFingerprint, IUserBehaviorClicks, IUserLocality } from './interfaces';
 
 
 /**
@@ -241,8 +241,14 @@ export class BackendSDK {
      * APIS DE GERENCIAMENTO DOS PARAMETROS DOS SDK BACKEND 
      * 
      * */
-    
 
+
+    /**
+     * 
+     * @hidden
+     * SENSE SCORE
+     * 
+     * */
     
     /**
      *
@@ -283,6 +289,7 @@ export class BackendSDK {
      * Realiza a atualização dos dados de sensibilidade da validação de fraude pelo id
      *
      * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * @param request -> valor para atualização do item interno de sensibilidade da validação de fraude.
      * 
      *
      */
@@ -328,6 +335,79 @@ export class BackendSDK {
             }
 
             senseService.getLevelByScore(score)
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
+
+    /**
+     * 
+     * @hidden
+     * FINGERPRINT SCORE
+     * 
+     * */
+
+
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da das validações de fingerprint scores
+     *  
+     * @remarks
+     * Retorna todos os dados de score das validaççoes de fingerprint.
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * 
+     *
+     */
+    async allFingerprintScores(token: string) {
+        let fingerprintService = new FingerprintServices(this.db.fingerprintDB);
+
+        return await new Promise<any[]>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            fingerprintService.getAllFingerprintScore()
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Atualiza os valores internos do score do fingerprint
+     *  
+     * @remarks
+     * Retorna todos os dados de score das validaççoes de fingerprint.
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * @param request -> valor para atualização do item interno de fingerprint score.
+     * 
+     *
+     */
+    async updateFingerprintScores(token: string, request: IUpdateFingerprintScore) {
+        let fingerprintService = new FingerprintServices(this.db.fingerprintDB);
+
+        return await new Promise<any>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            fingerprintService.updateFingerprintScore(request)
                 .then((resp) => {
                     resolve(resp)
                 })

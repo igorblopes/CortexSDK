@@ -71,6 +71,42 @@
           "async": true,
           "docs": {
             "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da das validações de fingerprint scores",
+              "remarks": "Retorna todos os dados de score das validaççoes de fingerprint."
+            },
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 369
+          },
+          "name": "allFingerprintScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "primitive": "any"
+                },
+                "kind": "array"
+              }
+            }
+          }
+        },
+        {
+          "async": true,
+          "docs": {
+            "custom": {
               "category": "[04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da sensibilidade da validação de fraude",
               "remarks": "Retorna todos os dados de sensibilidade da validação de fraude, explicitando qual são os ranges para allow, review e deny"
             },
@@ -78,7 +114,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 258
+            "line": 264
           },
           "name": "allSenseScores",
           "parameters": [
@@ -219,7 +255,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 321
+            "line": 328
           },
           "name": "getSenseScoreByScore",
           "parameters": [
@@ -313,6 +349,46 @@
           "async": true,
           "docs": {
             "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Atualiza os valores internos do score do fingerprint",
+              "remarks": "Retorna todos os dados de score das validaççoes de fingerprint."
+            },
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 401
+          },
+          "name": "updateFingerprintScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            },
+            {
+              "docs": {
+                "summary": "-> valor para atualização do item interno de fingerprint score."
+              },
+              "name": "request",
+              "type": {
+                "fqn": "backend-sdk.IUpdateFingerprintScore"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "async": true,
+          "docs": {
+            "custom": {
               "category": "[04.GERENCIAMENTO DOS DADOS] - Atualiza dos valores internos da sensibilidade da validação de fraude",
               "remarks": "Realiza a atualização dos dados de sensibilidade da validação de fraude pelo id"
             },
@@ -320,7 +396,7 @@
           },
           "locationInModule": {
             "filename": "src/index.ts",
-            "line": 289
+            "line": 296
           },
           "name": "updateSenseScores",
           "parameters": [
@@ -334,6 +410,9 @@
               }
             },
             {
+              "docs": {
+                "summary": "-> valor para atualização do item interno de sensibilidade da validação de fraude."
+              },
               "name": "request",
               "type": {
                 "fqn": "backend-sdk.IUpdateSenseScore"
@@ -554,7 +633,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 41
+        "line": 47
       },
       "name": "ICheckout",
       "properties": [
@@ -565,7 +644,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 42
+            "line": 48
           },
           "name": "accountHash",
           "type": {
@@ -579,7 +658,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 44
+            "line": 50
           },
           "name": "createdAt",
           "type": {
@@ -593,7 +672,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 43
+            "line": 49
           },
           "name": "itens",
           "type": {
@@ -617,7 +696,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 47
+        "line": 53
       },
       "name": "ICheckoutItens",
       "properties": [
@@ -628,7 +707,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 49
+            "line": 55
           },
           "name": "quantity",
           "type": {
@@ -642,7 +721,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 48
+            "line": 54
           },
           "name": "typeItem",
           "type": {
@@ -656,7 +735,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 50
+            "line": 56
           },
           "name": "unitValue",
           "type": {
@@ -876,7 +955,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 67
+        "line": 73
       },
       "name": "IIntakeData",
       "properties": [
@@ -889,7 +968,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 95
+            "line": 101
           },
           "name": "data",
           "type": {
@@ -905,7 +984,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 84
+            "line": 90
           },
           "name": "typeData",
           "type": {
@@ -914,6 +993,64 @@
         }
       ],
       "symbolId": "src/interfaces:IIntakeData"
+    },
+    "backend-sdk.IUpdateFingerprintScore": {
+      "assembly": "backend-sdk",
+      "docs": {
+        "stability": "experimental"
+      },
+      "fqn": "backend-sdk.IUpdateFingerprintScore",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "src/interfaces.ts",
+        "line": 28
+      },
+      "name": "IUpdateFingerprintScore",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 29
+          },
+          "name": "id",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 30
+          },
+          "name": "score",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/interfaces.ts",
+            "line": 31
+          },
+          "name": "status",
+          "type": {
+            "primitive": "any"
+          }
+        }
+      ],
+      "symbolId": "src/interfaces:IUpdateFingerprintScore"
     },
     "backend-sdk.IUpdateSenseScore": {
       "assembly": "backend-sdk",
@@ -982,7 +1119,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 28
+        "line": 34
       },
       "name": "IUserBehavior",
       "properties": [
@@ -993,7 +1130,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 29
+            "line": 35
           },
           "name": "accountHash",
           "type": {
@@ -1007,7 +1144,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 31
+            "line": 37
           },
           "name": "clicks",
           "type": {
@@ -1026,7 +1163,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 33
+            "line": 39
           },
           "name": "createdAt",
           "type": {
@@ -1040,7 +1177,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 30
+            "line": 36
           },
           "name": "pageVisit",
           "type": {
@@ -1054,7 +1191,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 32
+            "line": 38
           },
           "name": "sessionDuration",
           "type": {
@@ -1073,7 +1210,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 36
+        "line": 42
       },
       "name": "IUserBehaviorClicks",
       "properties": [
@@ -1084,7 +1221,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 38
+            "line": 44
           },
           "name": "createdAt",
           "type": {
@@ -1098,7 +1235,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 37
+            "line": 43
           },
           "name": "elementClick",
           "type": {
@@ -1205,5 +1342,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "5o0/DAfPOck9VT24jwB5c6w6A1A4LSvoMQLvflaSE80="
+  "fingerprint": "0GU2tWL1RiRE6oColGlg2ZyAMX0BinY5Pli62YXRNBA="
 }

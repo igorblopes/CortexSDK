@@ -1,5 +1,5 @@
 import { FingerprintDB } from "../infra/database/cortext-db-fingerprint";
-import { IFingerprint, IIntakeData } from "../interfaces";
+import { IFingerprint, IIntakeData, IUpdateFingerprintScore } from "../interfaces";
 
 export class FingerprintServices {
 
@@ -24,6 +24,15 @@ export class FingerprintServices {
         };
 
         return await this.fingerprintDB.createFingerprintEntity(entity);
+    }
+
+
+    async getAllFingerprintScore(): Promise<any> {
+        return await this.fingerprintDB.findAllFingerprintScore();
+    }
+
+    async updateFingerprintScore(request: IUpdateFingerprintScore): Promise<any> {
+        return await this.fingerprintDB.updateFingerprintScore(request);
     }
 
 

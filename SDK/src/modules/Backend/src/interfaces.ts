@@ -25,6 +25,12 @@ export interface IUpdateSenseScore {
   maxScore: number | any;
 }
 
+export interface IUpdateFingerprintScore {
+  id: number | any;
+  score: number | any;
+  status: number | any;
+}
+
 export interface IUserBehavior {
   accountHash: string;
   pageVisit: string;
