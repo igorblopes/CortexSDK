@@ -19,7 +19,7 @@ export class Checkout {
   private token = environment.token;
 
   cartItems: any[] = [];
-  total: number = 0;;
+  total: number = 0;
 
   constructor(
     private cartService: CartService,
@@ -32,6 +32,58 @@ export class Checkout {
 
     this.sdk = new FrontendSDK();
     this.sdk.init("http://localhost:8080", this.token);
+
+  }
+
+  callFraudValidation() {
+
+    this.getResponseFraud()
+        .then((resp) => {
+          let accountHash = resp.accountHash;
+          let score = resp.score;
+          let level = resp.level;
+          let reasons = resp.reasons;
+          let createdAt = resp.createdAt;
+
+          alert(`Validação de Fraude: \n AccountHash: ${accountHash} \n Score: ${score} \n Level: ${level} \n Reasons: ${reasons} \n Created At: ${createdAt}`)
+        })
+        .catch((err) => console.error(err))
+    
+
+  }
+
+
+  async getResponseFraud(): Promise<any> {
+
+    return await new Promise<void>((resolve, reject) => {
+
+      fetch("http://localhost:8080/api/v1/fraud/detect", {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': this.token,
+              'accountHash': this.usernameService.getUsername()
+          },
+      })
+      .then((resp) => {
+
+        resp.json()
+            .then((json) => {
+
+                    
+              console.log("JSON: "+ JSON.stringify(json))
+              resolve(json)
+
+
+            })
+            .catch((err) => reject(err))
+
+      })
+      .catch((err) => reject(err));
+
+    });
+
+    
 
   }
 
@@ -56,6 +108,7 @@ export class Checkout {
       
     };
     this.sdk?.sendCheckoutData(checkout);
+    this.cartItems = [];
   }
 
   getItems(): ICheckoutItens[] {

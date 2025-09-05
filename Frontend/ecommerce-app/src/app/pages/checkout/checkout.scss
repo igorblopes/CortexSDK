@@ -37,3 +37,21 @@
     background-color: #a71d2a;
   }
 }
+
+
+.fraud-container {
+  display: flex;
+  margin-top: 20%;
+  min-height: 150px;
+  background-color: #d1d0d0;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  button {
+    padding: 10px;
+    font-size: 16px;
+    align-items: center;
+    display: inline-block;
+  }
+}
