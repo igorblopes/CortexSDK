@@ -4,11 +4,14 @@ import { FraudDB } from "../infra/database/cortext-db-fraud";
 import { SenseScoreDB } from "../infra/database/cortext-db-sense-score";
 import { UserBehaviorDB } from "../infra/database/cortext-db-user-behavior";
 import { IFraudAssessment } from "../interfaces";
+import { CollectDate } from "./date/collect-date";
 import { ScoreMappers } from "./score-mappers";
 
 export class FraudAnalyzer {
 
     scoreMappers = new ScoreMappers(this.checkoutDB, this.fingerprintDB, this.userBehaviorDB);
+
+    private collectDate: CollectDate = new CollectDate();
     
     constructor(
         private checkoutDB: CheckoutDB,
@@ -43,8 +46,7 @@ export class FraudAnalyzer {
                                 let userBehaviorResult = this.processResult(results, userBehaviorIndice);
 
 
-                                
-                                let score = userBehaviorResult.score;
+                                let score = userBehaviorResult.score + checkoutResult.score + fingerprintResult.score;
                                 let reasons: string[] = fingerprintResult.reasons.concat(checkoutResult.reasons, userBehaviorResult.reasons);
 
 
@@ -53,7 +55,7 @@ export class FraudAnalyzer {
                                     score: score,
                                     level: mapScores.has(score) ? mapScores.get(score) : "allow",
                                     reasons: reasons,
-                                    createdAt: new Date()
+                                    createdAt: this.collectDate.getActualDate()
                                 };
 
                                 this.fraudDB.createFraudEntity(fraudResult)
@@ -92,7 +94,7 @@ export class FraudAnalyzer {
     async getAnalyseResults(accountHash:string, mapScores: Map<number, string>): Promise<any[]>{
         return await new Promise<any[]>((resolve, reject) => {
             let results = [];
-            
+
             this.analyzeFingerprints(accountHash, mapScores)
                 .then((respFingerprint) => {
 
@@ -148,7 +150,7 @@ export class FraudAnalyzer {
                                 score: score,
                                 level: mapScores.has(score) ? mapScores.get(score) : "allow",
                                 reasons: reasons,
-                                createdAt: new Date()
+                                createdAt: this.collectDate.getActualDate()
                             };
 
                             resolve(response);
@@ -167,18 +169,19 @@ export class FraudAnalyzer {
         return await new Promise<IFraudAssessment>((resolve, reject) => {
 
             this.scoreMappers.getMapCheckout()
-                .then(async (map) => {
+                .then((map) => {
 
                     this.checkoutDB.findCheckoutsByAccountHash(accountHash)
-                        .then(async (checkouts) => {
+                        .then((checkouts) => {
 
                             let reasons: string[] = [];
                             let score = 0;
 
                             for( const [chave, valor] of map.entries() ){
-                                let scoreValidation = valor != undefined ? valor.validation(checkouts, chave.score) : 0;
+
+                                let scoreValidation = valor?.validation(checkouts, chave.score);
                                 
-                                if(scoreValidation > 0){
+                                if(scoreValidation && scoreValidation > 0){
                                     score += scoreValidation;
                                     reasons.push(chave.name);
                                 }
@@ -189,7 +192,7 @@ export class FraudAnalyzer {
                                 score: score,
                                 level: mapScores.has(score) ? mapScores.get(score) : "allow",
                                 reasons: reasons,
-                                createdAt: new Date()
+                                createdAt: this.collectDate.getActualDate()
                             };
 
                             resolve(response);
@@ -231,7 +234,7 @@ export class FraudAnalyzer {
                                 score: score,
                                 level: mapScores.has(score) ? mapScores.get(score) : "allow",
                                 reasons: reasons,
-                                createdAt: new Date()
+                                createdAt: this.collectDate.getActualDate()
                             };
                             
                             resolve(response);

@@ -1,6 +1,6 @@
 import * as sqlite3 from 'sqlite3';
 import { ICheckout, ICheckoutItens } from '../../interfaces';
-import { CheckoutItensModelDB, CheckoutModelDB, ConfigModelDB } from '../../interfaces-db';
+import { CheckoutModelDB, ConfigModelDB } from '../../interfaces-db';
 
 export class CheckoutDB {
 
@@ -18,8 +18,8 @@ export class CheckoutDB {
                      for(let item of checkout.itens){
 
                         db.run(`
-                            INSERT INTO checkout_itens (type, quantity, unity_value, checkout_id)
-                            VALUES ('${item.typeItem}', '${item.quantity}', '${item.unitValue}', '${resp}') 
+                            INSERT INTO checkout_itens (type, quantity, unityvalue, checkout_id)
+                            VALUES ('${item.typeItem}', '${item.quantity}', '${Math.round(item.unitValue)}', '${resp}') 
                         `,function (err) {
 
                             if(err) reject(err);
@@ -109,7 +109,7 @@ export class CheckoutDB {
 
     }
 
-    convertItemDatabaseToModel(itemCheckout: CheckoutModelDB, itemCheckoutItens: CheckoutItensModelDB[]): ICheckout{
+    convertItemDatabaseToModel(itemCheckout: CheckoutModelDB, itemCheckoutItens: any[]): ICheckout{
     
         //let dateCreatedAt = new Date(itemCheckout.created_at);
         let dateCreatedAt = new Date();
@@ -120,7 +120,7 @@ export class CheckoutDB {
             checkoutItens.push({
                 quantity: f.quantity,
                 typeItem: f.type,
-                unitValue: f.unit_value
+                unitValue: f.unityvalue
             });
         });
 

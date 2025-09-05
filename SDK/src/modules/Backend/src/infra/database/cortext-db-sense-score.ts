@@ -96,6 +96,12 @@ export class SenseScoreDB {
                             }
                         }
 
+                        let nextItem = map.size + 1;
+
+                        for(let i=nextItem; i<1000; i++){
+                            map.set(i, "deny");
+                        }
+
                         resolve(map);
 
                     })

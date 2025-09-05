@@ -2,6 +2,7 @@ import { CheckoutDB } from "../infra/database/cortext-db-checkout";
 import { FingerprintDB } from "../infra/database/cortext-db-fingerprint";
 import { UserBehaviorDB } from "../infra/database/cortext-db-user-behavior";
 import { ConfigModelDB } from "../interfaces-db";
+import { FirstBuyBiggerThan2000 } from "./checkout/first_buy_bigger_2000/first-buy-bigger-than-2000.validation";
 import { ItensNeverPurchaseValidation } from "./checkout/itens_never_purchase/itens-never-purchase.validation";
 import { QuantityItensPurchaseValidation } from "./checkout/quantity_itens_purchase/quantity-itens-purchase.validation";
 import { TotalValue100PercentValidation } from "./checkout/total_value_100/total-value-100-perc.validation";
@@ -39,7 +40,7 @@ export class ScoreMappers {
             this.fingerprintDB.findAllFingerprintScore()
                 .then((fingerprintScores) => {
 
-                    let mapNameToValidation = this.getMapNameScoreToClassValidation();
+                    let mapNameToValidation = this.getMapFingerprintsScoreToClassValidation();
 
                     let map = new Map<ConfigModelDB, Validation | undefined>();        
 
@@ -68,7 +69,7 @@ export class ScoreMappers {
             this.checkoutDB.findAllCheckoutScore()
                 .then((checkoutScores) => {
 
-                    let mapNameToValidation = this.getMapNameScoreToClassValidation();
+                    let mapNameToValidation = this.getMapScoreUserCheckoutsToClassValidation();
 
                     let map = new Map<ConfigModelDB, Validation | undefined>();
 
@@ -96,7 +97,7 @@ export class ScoreMappers {
             this.userBehaviorDB.findAllUserBehaviorScore()
                 .then((userBehaviorScores) => {
 
-                    let mapNameToValidation = this.getMapNameScoreToClassValidation();
+                    let mapNameToValidation = this.getMapUserBehaviorsScoreToClassValidation();
 
                     let map = new Map<ConfigModelDB, Validation | undefined>();
 
@@ -117,7 +118,23 @@ export class ScoreMappers {
     }
 
 
-    getMapNameScoreToClassValidation(): Map<string, Validation> {
+    getMapUserBehaviorsScoreToClassValidation(): Map<string, Validation> {
+        let map = new Map<string, Validation>();
+   
+
+        // User Behaviors
+        map.set("Page change difference less than 5 seconds", new PageDifferenceLessFiveSeconds());
+        map.set("Page change difference less than 2 seconds", new PageDifferenceLessTwoSeconds());
+        map.set("Mean clicks less than 5 seconds", new MeanClicksLessFiveSeconds());
+        map.set("Mean clicks less than 2 seconds", new MeanClicksLessTwoSeconds());
+       
+
+
+        return map;
+    }
+
+
+    getMapFingerprintsScoreToClassValidation(): Map<string, Validation> {
         let map = new Map<string, Validation>();
 
         // Fingerprints
@@ -131,7 +148,13 @@ export class ScoreMappers {
         map.set("Its new system operation", new OperatingSystemValidation());
         map.set("Its new so version", new SOVersionValidation());
         map.set("Its new browser agent", new BrowserAgentValidation());
-    
+
+        return map;
+    }
+
+
+    getMapScoreUserCheckoutsToClassValidation(): Map<string, Validation> {
+        let map = new Map<string, Validation>();
 
         // Checkouts
         map.set("Itens types never purchased before", new ItensNeverPurchaseValidation());
@@ -139,14 +162,7 @@ export class ScoreMappers {
         map.set("Total value 30% of purchase above mean", new TotalValue30PercentValidation());
         map.set("Total value 50% of purchase above mean", new TotalValue50PercentValidation() );
         map.set("Total value 100% of purchase above mean", new TotalValue100PercentValidation() );
-
-
-        // User Behaviors
-        map.set("Page change difference less than 5 seconds", new PageDifferenceLessFiveSeconds());
-        map.set("Page change difference less than 2 seconds", new PageDifferenceLessTwoSeconds());
-        map.set("Mean clicks less than 5 seconds", new MeanClicksLessFiveSeconds());
-        map.set("Mean clicks less than 2 seconds", new MeanClicksLessTwoSeconds());
-
+        map.set("First Buy Bigger Than 2000", new FirstBuyBiggerThan2000());
 
         return map;
     }

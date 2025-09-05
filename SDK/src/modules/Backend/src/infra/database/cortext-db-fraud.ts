@@ -37,7 +37,7 @@ export class FraudDB {
                         `);
                     }
 
-                    resolve();
+                    setTimeout(() => {resolve()}, 2000)
 
 
                 })
@@ -85,14 +85,13 @@ export class FraudDB {
 
         });
 
-        frauds.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+        //frauds.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
         return frauds;
     }
 
     convertItemDatabaseToModel(item: FraudAssessmentModelDB, rows: FraudAssessmentReasonModelDB[]): IFraudAssessment{
     
-        let dateCreatedAt = new Date(item.created_at);
         let reasons = rows.map(m => m.reason);
 
         let fraud: IFraudAssessment = {
@@ -100,7 +99,7 @@ export class FraudDB {
             score: item.score,
             level: item.level,
             reasons: reasons,
-            createdAt: dateCreatedAt
+            createdAt: item.created_at
         };
 
         return fraud;

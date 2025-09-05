@@ -7,8 +7,9 @@ export class PageDifferenceLessTwoSeconds implements Validation{
     validation(itens: IUserBehavior[], score: number): number {
         //TODO: Implement Verification
 
-        if(itens.length > 0) return 100;
-        return score;
+        if(itens.length > 0) return 0;
+        if(score > 1000) return 0;
+        return 0;
     }
 
     

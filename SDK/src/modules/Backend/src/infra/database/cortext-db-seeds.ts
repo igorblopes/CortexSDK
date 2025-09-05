@@ -125,7 +125,7 @@ export class SeedDB {
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         type TEXT, 
                         quantity INTEGER, 
-                        unity_value REAL,
+                        unityvalue INTEGER,
                         checkout_id INTEGER,
                         created_at TEXT,
                         FOREIGN KEY (checkout_id) REFERENCES checkout(id)
@@ -175,6 +175,9 @@ export class SeedDB {
 
                     INSERT INTO checkout_score (name, score, status)
                     VALUES ('Total value 100% of purchase above mean', 10, 1);
+
+                    INSERT INTO checkout_score (name, score, status)
+                    VALUES ('First Buy Bigger Than 2000', 90, 1);
                     
                     COMMIT;
                 `,

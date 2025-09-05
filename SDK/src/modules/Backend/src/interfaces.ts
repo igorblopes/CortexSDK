@@ -55,7 +55,7 @@ export interface IFraudAssessment {
   score: number;
   level: string | undefined;
   reasons: string[];
-  createdAt: Date;
+  createdAt: string;
 }
 
 /**
