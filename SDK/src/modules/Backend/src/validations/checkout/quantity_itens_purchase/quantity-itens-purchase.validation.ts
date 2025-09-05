@@ -4,9 +4,11 @@ import { Validation } from "../../validation.interface";
 export class QuantityItensPurchaseValidation implements Validation{
     
     validation(checkouts: ICheckout[], score: number): number{
-        if(checkouts.length <= 1) {return 0}
+        let size = checkouts.length;
+        
+        if(size <= 1) {return 0}
 
-        let lastCheckout = checkouts[0];
+        let lastCheckout = checkouts[size-1];
 
         let totalQtdItensPurchases = 0;
         lastCheckout.itens.forEach((i)  => totalQtdItensPurchases += i.quantity);

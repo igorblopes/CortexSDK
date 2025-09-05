@@ -24,28 +24,33 @@ export class CollectUserBehaviors {
 
         const nav = (window as any).navigation;
 
-        nav.addEventListener("navigate", (e: any) => {
+        //Validar de como fazer o navigate para firefox
+        if(nav){
 
-          let response: IUserBehavior = {
-            accountHash: accountHash,
-            clicks: this.clicks,
-            pageVisit: e.destination?.url,
-            createdAt: this.collectDate.getActualDate(),
-            sessionDuration: 0
-          };
+          nav.addEventListener("navigate", (e: any) => {
 
-          let body = {
-              "typeData": "IntakeUserBehavior",
-              "data": response
-          };
+            let response: IUserBehavior = {
+              accountHash: accountHash,
+              clicks: this.clicks,
+              pageVisit: e.destination?.url,
+              createdAt: this.collectDate.getActualDate(),
+              sessionDuration: 0
+            };
 
-          this.makeIntakeDataRequest(body)
-              .then(() => {
+            let body = {
+                "typeData": "IntakeUserBehavior",
+                "data": response
+            };
+
+            this.makeIntakeDataRequest(body)
+                .then(() => {
+                  
+                  this.clicks = [];
                 
-                this.clicks = [];
-              
-              });
-        });
+                });
+          });
+
+        }
 
     }
 

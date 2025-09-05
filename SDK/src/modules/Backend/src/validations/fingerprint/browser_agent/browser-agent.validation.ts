@@ -4,12 +4,42 @@ import { Validation } from "../../validation.interface";
 export class BrowserAgentValidation implements Validation{
     
     validation(fingerprints: IFingerprint[], score: number): number{
-        if(fingerprints.length <= 1) {return 0}
+        let size = fingerprints.length;
 
-        let lastConnection = fingerprints[0];
+        if(size <= 1) {return 0}
 
-        const count = fingerprints.filter((f) => f.browserAgent == lastConnection.browserAgent).length;
+        fingerprints.sort((a, b) => this.parseCustomDate(b.createdAt).getTime() - this.parseCustomDate(a.createdAt).getTime())
 
-        return count <= 0 ? score : 0;
+        let lastConnection = fingerprints[size-1];
+
+        let copiedFingerprintsWithoutLast = Array.from(fingerprints);
+        copiedFingerprintsWithoutLast.pop();
+
+        let browsersAgents = copiedFingerprintsWithoutLast.map((m) => m.browserAgent);
+
+        let newAgent = !browsersAgents.includes(lastConnection.browserAgent);
+
+        return newAgent ? score : 0;
+    }
+
+
+
+    parseCustomDate(str: string): Date {
+        const [datePart, timePart] = str.split(", ");
+
+        const [day, month, year] = datePart.split("/").map(Number);
+
+        const [h, m, rest] = timePart.split(":");
+        const [s, ms] = rest.split(":");
+
+        return new Date(
+            year,
+            month - 1,      
+            day,
+            Number(h),
+            Number(m),
+            Number(s),
+            Number(ms)
+        );
     }
 }
