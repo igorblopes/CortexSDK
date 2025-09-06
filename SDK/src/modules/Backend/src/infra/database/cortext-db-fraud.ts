@@ -110,11 +110,79 @@ export class FraudDB {
                     }
                 }
             );
-
-        
         
         });
     }
+
+
+
+
+    async findAllFrauds(): Promise<IFraudAssessment[]> {
+        let frauds: IFraudAssessment[] = [];
+
+        return await new Promise<IFraudAssessment[]>((resolve, reject) => {
+
+            this.db.all(
+                `
+                    SELECT f.id,
+                            f.account_hash,
+                            f.score,
+                            f.created_at,
+                            fr.reason
+                    FROM fraud f
+                    LEFT JOIN fraud_reason fr
+                    ON f.id = fr.fraud_id
+                    ORDER BY f.id;
+                `
+               ,(err: any, rows: any[]) => {
+
+                    if (err) {
+                        reject(err);
+                    }
+
+                    if(!rows || rows.length == 0) {
+                        resolve(frauds);
+                    }
+
+                    const fraudMap = new Map<number, IFraudAssessment>();
+
+                    for(let row of rows){                        
+
+                        if(!fraudMap.has(row.id)){
+                            fraudMap.set(row.id, {
+                                accountHash: row.account_hash,
+                                score: row.score,
+                                level: "",
+                                reasons: [],
+                                createdAt: row.created_at,
+                            });
+                        }
+
+                        if (row.reason) {
+                            fraudMap.get(row.id)!.reasons.push(row.reason);
+                        }
+
+                    }
+
+                    resolve(Array.from(fraudMap.values()));
+                }
+            );
+        })
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     convertItemDatabaseToModel(item: FraudAssessmentModelDB, rows: FraudAssessmentReasonModelDB[]): IFraudAssessment{

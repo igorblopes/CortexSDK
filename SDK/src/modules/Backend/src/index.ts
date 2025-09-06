@@ -123,7 +123,7 @@ export class BackendSDK {
      */
     async validateFraud(accountHash: string, token: string): Promise<any> {
         let fraudAnalyzer = new FraudAnalyzer(this.db.checkoutDB, this.db.fingerprintDB, this.db.userBehaviorDB, this.db.fraudDB, this.db.senseScoreDB);
-        let fraudServices = new FraudServices(fraudAnalyzer);
+        let fraudServices = new FraudServices(fraudAnalyzer, this.db.fraudDB, this.db.senseScoreDB);
         return await new Promise<any>((resolve, reject) => {
 
             if(this.token != null && token != this.token) {
@@ -561,6 +561,81 @@ export class BackendSDK {
         });
     }
 
+
+
+
+
+
+    /**
+     * 
+     * @hidden
+     * FRAUD VALIDATIONS
+     * 
+     * */
+ 
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos das validações de fraude
+     *  
+     * @remarks
+     * Retorna todos os dados de score das validações de fraude com filtros.
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * 
+     *
+     */
+    async allFraudValidationsScores(token: string, filters: any) {
+        let fraudAnalyzer = new FraudAnalyzer(this.db.checkoutDB, this.db.fingerprintDB, this.db.userBehaviorDB, this.db.fraudDB, this.db.senseScoreDB);
+        let fraudServices = new FraudServices(fraudAnalyzer, this.db.fraudDB, this.db.senseScoreDB);
+
+        return await new Promise<any[]>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            fraudServices.getFraudsByFilters(filters)
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+
+    /**
+     *
+     * @category [04.GERENCIAMENTO DOS DADOS] - Busca valores de contadores das validações de fraude
+     *  
+     * @remarks
+     * Retorna todos os dados de contadores dos score das validações de fraude.
+     *
+     * @param token -> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend.
+     * 
+     *
+     */
+    async countersFraudValidationScores(token: string) {
+        let fraudAnalyzer = new FraudAnalyzer(this.db.checkoutDB, this.db.fingerprintDB, this.db.userBehaviorDB, this.db.fraudDB, this.db.senseScoreDB);
+        let fraudServices = new FraudServices(fraudAnalyzer, this.db.fraudDB, this.db.senseScoreDB);
+
+        return await new Promise<any>((resolve, reject) => {
+
+            if(this.token != null && token != this.token) {
+                reject("Token nulo ou inválido.")
+            }
+
+            fraudServices.getCountersFrauds()
+                .then((resp) => {
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
 
 
 

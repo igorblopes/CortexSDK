@@ -143,6 +143,48 @@
           "async": true,
           "docs": {
             "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos das validações de fraude",
+              "remarks": "Retorna todos os dados de score das validações de fraude com filtros."
+            },
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 588
+          },
+          "name": "allFraudValidationsScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            },
+            {
+              "name": "filters",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "primitive": "any"
+                },
+                "kind": "array"
+              }
+            }
+          }
+        },
+        {
+          "async": true,
+          "docs": {
+            "custom": {
               "category": "[04.GERENCIAMENTO DOS DADOS] - Busca dos valores internos da sensibilidade da validação de fraude",
               "remarks": "Retorna todos os dados de sensibilidade da validação de fraude, explicitando qual são os ranges para allow, review e deny"
             },
@@ -208,6 +250,37 @@
                 },
                 "kind": "array"
               }
+            }
+          }
+        },
+        {
+          "async": true,
+          "docs": {
+            "custom": {
+              "category": "[04.GERENCIAMENTO DOS DADOS] - Busca valores de contadores das validações de fraude",
+              "remarks": "Retorna todos os dados de contadores dos score das validações de fraude."
+            },
+            "stability": "experimental"
+          },
+          "locationInModule": {
+            "filename": "src/index.ts",
+            "line": 620
+          },
+          "name": "countersFraudValidationScores",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "-> x-api-token para validação entre a comunicação entre os SDK's de Frontend e Backend."
+              },
+              "name": "token",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
             }
           }
         },
@@ -1107,7 +1180,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "src/interfaces.ts",
-        "line": 85
+        "line": 91
       },
       "name": "IIntakeData",
       "properties": [
@@ -1120,7 +1193,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 113
+            "line": 119
           },
           "name": "data",
           "type": {
@@ -1136,7 +1209,7 @@
           },
           "locationInModule": {
             "filename": "src/interfaces.ts",
-            "line": 102
+            "line": 108
           },
           "name": "typeData",
           "type": {
@@ -1610,5 +1683,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "e8VJRXgljJYPkcfXPoTdwlbLrL7FKR+1vDNgRUgtzjs="
+  "fingerprint": "2ihZHHvpwiNZi898XItZ3DHYtDJjnZ/ohqXJPtMktJs="
 }

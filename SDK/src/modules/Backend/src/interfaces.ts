@@ -76,6 +76,12 @@ export interface IFraudAssessment {
   createdAt: string;
 }
 
+export interface ICounters {
+  allow: number;
+  review: number;
+  deny: number;
+}
+
 /**
  * 
  * @remarks

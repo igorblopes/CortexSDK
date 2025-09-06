@@ -7,6 +7,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FraudAnalyzerGateway {
 
@@ -22,5 +24,17 @@ public class FraudAnalyzerGateway {
 
         return response;
 
+    }
+
+    public Object getFraudCounters(String token) {
+        Object sdkResp = backendSDKStarter.getBackendSDK().countersFraudValidationScores(token);
+
+        return sdkResp;
+    }
+
+    public List<Object> getFrauds(String token, Object filters) {
+        List<Object> sdkResp = backendSDKStarter.getBackendSDK().allFraudValidationsScores(token, filters);
+
+        return sdkResp;
     }
 }
