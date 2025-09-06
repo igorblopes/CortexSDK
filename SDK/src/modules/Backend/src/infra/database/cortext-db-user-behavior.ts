@@ -100,7 +100,7 @@ export class UserBehaviorDB {
 
             this.db.all(
                 `
-                    SELECT * FROM user_behavior WHERE account_hash = '${accountHash}'
+                    SELECT * FROM user_behavior WHERE account_hash = '${accountHash}' ORDER BY id DESC
                 `
                 ,(err: any, rows: any[]) => {
 

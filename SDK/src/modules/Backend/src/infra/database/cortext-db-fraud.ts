@@ -53,42 +53,69 @@ export class FraudDB {
         let frauds: IFraudAssessment[] = [];
         let context = this;
 
-        await this.db.all<FraudAssessmentModelDB>(`
-            SELECT * FROM fraud WHERE account_hash = ${accountHash}
-        `, function(err, rows) {
+        return await new Promise<IFraudAssessment[]>((resolve, reject) => {
 
-                if (err) {
-                    console.error('Erro ao Buscar:', err.message);
-                    return;
-                }
-            
-            for(let item of rows){
-                if(item != null){
+            this.db.all(
+                `
+                    SELECT * FROM fraud WHERE account_hash = ${accountHash}
+                `
+                ,(err: any, rows: any[]) => {
 
-                    context.db.all<FraudAssessmentReasonModelDB>(`
-                        SELECT * FROM fraud_reason WHERE fraud_id = ${item.id}
-                    `, function(err, rows) {
+                    if (err) {
+                        reject(err);
+                    }
 
-                        if (err) {
-                            console.error('Erro ao Buscar:', err.message);
-                            return;
+                    if(!rows || rows.length == 0) {
+                        resolve(frauds);
+                    }
+
+                    for(let item of rows){
+                        if(item != null){
+
+                            context.db.all(
+                                `
+                                    SELECT * FROM fraud_reason WHERE fraud_id = '${item.id}'
+                                `
+                                ,(err: any, rowsItems: any[]) => {
+
+                                    if (err) {
+                                        reject(err);
+                                    }
+
+                                    let reasons = [];
+
+                                    for(let itemReason of rowsItems){
+                                       reasons.push(itemReason.reason);
+                                    }
+
+
+                                    let fraud: IFraudAssessment = {
+                                        accountHash: accountHash,
+                                        score: item.score,
+                                        level: item.level,
+                                        reasons: reasons,
+                                        createdAt: item.created_at
+                                    }
+
+                                    
+                                    frauds.push(fraud);
+
+                                    resolve(frauds);
+
+
+                                }
+                            )
+
                         }
-
-                        frauds.push(
-                            context.convertItemDatabaseToModel(item, rows)
-                        );
-                        
-                    })
-
+                    }
                 }
-            }
+            );
 
+        
+        
         });
-
-        //frauds.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
-        return frauds;
     }
+
 
     convertItemDatabaseToModel(item: FraudAssessmentModelDB, rows: FraudAssessmentReasonModelDB[]): IFraudAssessment{
     

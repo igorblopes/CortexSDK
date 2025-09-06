@@ -8,7 +8,7 @@ export class CollectDate {
 
     getActualDate(): string {
 
-        return this.formatBR(new Date(), "UTC");
+        return this.formatBR(new Date());
 
         
     }

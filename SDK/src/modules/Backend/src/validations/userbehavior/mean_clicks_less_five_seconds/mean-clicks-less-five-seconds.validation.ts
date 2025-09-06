@@ -9,9 +9,9 @@ export class MeanClicksLessFiveSeconds implements Validation{
 
         if(size < 1) {return 0}
 
-         let lastConnection = userBehaviors[size-1];
+        let lastConnection = userBehaviors[0];
 
-         let mean = this.calculateMean(lastConnection);
+        let mean = this.calculateMean(lastConnection);
 
         return mean < 5 ? score : 0;
     }
