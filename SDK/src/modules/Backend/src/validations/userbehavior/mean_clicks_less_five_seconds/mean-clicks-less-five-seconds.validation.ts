@@ -7,7 +7,7 @@ export class MeanClicksLessFiveSeconds implements Validation{
     validation(userBehaviors: IUserBehavior[], score: number): number {
         let size = userBehaviors.length;
 
-        if(size <= 1) {return 0}
+        if(size < 1) {return 0}
 
          let lastConnection = userBehaviors[size-1];
 
@@ -24,17 +24,31 @@ export class MeanClicksLessFiveSeconds implements Validation{
 
         let dates = clicks.map((m) => this.parseCustomDate(m.createdAt));
 
+        dates.sort((a, b) => a.getTime() - b.getTime())
+
         for (let i = 1; i < dates.length; i++) {
             const diffMs = dates[i].getTime() - dates[i - 1].getTime();
-            secondsClicks.push(Math.floor(diffMs / 1000));
+            const seconds = Math.floor(diffMs / 1000);
+            secondsClicks.push(seconds);
         }
 
-        let sum = secondsClicks.reduce((acc, valor) => acc + valor, 0);
+        let sum = this.getSoma(secondsClicks);
 
         let mean = sum / secondsClicks.length;
 
-        return mean;
+        return Math.floor(mean);
 
+    }
+
+    getSoma(secondsClicks: number[]) {
+        let sum = 0;
+        let i = 0;
+        while (i < secondsClicks.length) {
+            sum += secondsClicks[i];
+            i++;
+        }
+
+        return sum;
     }
 
     parseCustomDate(str: string): Date {
@@ -42,8 +56,7 @@ export class MeanClicksLessFiveSeconds implements Validation{
 
         const [day, month, year] = datePart.split("/").map(Number);
 
-        const [h, m, rest] = timePart.split(":");
-        const [s, ms] = rest.split(":");
+        const [h, m, s, ms] = timePart.split(":");
 
         return new Date(
             year,

@@ -53,7 +53,7 @@ export class FraudAnalyzer {
                                 let fraudResult: IFraudAssessment = {
                                     accountHash: accountHash,
                                     score: score,
-                                    level: mapScores.has(score) ? mapScores.get(score) : "allow",
+                                    level: this.getLevel(mapScores, score),
                                     reasons: reasons,
                                     createdAt: this.collectDate.getActualDate()
                                 };
@@ -75,6 +75,18 @@ export class FraudAnalyzer {
             }
         });
     }
+
+    getLevel(mapScores: Map<number, string>, score: number): string | undefined {
+
+        if(score > 100){
+            return mapScores.get(99);
+        }
+
+        let level = mapScores.has(score) ? mapScores.get(score) : "allow";
+
+        return level;
+    }
+
 
     processResult(results: any[], indice: number) {
         let score: number = 0;
@@ -250,3 +262,4 @@ export class FraudAnalyzer {
         
     }
 }
+

@@ -37,7 +37,7 @@ export class FraudDB {
                         `);
                     }
 
-                    setTimeout(() => {resolve()}, 2000)
+                    setTimeout(() => {resolve()}, 500)
 
 
                 })
