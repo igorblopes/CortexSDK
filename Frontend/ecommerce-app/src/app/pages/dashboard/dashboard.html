@@ -1,0 +1,90 @@
+<div class="container v-stack">
+
+  <!-- Cabeçalho com título e gráfico -->
+  <section class="card header">
+    <div class="header-grid">
+      <div class="title-area">
+        <p class="kicker">C.O.R.T.E.X DASHBOARD</p>
+        <h1>C.O.R.T.E.X DASHBOARD</h1>
+      </div>
+
+      <!-- “Gráfico” de barras horizontais (CSS) -->
+      <div class="chart">
+        <div class="bar allow">
+          <div class="fill" [style.width.%]="stats().allow">
+            <span class="pct">{{ stats().allow }}%</span>
+          </div>
+          <span class="label">Allow</span>
+        </div>
+
+        <div class="bar review">
+          <div class="fill" [style.width.%]="stats().review">
+            <span class="pct">{{ stats().review }}%</span>
+          </div>
+          <span class="label">Review</span>
+        </div>
+
+        <div class="bar deny">
+          <div class="fill" [style.width.%]="stats().deny">
+            <span class="pct">{{ stats().deny }}%</span>
+          </div>
+          <span class="label">Deny</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filtro -->
+  <section class="card filter">
+    <div class="filter-row">
+      <input
+        type="search"
+        placeholder="Filters"
+        [ngModel]="filter()"
+        (ngModelChange)="filter.set($event)"
+        aria-label="Filtrar por conta, motivo ou nível" />
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M10 18a8 8 0 1 1 6.32-3.16l4.42 4.42-1.41 1.41-4.42-4.42A8 8 0 0 1 10 18zm0-2a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Tabela -->
+  <section class="card table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Score</th>
+          <th>Level</th>
+          <th>Reasons</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of rows(); trackBy: trackByAccount">
+          <td class="mono">{{ row.accountHash }}</td>
+          <td class="num">{{ row.score }}</td>
+          <td>
+            <span class="chip" [ngClass]="levelClass(row.level)">{{ row.level | titlecase }}</span>
+          </td>
+          <td class="reasons">
+            <ng-container *ngFor="let reason of row.reasons; trackBy: trackByReason">
+                <span class="chip" [ngClass]="reasonClass(reason)" [attr.title]="reason">
+                {{ reason }}
+                </span>
+            </ng-container>
+          </td>
+          <td class="mono">
+            {{ row.createdAt | date:'dd/MM/yyyy, HH:mm:ss' }}
+          </td>
+        </tr>
+
+        <tr *ngIf="rows().length === 0">
+          <td colspan="5" class="empty">Nenhum resultado encontrado.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>

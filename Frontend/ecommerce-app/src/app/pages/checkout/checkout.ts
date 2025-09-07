@@ -82,9 +82,6 @@ export class Checkout {
       .catch((err) => reject(err));
 
     });
-
-    
-
   }
 
   goBack() {

@@ -1,0 +1,30 @@
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: #f6f7fb;
+  color: #0f172a;
+}
+
+/* Helpers */
+.container {
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(2, 6, 23, 0.06);
+  border: 1px solid rgba(2,6,23,0.06);
+}
+.h-stack { display: flex; align-items: center; gap: 16px; }
+.v-stack { display: flex; flex-direction: column; gap: 12px; }
+.badge {
+  display: inline-flex; align-items: center; padding: 4px 10px;
+  border-radius: 999px; font-weight: 600; font-size: 12px;
+}
+.badge.allow  { background: #e6f6ee; color: #0f7b4b; }
+.badge.review { background: #fff2cc; color: #8a6d00; }
+.badge.deny   { background: #fde7e9; color: #a61b29; }

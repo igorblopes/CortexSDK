@@ -46,8 +46,10 @@ public class FraudDetectionApi {
     @GetMapping("/fraud")
     public ResponseEntity getFrauds(
             @RequestHeader("x-api-key") String token,
-            @RequestBody FraudFiltersRequest request
+            @RequestParam(value = "account", required = false) String account
     ) {
+
+        var request = new FraudFiltersRequest();
         var response = fraudAnalyzerGateway.getFrauds(token, request);
 
         if(response != null){

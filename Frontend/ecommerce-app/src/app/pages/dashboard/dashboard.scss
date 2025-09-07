@@ -1,0 +1,203 @@
+.header {
+  padding: 20px 24px;
+
+  .header-grid {
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 420px);
+    gap: 24px;
+    align-items: center;
+  }
+
+  .title-area {
+    .kicker {
+      margin: 0 0 8px 0;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #64748b;
+      font-weight: 700;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 3.2vw, 34px);
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+  }
+
+  .chart {
+    display: grid;
+    gap: 12px;
+
+    .bar {
+      position: relative;
+      background: #f1f5f9;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 40px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+
+      .fill {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding-left: 12px;
+        transition: width .35s ease;
+      }
+
+      .pct {
+        font-weight: 800;
+        text-shadow: 0 1px 2px rgba(0,0,0,.1);
+      }
+
+      .label {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: 700;
+        color: #0f172a;
+        background: rgba(255,255,255,.65);
+        padding: 4px 8px;
+        border-radius: 8px;
+      }
+
+      &.allow .fill  { background: linear-gradient(90deg, #12b886, #0ca678); color: #fff; }
+      &.review .fill { background: linear-gradient(90deg, #f59f00, #e67700); color: #fff; }
+      &.deny .fill   { background: linear-gradient(90deg, #e03131, #c92a2a); color: #fff; }
+    }
+  }
+
+  @media (max-width: 820px) {
+    .header-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.filter {
+  padding: 16px;
+
+  .filter-row {
+    position: relative;
+  }
+
+  input[type="search"] {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 44px 14px 14px;
+    font-size: 16px;
+    outline: none;
+    background: #fff;
+    transition: box-shadow .2s ease, border-color .2s ease;
+  }
+
+  input[type="search"]:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59,130,246,.1);
+  }
+
+  .icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    fill: #64748b;
+    pointer-events: none;
+  }
+}
+
+.table-wrap {
+  padding: 0;
+  overflow: hidden;
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  thead th {
+    text-align: left;
+    font-size: 13px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #475569;
+    background: #f8fafc;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+  }
+
+  tbody tr:hover {
+    background: #f9fafb;
+  }
+
+  .num { font-variant-numeric: tabular-nums; text-align: left; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+  .empty {
+    text-align: center;
+    padding: 28px 16px;
+    color: #64748b;
+  }
+}
+
+
+.reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-height: 40px; // mantém a linha elegante quando há vários chips
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  max-width: 220px;           // evita quebrar a tabela
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Paleta: ajuste conforme seu design system */
+.chip.neutral {
+  background: #eef2ff;  /* indigo-50 */
+  color: #3730a3;       /* indigo-800 */
+  border-color: #e0e7ff;
+}
+
+.chip.info {
+  background: #e0f2fe;  /* sky-100 */
+  color: #075985;       /* sky-800 */
+  border-color: #bae6fd;
+}
+
+.chip.warn {
+  background: #fef3c7;  /* amber-100 */
+  color: #92400e;       /* amber-800 */
+  border-color: #fde68a;
+}
+
+.chip.danger {
+  background: #fee2e2;  /* red-100 */
+  color: #991b1b;       /* red-800 */
+  border-color: #fecaca;
+}
