@@ -41,3 +41,10 @@
     </tbody>
   </table>
 </section>
+
+<!-- Modal reutilizável -->
+  <app-rule-edit-modal
+    [model]="editing()"
+    (close)="editing.set(null)"
+    (save)="onSave($event)">
+  </app-rule-edit-modal>

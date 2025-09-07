@@ -69,12 +69,10 @@ export class Dashboard {
     // Apenas para mostrar reatividade (poderia remover)
     constructor() {
         effect(() => {
-        const s = this.stats();
-        // eslint-disable-next-line no-console
-        console.log(`Allow ${s.allow}% • Review ${s.review}% • Deny ${s.deny}%`);
+            const s = this.stats();
         });
 
-        this.fillData();
+        setTimeout(() => {this.fillData();}, 200);
     }
 
     trackByAccount = (_: number, row: Row) => row.accountHash;
@@ -154,14 +152,7 @@ export class Dashboard {
             .then(() => {
 
                 this.getResponseFraud()
-                    .then((resp) => {
-                        let accountHash = resp.accountHash;
-                        let score = resp.score;
-                        let level = resp.level;
-                        let reasons = resp.reasons;
-                        let createdAt = resp.createdAt;
-
-                        //alert(`Validação de Fraude: \n AccountHash: ${accountHash} \n Score: ${score} \n Level: ${level} \n Reasons: ${reasons} \n Created At: ${createdAt}`)
+                    .then(() => {
                         this.fillData();
                     })
                     .catch((err) => console.error(err));
@@ -184,7 +175,6 @@ export class Dashboard {
 
     
     async callFraudDetect(): Promise<any> {
-        let username = localStorage.getItem("username");
 
         return await new Promise<void>((resolve, reject) => {
 
@@ -201,10 +191,7 @@ export class Dashboard {
                 resp.json()
                     .then((json) => {
 
-                            
-                    console.log("JSON: "+ JSON.stringify(json))
-                    resolve(json)
-
+                        resolve(json)
 
                     })
                     .catch((err) => reject(err))

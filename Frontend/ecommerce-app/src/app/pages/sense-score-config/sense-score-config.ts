@@ -12,7 +12,7 @@ type Level = 'allow' | 'review' | 'deny';
   imports: [CommonModule, FormsModule, RuleEditModal],
   templateUrl: './sense-score-config.html',
   // Reaproveita o MESMO SCSS do dashboard para herdar estilo de cards, filter e tabela
-  styleUrls: ['../dashboard/dashboard.scss']
+  styleUrls: ['../dashboard/dashboard.scss', './sense-score-config.scss']
 })
 export class SenseScoreConfig {
 
@@ -22,12 +22,6 @@ export class SenseScoreConfig {
 
   readonly editing = signal<SenseRange | null>(null);
 
-
-  // private readonly data = signal<SenseRange[]>([
-  //   { kind: 'sense', id: 1, min_score: 0,  max_score: 39, level: 'allow'  },
-  //   { kind: 'sense', id: 2, min_score: 40, max_score: 78, level: 'review' },
-  //   { kind: 'sense', id: 3, min_score: 79, max_score: 100, level: 'deny'  },
-  // ]);
 
   private readonly data = signal<SenseRange[]>([]);
 
@@ -45,7 +39,7 @@ export class SenseScoreConfig {
 
 
   constructor() {
-    this.fillData();
+    setTimeout(() => {this.fillData();}, 300);
   }
 
 
@@ -62,8 +56,18 @@ export class SenseScoreConfig {
       console.warn('Tipo inesperado no save do Sense:', updated);
       return;
     }
-    this.data.update(all => all.map(x => x.id === updated.id ? updated : x));
-    this.editing.set(null);
+    
+    let request = {
+      id: updated.id,
+      minScore: updated.min_score,
+      maxScore: updated.max_score
+    }
+    this.updatedSenseScoreScoreData(request)
+        .then(() => {
+          this.data.update(all => all.map(x => x.id === updated.id ? updated : x));
+          this.editing.set(null);      
+        })
+        .catch((err) => console.error(err))
   }
 
 
@@ -97,31 +101,59 @@ export class SenseScoreConfig {
 
   async getSenseScoreData(): Promise<any> {
 
-        return await new Promise<void>((resolve, reject) => {
+    return await new Promise<void>((resolve, reject) => {
 
-        fetch("http://localhost:8080/api/v1/sense-scores", {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': this.token
-            }
-        })
-        .then((resp) => {
+      fetch("http://localhost:8080/api/v1/sense-scores", {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': this.token
+          }
+      })
+      .then((resp) => {
 
-          resp.json()
-              .then((json) => {
+        resp.json()
+            .then((json) => {
 
-                resolve(json)
+              resolve(json)
 
 
-              })
-              .catch((err) => reject(err))
+            })
+            .catch((err) => reject(err))
 
-        })
-        .catch((err) => reject(err));
+      })
+      .catch((err) => reject(err));
 
-        });
-    }
+    });
+  }
+
+  async updatedSenseScoreScoreData(data: any): Promise<any> {
+  
+    return await new Promise<void>((resolve, reject) => {
+  
+      fetch("http://localhost:8080/api/v1/sense-scores", {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': this.token
+          },
+          body: JSON.stringify(data)
+      })
+      .then((resp) => {
+
+        resp.json()
+            .then((json) => {
+              resolve(json)
+            })
+            .catch((err) => reject(err))
+
+      })
+      .catch((err) => reject(err));
+  
+    });
+  }
+
+
 }
 
 function isSenseRange(x: Editable | null): x is SenseRange {

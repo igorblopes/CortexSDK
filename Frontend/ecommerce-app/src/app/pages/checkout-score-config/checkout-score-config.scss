@@ -18,8 +18,35 @@ tbody td { padding: 10px; border-top: 1px solid #f0f0f0; }
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
 
 .icon-btn {
-  border: 0; background: transparent; cursor: pointer; font-size: 14px; line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.5rem 1rem;
+  border-radius: 9999px; /* deixa bem arredondado */
+  
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  color: #333;
+
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
 }
+
+.icon-btn:hover {
+  background: #f5f5f5;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.icon-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
 
 .chip { padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #222; }
 .chip.info   { background: #e6f4ff; }

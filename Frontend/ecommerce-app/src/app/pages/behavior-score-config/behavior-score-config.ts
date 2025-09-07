@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
   standalone: true,
   imports: [CommonModule, FormsModule, RuleEditModal],
   templateUrl: './behavior-score-config.html',
-  styleUrls: ['../dashboard/dashboard.scss']
+  styleUrls: ['../dashboard/dashboard.scss', './behavior-score-config.scss']
 })
 export class BehaviorScoreConfig {
   private token = environment.token;
@@ -19,11 +19,7 @@ export class BehaviorScoreConfig {
 
   readonly editing = signal<BehaviorRule | null>(null);
 
-  private readonly data = signal<BehaviorRule[]>([
-    { kind: 'behavior', id: 1, name: 'Page change difference less than 5 seconds', score: 10, status: 'Ativo'   },
-    { kind: 'behavior', id: 2, name: 'Page change difference less than 2 seconds', score: 30, status: 'Ativo'   },
-    { kind: 'behavior', id: 3, name: 'Mean clicks less than 5 seconds',            score: 20, status: 'Inativo' },
-  ]);
+  private readonly data = signal<BehaviorRule[]>([]);
 
   readonly rows = computed(() => {
     const t = this.q().trim().toLowerCase();
@@ -37,7 +33,7 @@ export class BehaviorScoreConfig {
   });
 
   constructor() {
-    this.fillData();
+    setTimeout(() => {this.fillData();}, 400);
   }
 
   trackBy = (_: number, r: BehaviorRule) => r.id;
@@ -53,8 +49,18 @@ export class BehaviorScoreConfig {
       console.warn('Tipo inesperado no save do Behavior:', updated);
       return;
     }
-    this.data.update(all => all.map(x => x.id === updated.id ? updated : x));
-    this.editing.set(null);
+
+    let request = {
+      id: updated.id,
+      score: updated.score,
+      status: "Ativo" == updated.status ? 1 : 0
+    }
+    this.updatedBehaviorScoreData(request)
+        .then(() => {
+          this.data.update(all => all.map(x => x.id === updated.id ? updated : x));
+          this.editing.set(null);      
+        })
+        .catch((err) => console.error(err))
   }
 
 
@@ -65,10 +71,6 @@ export class BehaviorScoreConfig {
         .then((resp) => {
             let transformedData = this.transformData(resp);
             this.data.update(value => transformedData);
-            
-                    
-            console.log("JSON: "+ JSON.stringify(resp));
-            console.log("DATA: "+ transformedData);
         })
         .catch((err) => console.error(err));
 
@@ -116,7 +118,33 @@ export class BehaviorScoreConfig {
       .catch((err) => reject(err));
 
       });
-  } 
+  }
+  
+  async updatedBehaviorScoreData(data: any): Promise<any> {
+  
+      return await new Promise<void>((resolve, reject) => {
+  
+        fetch("http://localhost:8080/api/v1/user-behavior-scores", {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': this.token
+            },
+            body: JSON.stringify(data)
+        })
+        .then((resp) => {
+  
+          resp.json()
+              .then((json) => {
+                resolve(json)
+              })
+              .catch((err) => reject(err))
+  
+        })
+        .catch((err) => reject(err));
+  
+    });
+  }
   
 }
 
