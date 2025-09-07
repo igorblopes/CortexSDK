@@ -1,0 +1,29 @@
+@use 'sass:color';
+
+.section { margin-top: 24px; }
+.section-title { font-size: 16px; font-weight: 700; margin: 0 0 8px; }
+
+.filter-row {
+  display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center;
+  input[type="search"] { width: 100%; padding: 8px 12px; border: 1px solid #d9d9d9; border-radius: 8px; }
+  .icon { width: 20px; height: 20px; opacity: .6; }
+}
+
+.table-wrap { overflow: auto; border-radius: 10px; border: 1px solid #e6e6e6; }
+table { width: 100%; border-collapse: collapse; }
+thead th { background: #0a6adf; color: #fff; text-align: left; padding: 10px; font-weight: 600; }
+tbody td { padding: 10px; border-top: 1px solid #f0f0f0; }
+
+.num { text-align: right; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+.icon-btn {
+  border: 0; background: transparent; cursor: pointer; font-size: 14px; line-height: 1;
+}
+
+.chip { padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #222; }
+.chip.info   { background: #e6f4ff; }
+.chip.warn   { background: #fff7e6; }
+.chip.danger { background: #ffeaea; }
+
+.empty { text-align: center; padding: 16px; color: #888; }

@@ -314,6 +314,10 @@ export class Products implements OnInit {
     this.router.navigate(['/checkout']);
   }
 
+  goToConfig() {
+    this.router.navigate(['/dashboard']);
+  }
+
   addToCart(product: Product) {
     const quantity = this.quantities[product.id] || 1;
     this.quantity += quantity;

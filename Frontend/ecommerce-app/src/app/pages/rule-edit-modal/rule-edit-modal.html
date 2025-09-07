@@ -1,0 +1,92 @@
+<div *ngIf="visible()" class="modal-backdrop" (click)="onBackdrop($event)" (keydown)="onKeydown($event)" tabindex="-1">
+
+  <section class="card modal-card" role="dialog" aria-modal="true">
+    <!-- Cabeçalho no padrão do dashboard -->
+    <div class="title-area modal-title">
+      <h2 *ngIf="_model()?.kind === 'sense'">Editar Sense Range</h2>
+      <h2 *ngIf="_model()?.kind === 'behavior'">Editar Behavior Rule</h2>
+      <h2 *ngIf="_model()?.kind === 'fingerprint'">Editar Fingerprint Rule</h2>
+      <h2 *ngIf="_model()?.kind === 'checkout'">Editar Checkout Rule</h2>
+      <button class="icon-btn close-btn" (click)="close.emit()" aria-label="Fechar">✕</button>
+    </div>
+
+    <!-- Formulário com o MESMO estilo de inputs já usado no filtro -->
+    <!-- ... cabeçalho do modal ... -->
+
+<div class="modal-body" *ngIf="_model() as m">
+  <!-- Sense -->
+  <ng-container *ngIf="m.kind === 'sense'">
+    <div class="form-grid">
+      <label>
+        <span>Min Score</span>
+        <input
+          type="number"
+          [ngModel]="m.min_score"
+          (ngModelChange)="patch({ min_score: +$event })" />
+      </label>
+
+      <label>
+        <span>Max Score</span>
+        <input
+          type="number"
+          [ngModel]="m.max_score"
+          (ngModelChange)="patch({ max_score: +$event })" />
+      </label>
+
+      <label>
+        <span>Level</span>
+        <select
+          [ngModel]="m.level"
+          (ngModelChange)="patch({ level: $event })">
+          <option value="allow">Allow</option>
+          <option value="review">Review</option>
+          <option value="deny">Deny</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="preview">
+      <small>Pré-visualização:</small>
+      <span class="chip" [ngClass]="levelClass(m.level)">{{ m.level | titlecase }}</span>
+      <span class="mono">[{{ m.min_score }} – {{ m.max_score }}]</span>
+    </div>
+  </ng-container>
+
+  <!-- Behavior / Fingerprint / Checkout -->
+  <ng-container *ngIf="m.kind !== 'sense'">
+    <div class="form-grid no-sense">
+      <label>
+        <span>Nome</span>
+        <input
+          type="text"
+          [ngModel]="m.name"
+          (ngModelChange)="patch({ name: $event })" disabled/>
+      </label>
+
+      <label>
+        <span>Score</span>
+        <input
+          type="number"
+          [ngModel]="m.score"
+          (ngModelChange)="patch({ score: +$event })" />
+      </label>
+
+      <label>
+        <span>Status</span>
+        <select
+          [ngModel]="m.status"
+          (ngModelChange)="patch({ status: $event })">
+          <option value="Ativo">Ativo</option>
+          <option value="Inativo">Inativo</option>
+        </select>
+      </label>
+    </div>
+  </ng-container>
+</div>
+
+    <div class="modal-actions">
+      <button class="btn ghost" (click)="close.emit()">Cancelar</button>
+      <button class="btn primary" (click)="commit()">Salvar</button>
+    </div>
+  </section>
+</div>

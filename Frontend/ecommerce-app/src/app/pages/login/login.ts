@@ -31,6 +31,8 @@ export class Login {
   login() {
     if (this.email && this.password) {
 
+      localStorage.setItem("username", this.email);
+
       
       this.usernameService.setUsername(this.email);
       this.sdk?.sendFingerprintData(this.email);

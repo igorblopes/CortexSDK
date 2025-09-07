@@ -1,0 +1,53 @@
+<!-- Título no mesmo “bloco” visual: card simples -->
+<section class="card header" style="margin-top: 50px; margin-bottom: 50px;">
+  <div class="header-grid">
+    <div class="title-area">
+      <p class="kicker">Sense Score</p>
+      <h1>SENSE SCORE CONFIGURATION</h1>
+    </div>
+  </div>
+</section>
+
+<!-- Filtro com o mesmo markup do dashboard -->
+<section class="card filter">
+  <div class="filter-row">
+    <input type="search" placeholder="Filters" [ngModel]="q()" (ngModelChange)="q.set($event)" />
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M10 18a8 8 0 1 1 6.32-3.16l4.42 4.42-1.41 1.41-4.42-4.42A8 8 0 0 1 10 18zm0-2a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- Tabela com o mesmo padrão -->
+<section class="card table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>Min Score</th>
+        <th>Max Score</th>
+        <th>Level</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of rows(); trackBy: trackBy">
+        <td class="mono">{{ r.id }}</td>
+        <td class="num">{{ r.min_score }}</td>
+        <td class="num">{{ r.max_score }}</td>
+        <td><span class="chip" [ngClass]="levelClass(r.level)">{{ r.level | titlecase }}</span></td>
+        <td><button class="icon-btn" (click)="edit(r)" title="Editar">✎</button></td>
+      </tr>
+      <tr *ngIf="rows().length === 0">
+        <td colspan="5" class="empty">Nenhum resultado encontrado.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Modal reutilizável -->
+<app-rule-edit-modal
+  [model]="editing()"
+  (close)="editing.set(null)"
+  (save)="onSave($event)">
+</app-rule-edit-modal>

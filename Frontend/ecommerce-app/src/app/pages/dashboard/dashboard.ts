@@ -2,6 +2,11 @@ import { Component, computed, effect, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
+import { UsernameService } from '../../services/username.service';
+import { CheckoutScoreConfig } from '../checkout-score-config/checkout-score-config';
+import { FingerprintScoreConfig } from '../fingerprint-score-config/fingerprint-score-config';
+import { BehaviorScoreConfig } from '../behavior-score-config/behavior-score-config';
+import { SenseScoreConfig } from '../sense-score-config/sense-score-config';
 
 type Level = 'allow' | 'review' | 'deny';
 
@@ -16,7 +21,14 @@ interface Row {
 @Component({
   selector: 'app-cortex-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe],
+  imports: [
+    CommonModule, FormsModule, DatePipe,
+    SenseScoreConfig,
+    BehaviorScoreConfig,
+    FingerprintScoreConfig,
+    CheckoutScoreConfig
+
+  ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss']
 })
@@ -24,7 +36,8 @@ export class Dashboard {
 
 
     private token = environment.token;
-  // --- dados simulados (pode trocar por chamada HTTP depois)
+
+    
     private data = signal<Row[]>([]);
 
     // --- filtro
@@ -61,17 +74,7 @@ export class Dashboard {
         console.log(`Allow ${s.allow}% • Review ${s.review}% • Deny ${s.deny}%`);
         });
 
-        this.getResponseFraud()
-            .then((resp) => {
-
-
-                this.data.update(value => resp);
-                
-                        
-                console.log("JSON: "+ JSON.stringify(resp));
-                console.log("DATA: "+ this.data);
-            })
-            .catch((err) => console.error(err));
+        this.fillData();
     }
 
     trackByAccount = (_: number, row: Row) => row.accountHash;
@@ -105,6 +108,15 @@ export class Dashboard {
     }
 
 
+    fillData() {
+
+        this.getResponseFraud()
+            .then((resp) => {
+                this.data.update(value => resp);
+            })
+            .catch((err) => console.error(err));
+
+    }
 
 
     async getResponseFraud(): Promise<any> {
@@ -131,6 +143,74 @@ export class Dashboard {
 
         })
         .catch((err) => reject(err));
+
+        });
+    }
+
+
+    callFraudValidation() {
+
+        this.callFraudDetect()
+            .then(() => {
+
+                this.getResponseFraud()
+                    .then((resp) => {
+                        let accountHash = resp.accountHash;
+                        let score = resp.score;
+                        let level = resp.level;
+                        let reasons = resp.reasons;
+                        let createdAt = resp.createdAt;
+
+                        //alert(`Validação de Fraude: \n AccountHash: ${accountHash} \n Score: ${score} \n Level: ${level} \n Reasons: ${reasons} \n Created At: ${createdAt}`)
+                        this.fillData();
+                    })
+                    .catch((err) => console.error(err));
+
+            })
+            .catch((err) => console.error(err));
+
+        
+    }
+
+    getUsername(): string{
+        let username = localStorage.getItem("username");
+
+        if(username){
+            return username;
+        }
+
+        return "";
+    }
+
+    
+    async callFraudDetect(): Promise<any> {
+        let username = localStorage.getItem("username");
+
+        return await new Promise<void>((resolve, reject) => {
+
+            fetch("http://localhost:8080/api/v1/fraud/detect", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': this.token,
+                    'accountHash': this.getUsername()
+                },
+            })
+            .then((resp) => {
+
+                resp.json()
+                    .then((json) => {
+
+                            
+                    console.log("JSON: "+ JSON.stringify(json))
+                    resolve(json)
+
+
+                    })
+                    .catch((err) => reject(err))
+
+            })
+            .catch((err) => reject(err));
 
         });
     }
