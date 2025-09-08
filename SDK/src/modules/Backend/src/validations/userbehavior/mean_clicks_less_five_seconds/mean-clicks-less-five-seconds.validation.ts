@@ -32,7 +32,7 @@ export class MeanClicksLessFiveSeconds implements Validation{
             secondsClicks.push(seconds);
         }
 
-        let sum = this.getSoma(secondsClicks);
+        let sum = this.getSum(secondsClicks);
 
         let mean = sum / secondsClicks.length;
 
@@ -40,7 +40,7 @@ export class MeanClicksLessFiveSeconds implements Validation{
 
     }
 
-    getSoma(secondsClicks: number[]) {
+    getSum(secondsClicks: number[]) {
         let sum = 0;
         let i = 0;
         while (i < secondsClicks.length) {

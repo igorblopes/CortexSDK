@@ -4,12 +4,39 @@ import { Validation } from "../../validation.interface";
 export class ResolutionValidation implements Validation{
     
     validation(fingerprints: IFingerprint[], score: number): number{
-        if(fingerprints.length <= 1) {return 0}
+        let size = fingerprints.length;
 
-        let lastFingerprint = fingerprints[0];
+        if(size <= 1) {return 0}
 
-        const count = fingerprints.filter((f) => f.screenResolution[0] == lastFingerprint.screenResolution[0] && f.screenResolution[1] == lastFingerprint.screenResolution[1]).length;
+        fingerprints.sort((a, b) => this.parseCustomDate(b.createdAt).getTime() - this.parseCustomDate(a.createdAt).getTime())
 
-        return count <= 0 ? score : 0;
+        let lastFingerprint = fingerprints[size-1];
+
+        let copiedFingerprintsWithoutLast = Array.from(fingerprints);
+        copiedFingerprintsWithoutLast.pop();
+
+        let resolutions = copiedFingerprintsWithoutLast.map((m) => m.screenResolution);
+
+        let newResolutions = !resolutions.includes(lastFingerprint.screenResolution);
+
+        return newResolutions ? score : 0;
+    }
+
+    parseCustomDate(str: string): Date {
+        const [datePart, timePart] = str.split(", ");
+
+        const [day, month, year] = datePart.split("/").map(Number);
+
+        const [h, m, s, ms] = timePart.split(":");
+
+        return new Date(
+            year,
+            month - 1,      
+            day,
+            Number(h),
+            Number(m),
+            Number(s),
+            Number(ms)
+        );
     }
 }

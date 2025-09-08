@@ -80,7 +80,7 @@ export class SeedDB {
                     VALUES (40, 79, 'review');
 
                     INSERT INTO sense_score (min_score, max_score, level)
-                    VALUES (79, 100, 'deny');
+                    VALUES (80, 100, 'deny');
 
                     CREATE TABLE IF NOT EXISTS fingerprint ( 
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
