@@ -29,6 +29,11 @@ export class CollectUserBehaviors {
 
           nav.addEventListener("navigate", (e: any) => {
 
+            if(e.destination?.url?.indexOf("dashboard") !== -1){
+              this.clicks = [];
+              return;
+            }
+
             let response: IUserBehavior = {
               accountHash: accountHash,
               clicks: this.clicks,

@@ -8,7 +8,7 @@ export class TotalValue30PercentValidation implements Validation{
 
         if(size < 2) {return 0}
 
-        //checkouts.sort((a, b) => this.parseCustomDate(b.createdAt).getTime() - this.parseCustomDate(a.createdAt).getTime())
+        checkouts.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
 
         let lastCheckout = checkouts[size - 1];
 

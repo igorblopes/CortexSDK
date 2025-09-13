@@ -7,7 +7,7 @@ export class FirstBuyBiggerThan2000 implements Validation{
         
         let size = checkouts.length;
         
-        if(size < 1) {return 0} 
+        if(size != 1) {return 0} 
 
         let lastCheckout = checkouts[size - 1];
         

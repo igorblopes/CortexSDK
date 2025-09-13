@@ -95,68 +95,61 @@ export class CheckoutDB {
 
     }
 
-
     async findCheckoutsByAccountHash(accountHash: string): Promise<ICheckout[]> {
-
-        return await new Promise<ICheckout[]>((resolve, reject) => {
-
-            let checkouts: ICheckout[] = [];
-            let context = this;
-
-            this.db.all(
+        const rows = await this.all(
+            this.db,
             `
-                SELECT * FROM checkout WHERE account_hash = '${accountHash}'
-            `
-            ,(err: any, rows: any[]) => {
+            SELECT
+            c.id,
+            c.created_at,
+            ci.id          AS item_id,
+            ci.type        AS item_type,
+            ci.quantity    AS item_quantity,
+            ci.unityvalue  AS item_unityvalue,
+            ci.checkout_id AS item_checkout_id
+            FROM checkout c
+            LEFT JOIN checkout_itens ci ON ci.checkout_id = c.id
+            WHERE c.account_hash = ?
+            ORDER BY c.id
+            `,
+            [accountHash]
+        );
 
+        if (!rows.length) return [];
 
-                if (err) {
-                    reject(err);
-                }
+        // Agrupa por checkout.id
+        const byCheckout = new Map<number, ICheckout>();
 
-                if(!rows || rows.length == 0) {
-                    resolve(checkouts);
-                }
+        for (const r of rows) {
+            // cria o checkout se ainda não existir
+            let checkout = byCheckout.get(r.id);
+            if (!checkout) {
+                checkout = {
+                    accountHash: "",
+                    createdAt: this.parseCustomDate(r.created_at),
+                    itens: [],
+                };
+                byCheckout.set(r.id, checkout);
+            }
 
-                for(let item of rows){
+            // Se houver item (LEFT JOIN pode trazer nulos)
+            if (r.item_checkout_id != null) {
+                checkout.itens.push({
+                    typeItem: r.item_type ?? null,
+                    quantity: r.item_quantity ?? null,
+                    unitValue: r.item_unityvalue ?? null,
+                });
+            }
+        }
 
-                    if(item != null){
-
-                        context.db.all(
-                        `
-                            SELECT * FROM checkout_itens WHERE checkout_id = '${item.id}'
-                        `
-                        ,(err: any, rowsItens: any[]) => {
-
-                            if (err) {
-                                reject(err);
-                            }
-
-                            if(!rowsItens) {
-                                resolve(checkouts);
-                            }
-
-                            checkouts.push(
-                                context.convertItemDatabaseToModel(item, rowsItens)
-                            );
-
-                            //checkouts.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-
-                            resolve(checkouts);
-                        })
-                    }
-                }
-
-            });
-
-        });
-
+        return Array.from(byCheckout.values());
     }
+
+    
 
     convertItemDatabaseToModel(itemCheckout: CheckoutModelDB, itemCheckoutItens: any[]): ICheckout{
     
-        //let dateCreatedAt = new Date(itemCheckout.created_at);
-        let dateCreatedAt = new Date();
+        let dateCreatedAt = this.parseCustomDate(itemCheckout.created_at);
 
         let checkoutItens: ICheckoutItens[] = [];
 
@@ -209,6 +202,30 @@ export class CheckoutDB {
 
         });
         
+    }
+
+    all<T = any>(db: any, sql: string, params: any[] = []): Promise<T[]> {
+        return new Promise((resolve, reject) =>
+            db.all(sql, params, (err: any, rows: T[]) => (err ? reject(err) : resolve(rows)))
+        );
+    }
+
+    parseCustomDate(str: string): Date {
+        const [datePart, timePart] = str.split(", ");
+
+        const [day, month, year] = datePart.split("/").map(Number);
+
+        const [h, m, s, ms] = timePart.split(":");
+
+        return new Date(
+            year,
+            month - 1,      
+            day,
+            Number(h),
+            Number(m),
+            Number(s),
+            Number(ms)
+        );
     }
 
 
